@@ -99,24 +99,24 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
+            <!-- 로고-->
             <a class="navbar-brand ps-3" href="index.jsp">OO대학교</a>
-            <!-- Sidebar Toggle-->
+            <!-- 사이드바 열기닫기-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
+            <!-- 상단검은색 바-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
+                	<%-- 검색창인풋 --%>
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>
-            <!-- Navbar-->
+            <!-- 사이드바-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-	                <%-- 로그인 로그아웃 관련 include --%>
+                    <%--조회, 수정, 로그아웃--%>
                     <jsp:include page="/inc/member.jsp" />
-    	            <%-- 로그인 로그아웃 관련 include --%>
                 </li>
             </ul>
         </nav>
@@ -124,15 +124,16 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-	                    <%-- menu 사이드바 include --%>	
+                   		 <%--사이드바--%>
                         <jsp:include page="/inc/menu.jsp" />
-	                    <%-- menu 사이드바 include --%>	
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
+                        
                     </div>
                 </nav>
             </div>
+            <%--메인 페이지부분 --%>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -145,11 +146,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         <!-- Area Chart -->
                         <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
+                                <!-- 일정리스트  -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h4 class="m-0 font-weight-bold text-primary">일정 리스트</h4>
                                 </div>
-                                <!-- Card Body -->
+                                <!-- 일정리스트 내용 -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                    	         		<table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
@@ -170,14 +171,14 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                             </div>
                         </div>
 
-                        <!-- Pie Chart -->
+                        <!-- 달력부분 -->
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h4 class="m-0 font-weight-bold text-primary">일정</h4>
                                 </div>
-                                <!-- Card Body -->
+                                <!-- 달력부분 내용 -->
                                 <div class="card-body">
                                 	<form name="calendarFrm" id="calendarFrm" action="" method="post">
 										<DIV id="content" style="width:99%;">
@@ -261,6 +262,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										</THEAD>
 										<TBODY>
 										<TR>
+									
 <%
 										//처음 빈공란 표시
 										for(int index = 1; index < start ; index++ )
@@ -327,6 +329,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                             </p>
                         </div>
                     </div>
+                    <%--공지사항 --%>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">공지사항</h1>
                         <ol class="breadcrumb mb-4">
