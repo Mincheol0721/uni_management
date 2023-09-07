@@ -36,10 +36,10 @@
 		</c:when>
 		<c:when test="${job eq '교직원'}">
 			<a class="nav-link menu" href="${path}/menu/professorList.jsp">
-				교수정보
+				교수정보 관리 게시판
 			</a>
 			<a class="nav-link menu" href="${path}/menu/studentList.jsp">
-				학생정보
+				학생정보 정보 관리 게시판
 			</a>
 		</c:when>
 		<c:when test="${job eq '학생'}">
