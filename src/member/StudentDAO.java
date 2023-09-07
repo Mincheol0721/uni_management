@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 //DAO는 데이터베이스 연결을 맺은 후 DB작업하는 자바빈클래스 종류중 하나!
 
-public class ProfessorDAO {
+public class StudentDAO {
 
 	//데이터베이스 작업관련 객체들을 저장할 변수들
 	DataSource ds;//커넥션풀 역할을 하는 DataSouce객체의 주소를 저장할 변수 
@@ -65,7 +65,7 @@ public class ProfessorDAO {
 			//  요약 : DB와의 연결
 			con = getConnection();
 			//2. insert 쿼리문(SQL문) 만들기
-			sql = "insert into professor(id,pwd,name,tel,ssn,email,addr,faculty,dept) " +
+			sql = "insert into student(id,pwd,name,tel,ssn,email,addr,faculty,dept) " +
 							     "values( ?,  ?,   ?,  ?,  ?,    ?,   ?,      ?,   ?)";
 			
 			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
@@ -86,7 +86,7 @@ public class ProfessorDAO {
 			result = pstmt.executeUpdate();
 		
 		} catch (Exception e) {
-			System.out.println("ProfessorDAO클래스의 insertProf메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
+			System.out.println("studentDAO클래스의 insertProf메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
 		} finally {
 			freeResource();
 		}
@@ -110,7 +110,7 @@ public class ProfessorDAO {
 			//  요약 : DB와의 연결
 			con = getConnection();
 			//2. 입력한 아이디에 해당하는 회원레코드 조회 SELECT 쿼리문 만들기
-			sql = "select * from professor where id='"+id+"'";
+			sql = "select * from student where id='"+id+"'";
 			//3. PreparedStatement실행객체 얻기
 			pstmt = con.prepareStatement(sql);
 			//4. select문장 DB에 전송해서 실행 후 조회 결과를 ResultSet으로 반환받기
@@ -123,7 +123,7 @@ public class ProfessorDAO {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("ProfessorDAO의 idCheck메소드 내부에서 SQL 실행오류: " + e);
+			System.out.println("studentDAO의 idCheck메소드 내부에서 SQL 실행오류: " + e);
 		} finally {
 			//7. 자원반납(커넥션풀에 Connection객체 사용 후 반납)
 			freeResource();
@@ -149,7 +149,7 @@ public class ProfessorDAO {
 			con = getConnection();
 			//2.1 입력한 아이디에 해당하는 정보 조회(SELECT문 만들기)
 			
-			sql = "SELECT * FROM PROFESSOR WHERE id=?";
+			sql = "SELECT * FROM student WHERE id=?";
 			//2.2 입력한 비밀번호에 해당하는 정보 조회(SELECT문 만들기)
 			//sql = "SELECT * FROM MEMBER WHERE passwd=?";
 			//3. PreparedStatement실행 객체 얻기
@@ -176,7 +176,7 @@ public class ProfessorDAO {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("ProfessorDAO의 userCheck메소드에서 sql문 실행 오류: " + e);
+			System.out.println("studentDAO의 userCheck메소드에서 sql문 실행 오류: " + e);
 		} finally {
 			//자원반납(커넥션풀에 Connection객체 사용 후 반납)
 			freeResource();
