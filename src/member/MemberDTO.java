@@ -29,7 +29,21 @@ public class MemberDTO {
 		this.faculty = faculty;
 		this.reg_date = reg_date;
 	}
-
+	//reg_date없는 생성자
+	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
+			String dept, String faculty) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+		this.dept = dept;
+		this.faculty = faculty;
+		
+	}
 	//getter, setter 메소드
 	public String getId() {
 		return id;

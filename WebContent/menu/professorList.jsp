@@ -1,3 +1,6 @@
+<%@page import="member.MemberDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="member.ProfessorDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
@@ -16,6 +19,11 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script>
+        
+        
+        
+        </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -72,17 +80,42 @@
                    	           			<td width=5%>학부</td>
                    	           			<td width=5%>전공</td>
                    	           		</tr>
+                   	       			<%
+                   	       			ProfessorDAO dao = new ProfessorDAO();
+                   	       			
+                   	       			
+                   	       			List profMem = dao.listProfessor();
+                   	       			
+                   	    			MemberDTO Mem = null;
+                   	    			
+                   	    			
+                   	       			
+                   	       			for(int i=0; i < profMem.size(); i++){
+                   	       			Mem = (MemberDTO)profMem.get(i);
+                   	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                    	           			<td><input type="checkbox" name="xxx" value="yyy"></td>
-                   	           			<td width=5%>수강</td>
-                   	           			<td width=5%>수강신청관련 공지</td>
-                   	           			<td width=5%>2023-05-08</td>
+                   	           			<td width=5%><%=Mem.getId() %></td>
+                   	           			<td width=5%><%=Mem.getName() %></td>
+                   	           			<td width=5%><%=Mem.getTel() %></td>
+                   	           			<td width=5%><%=Mem.getSsn() %></td>
+                   	           			<td width=5%><%=Mem.getEmail() %></td>
+                   	           			<td width=5%><%=Mem.getAddr() %></td>
+                   	           			<td width=5%><%=Mem.getPwd() %></td>
+                   	           			<td width=5%><%=Mem.getFaculty() %></td>
+                   	           			<td width=5%><%=Mem.getDept() %></td>
+                   	           			
+                   	           			
                    	           		</tr>
-                   	           		
+                   	           		<%
+                   	           		}
+                   	       			%>
                    	           </table>
-                   	           		<input type="button" value="등록">
-                   	           		<input type="button" value="수정">
-                   	           		<input type="button" value="삭제">
+                   	           
+                   	          		<input type="button" name="professor_reg" value="등록">
+                   	           		<input type="button" name="professor_mod" value="수정">
+                   	           		<input type="button"  value="삭제">
+                   	           		
                             </p>
                         </div>
                     </div>

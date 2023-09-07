@@ -1,9 +1,11 @@
 package member;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -184,9 +186,46 @@ public class ProfessorDAO {
 		
 		
 		return check;
+	}//useCheck메소드 끝
+	
+	
+	public ArrayList listProfessor() {
+		
+		ArrayList list = new ArrayList();
+		
+		try {
+			//db에 접속
+			con = getConnection();
+			
+			String sql = "select * from professor";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String tel = rs.getString("tel");
+				String ssn = rs.getString("ssn");
+				String email = rs.getString("email");
+				String addr = rs.getString("addr");
+				String pwd = rs.getString("pwd");
+				String faculty = rs.getString("faculty");
+				String dept = rs.getString("dept");
+	
+				
+				MemberDTO memberDTO = new MemberDTO(id, pwd, name, email, addr, tel, ssn, dept, faculty);
+				
+				list.add(memberDTO);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			freeResource();
+		}
+		return list;
 	}
-	
-	
 	
 	
 }
