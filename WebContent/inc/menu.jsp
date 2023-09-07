@@ -38,7 +38,7 @@
 			<a class="nav-link menu" href="${path}/menu/professorList.jsp">
 				교수정보
 			</a>
-			<a class="nav-link menu" href="${path}/menu/professorList.jsp">
+			<a class="nav-link menu" href="${path}/menu/studentList.jsp">
 				학생정보
 			</a>
 		</c:when>
