@@ -26,6 +26,10 @@
 			<a class="nav-link menu" href="${path}/menu/info.jsp">
 				학사정보
 			</a>
+			<a class="nav-link menu" href="${path}/menu/professorList.jsp">
+				교수정보
+			</a>
+			
 		</div>
 		
 		<script type="text/javascript">
