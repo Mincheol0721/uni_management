@@ -3,6 +3,7 @@ package faculty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -51,8 +52,45 @@ public class FacultyDAO {
 		}
 	}
 	
+	
+	public ArrayList fList() {
 		
 		
+		ArrayList list = new ArrayList();		
 		
+		String sql = "";
+		
+		try {
+			getConnection();
+			
+			sql = "select * from faculty order by fcode";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				FacultyDTO dto = new FacultyDTO();
+				
+				dto.setFname(rs.getString("fname"));
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("FacultyDAO의 fList메소드 내부에서 예외발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		
+		return list;
+	}
+	
+	
+	
+	
 		
 }

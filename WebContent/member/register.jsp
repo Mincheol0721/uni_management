@@ -1,8 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="java.util.ArrayList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" 
+	import="faculty.*" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<% request.setCharacterEncoding("UTF-8"); %>
+<% 
+	request.setCharacterEncoding("UTF-8"); 
+	
+	DeptDAO dao = new DeptDAO();
+	DeptDTO dto = new DeptDTO();
+	
+%>
 
 <!DOCTYPE html>
 <html>
@@ -15,6 +23,50 @@
         <title>OO대학교 학생/교수 등록</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript">
+        	$(function() {
+        		var $dselect = $("#dept");
+        		var $fsel = $("select[name=faculty]");
+        		
+        		$fsel.empty();
+        		
+				$.ajax({
+					url : '<%=request.getContextPath()%>/register.do',
+					type : 'POST',
+					dataType : 'json',
+					success : function(data){
+						$.each(data, function(index, dto) {
+							$fsel.append("<option value='" + dto.fname + "' name='foption'>" + dto.fname + "</option>"); 
+						});
+					}
+				});
+				
+				
+				$(document).on("change", $("#faculty option:selected"), function() {
+					$dselect.empty();
+					
+					console.log("fsel: " + $fsel.val());
+					
+					$.ajax({
+						url : '<%=request.getContextPath()%>/register.do',
+						type : 'POST',
+						data : {foption : $(this).val(), fname : $fsel.val()},
+						dataType : 'json',
+						success : function(data){
+							$.each(data, function(index, dto) {
+								$dselect.append("<option value='" + dto.dname + "' name='doption'>" + dto.dname + "</option>"); 
+								
+							});
+						}
+					});
+					
+					
+				});
+				
+				
+			});
+        </script>
     </head>
     <body class="bg-primary">
         <div id="layoutAuthentication">
@@ -75,13 +127,15 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="faculty" type="text" />
+                                                        <select class="form-control" id="faculty" name="faculty">
+                                                        </select>
                                                         <label for="faculty">학부</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="dept" type="text" />
+                                                        <select class="form-control" id="dept" name="dept">
+                                                        </select>
                                                         <label for="dept">전공</label>
                                                     </div>
                                                 </div>

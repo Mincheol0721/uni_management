@@ -65,6 +65,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 
 %>
 
+<c:set var="id" value="${sessionScope.id}" />
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -128,7 +130,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         <jsp:include page="/inc/menu.jsp" />
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
+                        <div class="small">Logged in as: ${id}</div>
                         
                     </div>
                 </nav>
