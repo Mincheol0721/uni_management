@@ -26,27 +26,29 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인하기</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form action="loginPro.jsp" method="post">
+                                        	<div class="form-check mb-3" style="align-content: center;">
+                                            	<input type="radio" id="professor" value="교수" name="job" checked="checked"> 교수
+                                            	&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                                            	<input type="radio" id="student" value="학생" name="job"> 학생 
+                                            	&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                                            	<input type="radio" id="employee" value="교직원" name="job"> 교직원
+                                            </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="id" type="text" placeholder="name@example.com" />
+                                                <input class="form-control" id="id" type="text" name="id" placeholder="202310001" />
                                                 <label for="inputEmail">학번/교번</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="pw" type="password" placeholder="Password" />
+                                                <input class="form-control" id="pwd" type="password" name="pwd" placeholder="Password" />
                                                 <label for="inputPassword">비밀번호</label>
                                             </div>
                                             <div class="form-check mb-3">
                                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                                 <label class="form-check-label" for="inputRememberPassword">비밀번호 기억하기</label>
                                             </div>
-                                            <div class="form-check mb-3" style="align-content: center;">
-                                            	<input type="radio" id="professor" value="교수" name="job" checked="checked"> 교수
-                                            	&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-                                            	<input type="radio" id="student" value="학생" name="job"> 학생 
-                                            </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.jsp">비밀번호 찾기</a>
-                                                <a class="btn btn-primary" href="index.jsp">로그인</a>
+                                                <a class="small" href="#">비밀번호 찾기</a>
+                                                <input type="submit" class="btn btn-primary" value="로그인" >
                                             </div>
                                         </form>
                                     </div>
