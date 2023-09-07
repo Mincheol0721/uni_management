@@ -28,8 +28,11 @@
                                     <div class="card-body">
                                         <form>
                                         	<div class="form-floating mb-3">
-                                        		<input type="radio" id="stud" value="학생" name="job"> 학생 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
-                                        		<input type="radio" id="prof" value="교수" name="job"> 교수
+                                        		<input type="radio" id="professor" value="교수" name="job" checked="checked"> 교수
+                                            	&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                                            	<input type="radio" id="student" value="학생" name="job"> 학생 
+                                            	&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+                                            	<input type="radio" id="employee" value="교직원" name="job"> 교직원
                                         	</div>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="id" type="text" />
@@ -38,7 +41,7 @@
                                             <div class="row mb-3">
                                                 <div class="col-md-6">
                                                     <div class="form-floating mb-3 mb-md-0">
-                                                        <input class="form-control" id="pwd" type="pwd" />
+                                                        <input class="form-control" id="pwd" type="password" />
                                                         <label for="pwd">비밀번호<span style="color: grey;"><small>&nbsp;| 비밀번호는 8자 이상 입력해주세요</small></span></label>
                                                     </div>
                                                 </div>
@@ -54,12 +57,12 @@
                                                 <label for="name">이름</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="mobile" type="text" />
+                                                <input class="form-control" id="tel" type="text" />
                                                 <label for="mobile">전화번호<span style="color: grey;"><small>&nbsp;| 하이픈(-)을 빼고 입력해주세요</small></span></label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="birth" type="text" />
-                                                <label for="birth">생년월일<span style="color: grey;"><small>&nbsp;| 생년월일 8자로 입력해주세요</small></span></label>
+                                                <input class="form-control" id="ssn" type="text" />
+                                                <label for="ssn">주민등록번호<span style="color: grey;"><small>&nbsp;| 하이픈(-)을 빼고 13자리로 입력해주세요</small></span></label>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input class="form-control" id="email" type="email" />
@@ -69,9 +72,19 @@
                                                 <input class="form-control" id="addr" type="text" />
                                                 <label for="addr">주소</label>
                                             </div>
-                                            <div class="form-floating mb-3">
-                                                <input class="form-control" id="major" type="text" />
-                                                <label for="major">전공</label>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="faculty" type="text" />
+                                                        <label for="faculty">학부</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        <input class="form-control" id="dept" type="text" />
+                                                        <label for="dept">전공</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             
                                             <div class="mt-4 mb-0">
