@@ -19,32 +19,8 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script>
-        $(function(){ 
-        	
-        	
-        	
-        	//교수등록
-        	$("#professor_reg").click(function(){
-     	       $("#mainform").attr("action", "professor_reg.jsp");
-     	       $("#mainform").submit();
-     		});
-        	//교수수정
-        	$("#professor_mod").click(function(){
-      	       $("#mainform").attr("action", "professor_mod.jsp");
-      	       $("#mainform").submit();
-      		});
-        	//교수삭제
-        	$("#professor_del").click(function(){
-      	       $("#mainform").attr("action", "professor_del.jsp");
-      	   	   $("#mainform").submit();
-      		});
-        	
-        	
-        });
-       	
-       	
+        
         
         
         </script>
@@ -52,7 +28,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
+            <a class="navbar-brand ps-3" href="index.jsp">OO대학교</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -85,69 +61,85 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수정보 관리</h1>
+                        <h1 class="mt-4">교수 정보 수정</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professorList</li>
+                            <li class="breadcrumb-item active">professor_mod</li>
                         </ol>
                         <div class="row">
-                        	<form id="mainform" action="" method="post">
-                   	           <table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%></td>
-                   	           			<td width=5%>교번</td>
-                   	           			<td width=5%>이름</td>
-                   	           			<td width=5%>연락처</td>
-                   	           			<td width=5%>주민등록번호</td>
-                   	           			<td width=5%>이메일</td>
-                   	           			<td width=5%>주소</td>
-                   	           			<td width=5%>비밀번호</td>
-                   	           			<td width=5%>학부</td>
-                   	           			<td width=5%>전공</td>
-                   	           		</tr>
-                   	       			<%
-                   	       			ProfessorDAO dao = new ProfessorDAO();
-                   	       			
-                   	       			
-                   	       			List profMem = dao.listProfessor();
-                   	       			
-                   	    			MemberDTO Mem = null;
-                   	    			
-                   	    			
-                   	       			
-                   	       			for(int i=0; i < profMem.size(); i++){
-                   	       			Mem = (MemberDTO)profMem.get(i);
-                   	       			%>
-                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td><input type="checkbox" name="xxx" value="yyy"></td>
-                   	           			<td width=5%><%=Mem.getId() %></td>
-                   	           			<td width=5%><%=Mem.getName() %></td>
-                   	           			<td width=5%><%=Mem.getTel() %></td>
-                   	           			<td width=5%><%=Mem.getSsn() %></td>
-                   	           			<td width=5%><%=Mem.getEmail() %></td>
-                   	           			<td width=5%><%=Mem.getAddr() %></td>
-                   	           			<td width=5%><%=Mem.getPwd() %></td>
-                   	           			<td width=5%><%=Mem.getFaculty() %></td>
-                   	           			<td width=5%><%=Mem.getDept() %></td>
-                   	           			
-                   	           			
-                   	           		</tr>
-                   	           		<%
-                   	           		}
-                   	       			%>
-                   	 
-                   	       			
-                   	           </table>
-                   	          		
-                   	           		
-                   	           		
-                   	           	 <input style="float: right" type="button" id="professor_del" name="professor_del" value="삭제">
-                   	           	 <input style="float: right" type="button" id="professor_mod" name="professor_mod" value="수정">
-                   	           	 <input style="float: right" type="button" id="professor_reg" name="professor_reg" value="등록">
-                   	         </form>
-                   	          		
-                   	           		
-                          			
-                        </div>
+
+
+					<form>
+
+					<table>
+						<tr>
+							<th>아이디</th>
+							<td ><input type="text" name="id"></td>
+							
+						</tr>
+						<tr>
+							<th>이름</th>
+							<td><input type="text" name="name"></td>
+							
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td><input type="text" name="tel"></td>
+							
+						</tr>
+						<tr>
+							<th>주민등록번호</th>
+							<td><input type="text" name="ssn"></td>
+							
+						</tr>
+						<tr>
+							<th>이메일</th>
+							<td><input type="text" name="email"></td>
+							
+						</tr>
+						<tr>
+							<th>주소</th>
+							<td><input type="text" name="addr"></td>
+							
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td><input type="text" name="pwd"></td>
+							
+						</tr>
+						<tr>
+							<th>소속 학부</th>
+							<td><select name="faculty">
+									
+									<option value="Engine">엔진</option>
+									<option value="Science">과학</option>
+									<option value="Arts">예술</option>
+									<option value="Business">경영</option>
+									<option value="Medicine">의학</option>
+									<option value="Social">사회</option>
+									<option value="Education">교육</option>
+							</select></td>
+						</tr>
+						<tr>
+							<th>소속 전공</th>
+							<td><select name="dept">
+									
+									<option value="Computer">컴퓨터</option>
+									<option value="Physics">물리학</option>
+									<option value="History">역사학</option>
+									<option value="Marketing">마케팅</option>
+									<option value="Biology">생물학</option>
+									<option value="Economics">경제학</option>
+									<option value="Mathema">수학</option>
+							</select></td>
+						</tr>
+					</table>
+							<input type="submit" id="professor_reg" name="professor_reg" value="등록">
+                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
+				</form>
+
+
+
+				</div>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">

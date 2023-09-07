@@ -61,9 +61,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수등록</h1>
+                        <h1 class="mt-4">교수삭제</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_mod</li>
+                            <li class="breadcrumb-item active">professor_del</li>
                         </ol>
                         <div class="row">
 
@@ -71,7 +71,7 @@
 					<table>
 						<tr>
 							<th>아이디</th>
-							<td><input type="text" name="id"></td>
+							<td ><input type="text" name="id"></td>
 							
 						</tr>
 						<tr>
@@ -107,7 +107,7 @@
 						<tr>
 							<th>소속 학부</th>
 							<td><select name="faculty">
-									<!-- name="addr" 로 수정 -->
+									
 									<option value="Engine">엔진</option>
 									<option value="Science">과학</option>
 									<option value="Arts">예술</option>
@@ -120,7 +120,7 @@
 						<tr>
 							<th>소속 전공</th>
 							<td><select name="dept">
-									<!-- name="addr" 로 수정 -->
+									
 									<option value="Computer">컴퓨터</option>
 									<option value="Physics">물리학</option>
 									<option value="History">역사학</option>
