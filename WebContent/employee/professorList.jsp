@@ -27,19 +27,28 @@
         	
         	//교수등록
         	$("#professor_reg").click(function(){
-     	       $("#mainform").attr("action", "professor_reg.jsp");
-     	       $("#mainform").submit();
+        	   document.mainform.action = "professor_reg.jsp";	
+          	   document.mainform.submit();
+     	      
      		});
+        	
+        	checked = $("input[name=checkbox]");
         	//교수수정
         	$("#professor_mod").click(function(){
-      	       $("#mainform").attr("action", "professor_mod.jsp");
-      	       $("#mainform").submit();
+        		
+        	   document.mainform.action = "professor_mod.jsp";
+        	   document.mainform.submit();
       		});
         	//교수삭제
         	$("#professor_del").click(function(){
-      	       $("#mainform").attr("action", "professor_del.jsp");
-      	   	   $("#mainform").submit();
+        	   document.mainform.action = "professor_del.jsp";	
+         	   document.mainform.submit();
+      	       
       		});
+        	
+        	
+        	
+        
         	
         	
         });
@@ -90,7 +99,7 @@
                             <li class="breadcrumb-item active">professorList</li>
                         </ol>
                         <div class="row">
-                        	<form id="mainform" action="" method="post">
+                        	<form id="mainform" action="" method="post" name="mainform">
                    	           <table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
                    	           		<tr bgcolor="lightgrey" align="center">
                    	           			<td width=5%></td>
@@ -118,7 +127,7 @@
                    	       			Mem = (MemberDTO)profMem.get(i);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td><input type="checkbox" name="xxx" value="yyy"></td>
+                   	           			<td><input type="checkbox" name="radio" value="<%=Mem.getId() %>"></td>
                    	           			<td width=5%><%=Mem.getId() %></td>
                    	           			<td width=5%><%=Mem.getName() %></td>
                    	           			<td width=5%><%=Mem.getTel() %></td>
@@ -171,5 +180,31 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-    </body>
+		<script type="text/javascript">
+        //체크박스 하나만 눌리게 하기
+        
+       
+        
+        $('input[type="checkbox"][name="radio"]').click(function(){
+        	 //만약에 체크박스가 클릭되어있으면,
+        	  if($(this).prop('checked')){
+        		  //checkbox 전체를 checked 해제 후, 
+        	     $('input[type="checkbox"][name="radio"]').prop('checked',false);
+        	 	  //click한 요소만 true 지정
+        	     $(this).prop('checked',true);
+        	 	  
+//         	     attr()는 html의 속성(attribute)을 다루고, .
+//         	     prop()는 javascript의 속성(property)을 다루는 차이점이 있습니다.
+
+//         	     예를 들어,
+//         	     Attr(“checked”); 와 prop(“checked”); 가 있다면
+//         	     Attr의 값은 checked
+//         	     Prop는 true가 됩니다.
+        	    }
+        	  
+        	   });
+
+        
+        </script>
+</body>
 </html>

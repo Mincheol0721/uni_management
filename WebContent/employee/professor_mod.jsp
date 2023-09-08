@@ -67,48 +67,65 @@
                         </ol>
                         <div class="row">
 
+					<%
+					request.setCharacterEncoding("utf-8");
 
+					String selectedRadio = request.getParameter("radio");
+					System.out.print(selectedRadio);
+					String id = request.getParameter("id");
+					String name = request.getParameter("name");
+					String tel = request.getParameter("tel");
+					String ssn = request.getParameter("ssn");
+					String email = request.getParameter("email");
+					String addr = request.getParameter("addr");
+					String pwd = request.getParameter("pwd");
+					String faculty = request.getParameter("faculty");
+					String dept = request.getParameter("dept");
+					
+					
+					%>
+					
 					<form>
 
 					<table>
 						<tr>
 							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
+							<td ><input type="text" value="<%=id%>"></td>
 							
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name"></td>
+							<td><input type="text" name="<%= name%>"></td>
 							
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
+							<td><input type="text" name="<%= tel%>"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
+							<td><input type="text" name="<%= ssn%>"></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email"></td>
+							<td><input type="text" name="<%= email%>"></td>
 							
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td><input type="text" name="addr"></td>
+							<td><input type="text" name="<%= addr%>"></td>
 							
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
+							<td><input type="text" name="<%= pwd%>"></td>
 							
 						</tr>
 						<tr>
 							<th>소속 학부</th>
-							<td><select name="faculty">
+							<td><select name="<%= faculty%>">
 									
 									<option value="Engine">엔진</option>
 									<option value="Science">과학</option>
@@ -121,7 +138,7 @@
 						</tr>
 						<tr>
 							<th>소속 전공</th>
-							<td><select name="dept">
+							<td><select name="<%=dept%>">
 									
 									<option value="Computer">컴퓨터</option>
 									<option value="Physics">물리학</option>
@@ -163,5 +180,11 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script type="text/javascript"> 
+		
+      
+        
+
+   		</script> 
     </body>
 </html>
