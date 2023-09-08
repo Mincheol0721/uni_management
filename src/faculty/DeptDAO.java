@@ -50,7 +50,7 @@ public class DeptDAO {
 				e.printStackTrace();
 			}
 		}
-		
+
 		public ArrayList dList(int fcode) {
 			
 			ArrayList list = new ArrayList();		
@@ -60,49 +60,10 @@ public class DeptDAO {
 			try {
 				getConnection();
 				
-				sql = "select * from dept order by dcode";
+				sql = "select * from dept where fcode=? order by dcode";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, fcode);
-				
-				rs = pstmt.executeQuery();
-				
-				while(rs.next()) {
-					
-					DeptDTO dto = new DeptDTO();
-					
-					dto.setDcode( rs.getInt("dcode") );
-					dto.setFcode( rs.getInt("fcode") );
-					dto.setDname( rs.getString("dname") );
-					dto.setFname( rs.getString("fname") );
-					
-					list.add(dto);
-				}
-				
-				
-			} catch (Exception e) {
-				System.out.println("DeptDAO의 dList(int)메소드 내부에서 예외발생: " + e);
-			} finally {
-				freeResource();
-			}
-			
-			
-			return list;
-		}
-		
-		public ArrayList dList() {
-			
-			ArrayList list = new ArrayList();		
-			
-			String sql = "";
-			
-			try {
-				getConnection();
-				
-				sql = "select * from dept order by dcode";
-				
-				pstmt = con.prepareStatement(sql);
-//				pstmt.setInt(1, fcode);
 				
 				rs = pstmt.executeQuery();
 				

@@ -65,8 +65,8 @@ public class EmployeeDAO {
 			//  요약 : DB와의 연결
 			con = getConnection();
 			//2. insert 쿼리문(SQL문) 만들기
-			sql = "insert into employee(id,pwd,name,tel,ssn,email,addr,faculty,dept) " +
-							     "values( ?,  ?,   ?,  ?,  ?,    ?,   ?,      ?,   ?)";
+			sql = "insert into employee(id,pwd,name,email,tel,ssn,addr) " +
+							     "values( ?,  ?,  ?,    ?,  ?,  ?,   ?)";
 			
 			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
 			pstmt = con.prepareStatement(sql);
@@ -74,19 +74,17 @@ public class EmployeeDAO {
 			pstmt.setString(1, dto.getId());
 			pstmt.setString(2, dto.getPwd());
 			pstmt.setString(3, dto.getName());
-			pstmt.setString(4, dto.getTel());
-			pstmt.setString(5, dto.getSsn());
-			pstmt.setString(6, dto.getEmail());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getTel());
+			pstmt.setString(6, dto.getSsn());
 			pstmt.setString(7, dto.getAddr());
-			pstmt.setString(8, dto.getFaculty());
-			pstmt.setString(9, dto.getDept());
 			
 			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
 			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
 			result = pstmt.executeUpdate();
 		
 		} catch (Exception e) {
-			System.out.println("employeeDAO클래스의 insertProf메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
+			System.out.println("employeeDAO클래스의 insertMember메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
 		} finally {
 			freeResource();
 		}
