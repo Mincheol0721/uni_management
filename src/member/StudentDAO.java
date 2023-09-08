@@ -86,7 +86,7 @@ public class StudentDAO {
 			result = pstmt.executeUpdate();
 		
 		} catch (Exception e) {
-			System.out.println("studentDAO클래스의 insertProf메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
+			System.out.println("studentDAO클래스의 insertMember내부에서  insert문장 실행 예외발생 : " + e.toString());
 		} finally {
 			freeResource();
 		}
