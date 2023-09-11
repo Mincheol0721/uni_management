@@ -116,7 +116,7 @@ public class BoardDAO {
 	
 	
 	//새 과목 하나를 studyplannerdb 데이터베이스의 Board에 추가시키는 기능의 메소드
-	public void insertSB(BoardBean boardBean) {
+	public int insertSB(BoardBean boardBean) {
 		
 		try {
 			
@@ -140,13 +140,14 @@ public class BoardDAO {
 			pstmt.setString(6, boardBean.getProfessor()); 	//담당 교수
 
 			//insert문 실행
-			pstmt.executeUpdate();			
+			return pstmt.executeUpdate();			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			 freeResource();	
 		}
+		return 0;
 		
 	}//insertSB end
 	
@@ -196,7 +197,31 @@ public class BoardDAO {
 	}
 
 	
-	//
+	//과목 수정
+	public void modifyCourse(BoardBean bean) {
+		
+		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where ccode=?";
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, bean.getCname());
+//			pstmt.setString(2, );
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			freeResource();
+		}
+		
+	}
+	
 	
 	
 	
