@@ -87,7 +87,7 @@ public class BoardDAO {
 				
 				BoardBean bean = new BoardBean();
 				
-				//�븯�굹�뵫 ���옣
+				//하나씩 저장
 				bean.setCcode(rs.getInt("ccode"));
 				bean.setCname(rs.getString("cname"));
 				bean.setCompdiv(rs.getString("compdiv"));
@@ -127,7 +127,7 @@ public class BoardDAO {
 			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, professor)"
 					   + "values (?, ?, ?, ?, ?, ?);";
 			
-			System.out.println("inserSB sql문 : " + sql);
+			System.out.println("insertSB sql문 : " + sql);
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -167,8 +167,13 @@ public class BoardDAO {
 	            sqlBuilder.append("(?, ?, ?, ?, ?, ?)");
 	        }
 	        
+	     
+	        
 	        // insert 문 실행할 pstmt 실행 객체 얻기
 	        String sql = sqlBuilder.toString();
+	        
+	        System.out.println("insertMultipleSB sql문 : " + sql);
+	        
 	        pstmt = con.prepareStatement(sql);
 	        
 	        for (int i = 0; i < arrayList.size(); i++) {

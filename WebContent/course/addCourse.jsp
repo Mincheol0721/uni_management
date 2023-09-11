@@ -225,6 +225,7 @@
                 </footer>
             </div>
         </div>       
+        <div id="result1"></div>
         
         <script>
 				
@@ -276,7 +277,54 @@
 		        });
 				 
 		</script>
-        
+        		
+		
+		<script type="text/javascript">
+		
+			$("#btn3").click(function(){
+				
+				//버튼 클릭시 이벤트 발생 
+				//문자열을 담을 변수 str과 배열 선언
+				//클릭 된 버튼을 checkBtn이란 변수에 담음				
+				var str = ""
+				var tdArr = new Array();
+				var checkBtn = $(this);
+				
+				//parent()를 이용해 버튼 checkBtn의 부모를 찾음
+				var tr = checkBtn.parent().parent();
+				var td = tr.children();
+				
+				//tr.text()를 이용해 해당 행의 모든 값을 가져옴
+				//td값을 각각 가져오려면 td.eq(인덱스) 이용하면됨
+				
+				console.log("등록한 행의 모든 데이터 : " + tr.text());
+				
+				var cname = td.eq(0).text();
+				var compdiv = td.eq(1).text();
+				var compyear = td.eq(2).text();
+				var compsem = td.eq(3).text();
+				var grade = td.eq(4).text();
+				var professor = td.eq(5).text();
+				
+				//반복문을 이용해 배열에 값을 담아 사용할 수도 있음
+				td.each(function(i){
+					
+					tdArr.push(td.eq(i).text());
+					
+				});
+				
+				console.log("배열에 담긴 값 : " + tdArr);
+		
+				str += cname + compdiv + compyear + compsem + grade + professor;
+				
+				$("#result1").html(str);
+				
+				
+			});
+		
+		</script>
+		
+	
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
