@@ -95,6 +95,82 @@ public class ProfessorDAO {
 		return result;
 	}
 	
+		//Member테이블에 회원정보를 수정하는 기능의 메소드 
+		public int updateMember(MemberDTO dto){
+			
+			int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+			String sql = ""; // insert 쿼리문 저장할 변수 
+			
+			try {
+				//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+				//  요약 : DB와의 연결
+				con = getConnection();
+				//2. insert 쿼리문(SQL문) 만들기
+				sql = "update professor set id=?, pwd=?, name=?, tel=?, ssn=?, email=?, addr=?, faculty=?, dept=?)";
+								     
+				
+				//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+				pstmt = con.prepareStatement(sql);
+				//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+				pstmt.setString(1, dto.getId());
+				pstmt.setString(2, dto.getPwd());
+				pstmt.setString(3, dto.getName());
+				pstmt.setString(4, dto.getTel());
+				pstmt.setString(5, dto.getSsn());
+				pstmt.setString(6, dto.getEmail());
+				pstmt.setString(7, dto.getAddr());
+				pstmt.setString(8, dto.getFaculty());
+				pstmt.setString(9, dto.getDept());
+				
+				//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+				// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+				result = pstmt.executeUpdate();
+			
+			} catch (Exception e) {
+				System.out.println("ProfessorDAO클래스의 updateMember메소드 내부에서 예외 발생 : " + e.toString());
+			} finally {
+				freeResource();
+			}
+		
+			//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+			return result;
+		}
+		
+		public MemberDTO selectMember(String id) {
+			MemberDTO dto = null;
+			
+			try {
+				con = getConnection();
+				String sql = "select * from professor where id=?";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					dto = new MemberDTO();
+					
+					dto.setId(rs.getString("id"));
+					dto.setName(rs.getString("name"));
+					dto.setPwd(rs.getString("pwd"));
+					dto.setSsn(rs.getString("ssn"));
+					dto.setTel(rs.getString("tel"));
+					dto.setEmail(rs.getString("email"));
+					dto.setAddr(rs.getString("addr"));
+					dto.setFaculty(rs.getString("faculty"));
+					dto.setDept(rs.getString("dept"));
+				}
+				
+			} catch (Exception e) {
+				System.out.println("ProfessorDAO클래스의 selectMember메소드 내부에서 예외 발생: " + e);
+			} finally {
+				freeResource();
+			}
+			
+			return dto;
+		}
+		
 	//회원가입을 위해 입력한 아이디를 매개변수로 id로 전달받아
 	//DB의 테이블에 저장되어 있는지 유무를 검사하는 메소드
 	//만약 입력한 아이디가 DB에 저장되어 있으면 1을 check변수에 저장하여 반환하고

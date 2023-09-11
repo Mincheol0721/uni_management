@@ -51,8 +51,6 @@
 			MemberDTO edto = new MemberDTO(id, pwd, name, email, addr, tel, ssn);
 			
 			//3. 응답할값을 마련 하기 위한 비즈니스로직 처리 
-			//   jspbeginner데이터베이스내부의 member테이블에  입력한 가입할 정보를 추가(insert) 하기 위해
-			//   MemberDAO객체를 생성하여  MemberDAO에 만들어 놓은 insertMember메소드 호출시 매개변수로 MemberBean객체의 주소를 전달해서 작업
 			ProfessorDAO pdao = new ProfessorDAO();
 			StudentDAO sdao = new StudentDAO();
 			EmployeeDAO edao = new EmployeeDAO();

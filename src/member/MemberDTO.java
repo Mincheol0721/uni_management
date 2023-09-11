@@ -9,14 +9,13 @@ public class MemberDTO {
 	//멤버변수(인스턴스변수)
 	//private으로 은닉보호되게 생성
 	private String id, pwd, name, email, addr, tel, ssn, faculty, dept;
+	private int jobCode;
 	private Timestamp reg_date;
 	
 	//생성자
 	public MemberDTO() {}
 
 	//변수들을 초기화할 생성자
-	
-	
 	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
 			String dept, String faculty) {
 		super();
@@ -137,6 +136,15 @@ public class MemberDTO {
 	public void setReg_date(Timestamp reg_date) {
 		this.reg_date = reg_date;
 	}
+
+	public int getJobCode() {
+		return jobCode;
+	}
+
+	public void setJobCode(int jobCode) {
+		this.jobCode = jobCode;
+	}
+	
 	
 	
 	

@@ -1,8 +1,35 @@
+<%@page import="member.EmployeeDAO"%>
+<%@page import="member.StudentDAO"%>
+<%@page import="member.ProfessorDAO"%>
+<%@page import="member.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <% request.setCharacterEncoding("UTF-8"); %>
+<c:set var="job" value="${sessionScope.job}" />
+
+<%
+	String job = (String)session.getAttribute("job");
+	String id = (String)session.getAttribute("id");
+
+	MemberDTO dto = new MemberDTO();
+	ProfessorDAO pdao = new ProfessorDAO();
+	StudentDAO sdao = new StudentDAO();
+	EmployeeDAO edao = new EmployeeDAO();
+	
+	System.out.println("직업: " + job);
+	System.out.println("id: " + id);
+	
+	if(job.equals("교수")){
+		dto = pdao.selectMember(id);
+	} else if(job.equals("학생")){
+		dto = sdao.selectMember(id);
+	} else if(job.equals("교직원")){
+		dto = edao.selectMember(id);
+	}
+	
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,10 +39,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 공지사항</title>
+        <title>OO대학교 학사관리 시스템 - 회원정보조회</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <style type="text/css">
+        	ul {
+        		list-style: none;
+        	}
+        	#myPage {
+        		margin-left: 90%;
+        		word-spacing: 1em;
+        	}
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -53,24 +90,25 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">공지사항</h1>
+                        <h1 class="mt-4">회원정보 조회</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">notice</li>
+                            <li class="breadcrumb-item active">my-info</li>
                         </ol>
                         <div class="row">
                         	<p class="mb-0">
-                   	           <table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%>분류</td>
-                   	           			<td width=15%>제목</td>
-                   	           			<td width=5%>작성일자</td>
-                   	           		</tr>
-                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td width=5%>수강</td>
-                   	           			<td width=15%>수강신청관련 공지</td>
-                   	           			<td width=5%>2023-05-08</td>
-                   	           		</tr>
-                   	           </table>
+                        	<ul id="memList">
+                        		<li>아이디: <b><%=dto.getId() %></b></li>
+                        		<li>이름: <b><%=dto.getName()%></b></li>
+                        		<li>주민등록번호: <b><%=dto.getSsn().substring(0, 8) %> ******</b></li>
+                        		<li>연락처: <b><%=dto.getTel() %></b></li>
+                        		<li>이메일: <b><%=dto.getEmail() %></b></li>
+                        		<li>주소: <b><%=dto.getAddr() %></b></li>
+                        		<li>학부: <b><%=dto.getFaculty() %></b></li>
+                        		<li>전공: <b><%=dto.getDept() %></b></li>
+                        	</ul>
+                        	<div id="myPage">
+                        		<a href="#"><small><input type="button" value="회원정보수정"></small></a>
+                        	</div>
                             </p>
                         </div>
                     </div>

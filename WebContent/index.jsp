@@ -66,6 +66,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 %>
 
 <c:set var="id" value="${sessionScope.id}" />
+<c:set var="path" value="${pageContext.request.contextPath }" />
 
 <!DOCTYPE html>
 <html lang="en">
@@ -167,7 +168,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 	                   	           			<td width=5%>2023-05-08</td>
 	                   	           		</tr>
 	                   	           	</table>
-                   	         		<span align="right"><small><a href="schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
+                   	         		<span align="right"><small><a href="${path}/menu/schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
                                     </div>
                                 </div>
                             </div>
@@ -351,7 +352,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                    	           			<td width=5%>2023-05-08</td>
                    	           		</tr>
                    	           </table>
-                   	           <font align="right"><small><a href="notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
+                   	           <font align="right"><small><a href="${path}/menu/notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
                             </p>
                         </div>
                     </div>
