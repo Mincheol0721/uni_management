@@ -6,4 +6,9 @@ window.addEventListener('DOMContentLoaded', event => {
     if (datatablesSimple) {
         new simpleDatatables.DataTable(datatablesSimple);
     }
+    
+    dataTable.on('datatable.page', function(page) {
+		//
+	});
+    
 });

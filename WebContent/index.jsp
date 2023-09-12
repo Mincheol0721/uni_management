@@ -126,14 +126,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                   		 <%--사이드바--%>
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as: ${id}</div>
-                        
-                    </div>
+	           		<%--사이드바--%>
+	                <jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <%--메인 페이지부분 --%>

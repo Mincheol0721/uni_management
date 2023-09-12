@@ -104,13 +104,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+	           		<%--사이드바--%>
+	                <jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -280,29 +275,146 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                     </div>
                         <!-- Area Chart -->
                         <div class="container-fluid px-4">
-                        <h1 class="mt-4">공지사항</h1>
+                        <h1 class="mt-4">일정 공지</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Notice</li>
+                            <li class="breadcrumb-item active">Schedule-List</li>
                         </ol>
-                        <div class="row">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+								일정리스트
+                            </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                   	         		<table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%>분류</td>
-	                   	           			<td width=15%>제목</td>
-	                   	           			<td width=5%>작성일자</td>
-	                   	           		</tr>
-	                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-	                   	           			<td width=5%>수강</td>
-	                   	           			<td width=15%>수강신청관련 공지</td>
-	                   	           			<td width=5%>2023-05-08</td>
-	                   	           		</tr>
+                                    <table id="datatablesSimple">
+	                                    <thead>
+		                   	           		<tr bgcolor="lightgrey" align="center">
+		                   	           			<td width=5%>분류</td>
+		                   	           			<td width=15%>제목</td>
+		                   	           			<td width=5%>일정</td>
+		                   	           		</tr>
+	                                    </thead>
+	                                    <tbody>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>수강</td>
+		                   	           			<td width=15%>수강신청관련 공지</td>
+		                   	           			<td width=5%>2023-05-08</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>행사</td>
+		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
+		                   	           			<td width=5%>2023-05-12</td>
+		                   	           		</tr>
+		                   	           	</tbody>
 	                   	           	</table>
-		                   	           	<div class="pagination" align="center">
-	    	               	           		페이징처리
-		                   	           	</div>
+	                   	           	<br>
+		                   	           	<div class="datatable-bottom">
+										    <div class="datatable-info">현재 게시글 / 전체 게시글</div>
+										    <nav class="datatable-pagination">
+										    	<ul class="datatable-pagination-list">
+										    		<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
+										    			<a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item datatable-active">
+										    			<a data-page="1" class="datatable-pagination-list-item-link">1</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="2" class="datatable-pagination-list-item-link">2</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="3" class="datatable-pagination-list-item-link">3</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="4" class="datatable-pagination-list-item-link">4</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="5" class="datatable-pagination-list-item-link">5</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="6" class="datatable-pagination-list-item-link">6</a>
+										    		</li>
+										    		<li class="datatable-pagination-list-item">
+										    			<a data-page="2" class="datatable-pagination-list-item-link">›</a>
+										    		</li>
+										    	</ul>
+										    </nav>
+										</div>
                                     </div>
                                 </div>
                             </div>
