@@ -30,10 +30,33 @@ public class MemberDTO {
 		this.faculty = faculty;
 	}
 	
+	public MemberDTO(String id, String name, String email, String addr, String tel, String ssn,
+			String dept, String faculty) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+		this.dept = dept;
+		this.faculty = faculty;
+	}
+	
 	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn) {
 		super();
 		this.id = id;
 		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+	}
+	
+	public MemberDTO(String id, String name, String email, String addr, String tel, String ssn) {
+		super();
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.addr = addr;

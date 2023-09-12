@@ -49,7 +49,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 회원정보조회</title>
+        <title>OO대학교 학사관리 시스템 - 회원정보수정</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -73,6 +73,10 @@
         	#btn {
         		margin-left: 90%;
         	}
+        	input {
+        		border: 1px solid grey;
+        	}
+        	
         	@media (max-width: 1200px) {
         	#btn {
         		margin-left: 80%;
@@ -81,12 +85,10 @@
         </style>
         <script type="text/javascript">
         	$(function() {
-				
-	        	if('<%=job%>' === '교직원') {
+	        	if('<%=job%>' == '교직원') {
 	        		$(".faculty").remove();
 	        		$(".dept").remove();
 	        	};
-	        	
 			});
         </script>
     </head>
@@ -126,82 +128,88 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">회원정보 조회</h1>
+                        <h1 class="mt-4">회원정보 수정</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">my-info</li>
                         </ol>
                         <div class="col-xl-12 col-lg-7">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">내 정보</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">정보 수정</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                    <form action="${path}/member/modMemberPro.jsp">
                                     	<div class="container-fluid">
 										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
 <%
 												if(id != null) {
 %>
+											<div class="col-md-12">
+												<div class="row">
 													<div class="col-md-2">
 														<span class="info_title">이름</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getName() %></span>
+														<input type="text" value="<%=dto.getName() %>" class="info" name="name">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
 														<span class="info_title">아이디</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getId() %></span>
+														<input type="text" value="<%=dto.getId() %>" class="info" name="id" disabled>
+														<input type="hidden" value="<%=dto.getId() %>" name="id">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
 														<span class="info_title">주민등록번호</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getSsn().substring(0, 8) %>******</span>
+														<input type="text" value="<%=dto.getSsn().substring(0, 8) %>******" name="ssn" disabled>
+														<input type="hidden" value="<%=dto.getSsn() %>" name="ssn">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
 														<span class="info_title">연락처</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getTel() %></span>
+														<input type="text" value="<%=dto.getTel() %>" class="info" name="tel">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
 														<span class="info_title">이메일</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getEmail() %></span>
+														<input type="text" value="<%=dto.getEmail() %>" class="info" name="email">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
 														<span class="info_title">주소</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getAddr() %></span>
+														<input type="text" value="<%=dto.getAddr() %>" class="info" name="addr">
 													</div>
 													<br><br><hr>
 													<div class="col-md-2 faculty">
 														<span class="info_title">학부</span>
 													</div>
 													<div class="col-md-10 faculty">
-														<span class="info"><%=dto.getFaculty() %></span>
+														<input type="text" value="<%=dto.getFaculty() %>" class="info" name="faculty" disabled>
+														<input type="hidden" value="<%=dto.getFaculty() %>" name="faculty">
 													</div>
 													<br class="faculty"><br class="faculty"><hr class="faculty">
 													<div class="col-md-2 dept">
 														<span class="info_title">전공</span>
 													</div>
 													<div class="col-md-10 dept">
-														<span class="info"><%=dto.getDept() %></span>
+														<input type="text" value="<%=dto.getDept() %>" class="info" name="dept" disabled>
+														<input type="hidden" value="<%=dto.getDept() %>" name="dept">
 													</div>
 													<br class="dept"><br class="dept"><hr class="dept">
-		                                    		<a href="${path}/member/checkPwd.jsp"><small><input type="button" id="btn" value="회원정보수정"></small></a>
+		                                    		<small><input type="submit" id="btn" value="수정하기"></small>
 												</div>
+											</div>
 <%
 												} else {
 %>	
@@ -212,9 +220,9 @@
 <%	
 												}
 %>
-											</div>
 										</div>
 									</div>
+									</form>
                                 </div>
                             </div>
                         </div>

@@ -30,7 +30,6 @@
 		System.out.println("직업: " + job);
 		System.out.println("id: " + id);
 		
-		
 		if(job.equals("교수")){
 			dto = pdao.selectMember(id);
 		} else if(job.equals("학생")){
@@ -49,7 +48,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 회원정보조회</title>
+        <title>OO대학교 학사관리 시스템 - 회원정보수정</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -71,7 +70,7 @@
         		color: grey;
         	}
         	#btn {
-        		margin-left: 90%;
+        		margin-left: 95%;
         	}
         	@media (max-width: 1200px) {
         	#btn {
@@ -79,16 +78,6 @@
         	}
         	}
         </style>
-        <script type="text/javascript">
-        	$(function() {
-				
-	        	if('<%=job%>' === '교직원') {
-	        		$(".faculty").remove();
-	        		$(".dept").remove();
-	        	};
-	        	
-			});
-        </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -126,83 +115,34 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">회원정보 조회</h1>
+                        <h1 class="mt-4">회원정보 수정</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">my-info</li>
+                            <li class="breadcrumb-item active">update-info</li>
                         </ol>
                         <div class="col-xl-12 col-lg-7">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">내 정보</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">비밀번호 확인</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     	<div class="container-fluid">
 										<div class="row">
+										<form action="checkPwdPro.jsp" method="post">
 											<div class="col-md-12">
 												<div class="row">
 <%
 												if(id != null) {
 %>
 													<div class="col-md-2">
-														<span class="info_title">이름</span>
+														<span class="info_title">비밀번호 입력</span>
 													</div>
 													<div class="col-md-10">
-														<span class="info"><%=dto.getName() %></span>
+														<input type="password" name="pwd">
 													</div>
 													<br><br><hr>
-													<div class="col-md-2">
-														<span class="info_title">아이디</span>
-													</div>
-													<div class="col-md-10">
-														<span class="info"><%=dto.getId() %></span>
-													</div>
-													<br><br><hr>
-													<div class="col-md-2">
-														<span class="info_title">주민등록번호</span>
-													</div>
-													<div class="col-md-10">
-														<span class="info"><%=dto.getSsn().substring(0, 8) %>******</span>
-													</div>
-													<br><br><hr>
-													<div class="col-md-2">
-														<span class="info_title">연락처</span>
-													</div>
-													<div class="col-md-10">
-														<span class="info"><%=dto.getTel() %></span>
-													</div>
-													<br><br><hr>
-													<div class="col-md-2">
-														<span class="info_title">이메일</span>
-													</div>
-													<div class="col-md-10">
-														<span class="info"><%=dto.getEmail() %></span>
-													</div>
-													<br><br><hr>
-													<div class="col-md-2">
-														<span class="info_title">주소</span>
-													</div>
-													<div class="col-md-10">
-														<span class="info"><%=dto.getAddr() %></span>
-													</div>
-													<br><br><hr>
-													<div class="col-md-2 faculty">
-														<span class="info_title">학부</span>
-													</div>
-													<div class="col-md-10 faculty">
-														<span class="info"><%=dto.getFaculty() %></span>
-													</div>
-													<br class="faculty"><br class="faculty"><hr class="faculty">
-													<div class="col-md-2 dept">
-														<span class="info_title">전공</span>
-													</div>
-													<div class="col-md-10 dept">
-														<span class="info"><%=dto.getDept() %></span>
-													</div>
-													<br class="dept"><br class="dept"><hr class="dept">
-		                                    		<a href="${path}/member/checkPwd.jsp"><small><input type="button" id="btn" value="회원정보수정"></small></a>
-												</div>
-<%
+		                                    		<small><input type="submit" id="btn" value="제출"></small>
+<%													
 												} else {
 %>	
 													<script type="text/javascript">
@@ -214,6 +154,7 @@
 %>
 											</div>
 										</div>
+										</form>
 									</div>
                                 </div>
                             </div>

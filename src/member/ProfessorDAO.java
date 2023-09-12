@@ -106,21 +106,20 @@ public class ProfessorDAO {
 				//  요약 : DB와의 연결
 				con = getConnection();
 				//2. insert 쿼리문(SQL문) 만들기
-				sql = "update professor set id=?, pwd=?, name=?, tel=?, ssn=?, email=?, addr=?, faculty=?, dept=?)";
+				sql = "update professor set name=?, tel=?, ssn=?, email=?, addr=?, faculty=?, dept=? where id=?";
 								     
 				
 				//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
 				pstmt = con.prepareStatement(sql);
 				//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
-				pstmt.setString(1, dto.getId());
-				pstmt.setString(2, dto.getPwd());
-				pstmt.setString(3, dto.getName());
-				pstmt.setString(4, dto.getTel());
-				pstmt.setString(5, dto.getSsn());
-				pstmt.setString(6, dto.getEmail());
-				pstmt.setString(7, dto.getAddr());
-				pstmt.setString(8, dto.getFaculty());
-				pstmt.setString(9, dto.getDept());
+				pstmt.setString(1, dto.getName());
+				pstmt.setString(2, dto.getTel());
+				pstmt.setString(3, dto.getSsn());
+				pstmt.setString(4, dto.getEmail());
+				pstmt.setString(5, dto.getAddr());
+				pstmt.setString(6, dto.getFaculty());
+				pstmt.setString(7, dto.getDept());
+				pstmt.setString(8, dto.getId());
 				
 				//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
 				// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
@@ -260,6 +259,35 @@ public class ProfessorDAO {
 		
 		
 		return check;
+	}
+	
+	public String checkPwd(String id) {
+		String pwd = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql = "select pwd from professor where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pwd = rs.getString("pwd");
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("ProfessorDAO클래스의 checkPwd메소드 내부에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		
+		return pwd;
 	}
 	
 	
