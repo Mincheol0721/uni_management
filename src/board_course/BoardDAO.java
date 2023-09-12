@@ -152,12 +152,11 @@ public class BoardDAO {
 				
 				list.add(bean);
 				
-				//System.out.println("과목 정보 저장 완료");
-				
-			}
+				//System.out.println("과목 정보 저장 완료");				
+			}			
 			
 			System.out.println("과목 조회 sql구문 실행 완료");
-					
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -221,9 +220,7 @@ public class BoardDAO {
 	            }
 	            sqlBuilder.append("(?, ?, ?, ?, ?, ?)");
 	        }
-	        
-	     
-	        
+	        	     	        
 	        // insert 문 실행할 pstmt 실행 객체 얻기
 	        String sql = sqlBuilder.toString();
 	        
@@ -232,6 +229,7 @@ public class BoardDAO {
 	        pstmt = con.prepareStatement(sql);
 	        
 	        for (int i = 0; i < arrayList.size(); i++) {
+	        	
 	            BoardBean boardBean = arrayList.get(i);
 	            pstmt.setString(i * 6 + 1, boardBean.getCname());       //과목명
 	            pstmt.setString(i * 6 + 2, boardBean.getCompdiv());     //이수 구분
@@ -239,94 +237,123 @@ public class BoardDAO {
 	            pstmt.setInt(i * 6 + 4, boardBean.getCompsem());        //이수 학기
 	            pstmt.setInt(i * 6 + 5, boardBean.getGrade());          //학점
 	            pstmt.setString(i * 6 + 6, boardBean.getProfessor());   //담당 교수
-	        }
-	        
+	            
+	        }	        
 	        // insert 문 실행
 	        pstmt.executeUpdate();
+	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
 	        freeResource();
 	    }
+	    
 	}//insertMultipleSB end
 
 	
-	//과목 수정을 위해 선택한 한 과목의 정보를 modCourse.jsp에 뿌려주기 위해 리턴하는 메소드
-	public BoardBean getCourse(String cname) {
+	//과목 삭제하는 기능의 메소드
+	public void delCourse(int ccode) {
 		
-		String sql = "select * from course where cname=?";
-		
-		BoardBean bean = new BoardBean();
+		String sql = "delete from course where ccode=?";
 		
 		try {
 			
 			//DB연결
 			con = ds.getConnection();
-			
-			pstmt = con.prepareStatement(sql);
-			
-			//DB에 전달할  ?값 세팅
-			pstmt.setString(1, cname);
-			
-			rs = pstmt.executeQuery();
-			
-			//수정할 과목 하나의 데이터들을 bean객체에 저장
-			if (rs.next()) {
-				
-				bean.setCname(rs.getString("cname"));
-				bean.setCompdiv(rs.getString("compdiv"));
-				bean.setCompyear(rs.getInt("compyear"));
-				bean.setCompsem(rs.getInt("compsem"));
-				bean.setGrade(rs.getInt("grade"));
-				bean.setProfessor(rs.getString("professor"));
-				
-			}	
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("getCourse메소드 실행 오류 : " + e);
-		} finally {
-			freeResource();
-		}
-		
-		//수정할 과목명에 대한 과목 객체 전달
-		return bean;
-
-	}//getCourse end
-
 	
-	//과목 수정하는 기능의 메소드
-	public void modifyCourse(BoardBean bean) {
-		
-		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where cname=?";
-		
-		try {
-			
-			//DB연결
-			con = ds.getConnection();
-			
-			pstmt = con.prepareStatement(sql);
-			
-			pstmt.setString(1, bean.getCname());
-			pstmt.setString(2, bean.getCompdiv());
-			pstmt.setInt(3, bean.getCompyear());
-			pstmt.setInt(4, bean.getCompsem());
-			pstmt.setInt(5, bean.getGrade());
-			
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setInt(1, ccode);
 			
 			pstmt.executeUpdate();
+						
+			System.out.println("과목 삭제 sql구문 실행 완료");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("modifyCourse메소드 실행 오류 : " + e);
+			System.out.println("delCourse메소드 실행 오류 : " + e);
 		} finally {
 			freeResource();
 		}
-		
-	}//modifyCourse end
+			
+	}//delCourse end
 	
 	
-	//과목 삭제하는 기능의 메소드
 	
+	
+//	//과목 수정을 위해 선택한 한 과목의 정보를 modCourse.jsp에 뿌려주기 위해 리턴하는 메소드
+//	public BoardBean getCourse(String cname) {
+//		
+//		String sql = "select * from course where cname=?";
+//		
+//		BoardBean bean = new BoardBean();
+//		
+//		try {
+//			
+//			//DB연결
+//			con = ds.getConnection();
+//			
+//			pstmt = con.prepareStatement(sql);
+//			
+//			//DB에 전달할  ?값 세팅
+//			pstmt.setString(1, cname);
+//			
+//			rs = pstmt.executeQuery();
+//			
+//			//수정할 과목 하나의 데이터들을 bean객체에 저장
+//			if (rs.next()) {
+//				
+//				bean.setCname(rs.getString("cname"));
+//				bean.setCompdiv(rs.getString("compdiv"));
+//				bean.setCompyear(rs.getInt("compyear"));
+//				bean.setCompsem(rs.getInt("compsem"));
+//				bean.setGrade(rs.getInt("grade"));
+//				bean.setProfessor(rs.getString("professor"));
+//				
+//			}	
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.out.println("getCourse메소드 실행 오류 : " + e);
+//		} finally {
+//			freeResource();
+//		}
+//		
+//		//수정할 과목명에 대한 과목 객체 전달
+//		return bean;
+//
+//	}//getCourse end
+//
+//	
+//	//과목 수정하는 기능의 메소드
+//	public void modifyCourse(BoardBean bean) {
+//		
+//		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where cname=?";
+//		
+//		try {
+//			
+//			//DB연결
+//			con = ds.getConnection();
+//			
+//			pstmt = con.prepareStatement(sql);
+//			
+//			pstmt.setString(1, bean.getCname());
+//			pstmt.setString(2, bean.getCompdiv());
+//			pstmt.setInt(3, bean.getCompyear());
+//			pstmt.setInt(4, bean.getCompsem());
+//			pstmt.setInt(5, bean.getGrade());
+//						
+//			pstmt.executeUpdate();
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.out.println("modifyCourse메소드 실행 오류 : " + e);
+//		} finally {
+//			freeResource();
+//		}
+//		
+//	}//modifyCourse end
+//	
+	
+
 	
 }

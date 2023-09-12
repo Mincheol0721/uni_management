@@ -22,12 +22,10 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-   		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
- 
- 
+   		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
+
   	<script> 
- 		
- 		
+ 				
  		$(function(){
  			
  			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
@@ -72,8 +70,8 @@
                	           			"<td width=5%>" + boardbean.compsem + "</td>" + 
                	           			"<td width=5%>" + boardbean.grade + "</td>" + 
                	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
-               	           			"<td width=5%><a href='#' id='modCourse'>과목 수정</td>" + 
-               	           			"<td width=5%><a href='#' id='delCourse'>과목 삭제</td>" +
+               	           			"<td width=5%><a href='modCourse.jsp' id='modCourse'>과목 수정</td>" + 
+               	           			"<td width=5%><a href='delCourse.jsp' id='delCourse'>과목 삭제</td>" +
  								"</tr>"							
  								);
 								
@@ -87,8 +85,25 @@
  				});								
  			}); 			
  		});
- 	
+ 	 
  	</script>
+ 	
+ 	<script type="text/javascript">
+ 	
+	 	//삭제할 과목 한번 더 확인하는 함수
+	 	function delC(ccode){ 		
+
+ 			var result = confirm("해당 과목을 삭제하시겠습니까?");
+ 			
+ 			if (result == true) {
+				
+ 				location.href = "delCourse.jsp?ccode=" + ccode;
+			}			
+ 		}	 		
+ 	 	
+ 	</script>
+ 	
+ 	
     </head>
     <body class="sb-nav-fixed">    
         	<%
@@ -101,8 +116,7 @@
 			%>		
 			
 			<jsp:useBean id="boardDAO" class="board_course.BoardDAO"/>			
-			
-			
+					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
@@ -152,7 +166,6 @@
                         		<option value="professor">담당교수</option>                       		                      		                   		
                         	</select>
                         	<input type="text" name="searchText" id="searchText"/>
-                        	<input type="submit" value="검색"/>
                         	
                         	<%-- 교수님이 과목을 직접 추가하는 페이지로 이동하는 링크 --%>
                         	<a href="addCourse.jsp">과목 추가</a>
@@ -185,15 +198,15 @@
                   	           			BoardBean bean = (BoardBean)list.get(i);
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><%= bean.getCcode() %></td> 
+                  	           			<td><%= bean.getCcode() %></td>
 							            <td><%= bean.getCname() %></td>
 							            <td><%= bean.getCompdiv() %></td>
 							            <td><%= bean.getCompyear() %></td>
 							            <td><%= bean.getCompsem() %></td>
 							            <td><%= bean.getGrade() %></td>
 							            <td><%= bean.getProfessor() %></td>
-							            <td><a href="#">과목 수정</a></td>
-							            <td><a href="#">과목 삭제</a></td>	
+							            <td><a href="modCourse.jsp">과목 수정</a></td>
+							            <td><a href="javascript:delC(<%=bean.getCcode()%>)">과목 삭제</a></td>	
          	           				</tr>
                   	           	
                   	           	<%
@@ -202,8 +215,7 @@
                   	           		
                   	            %>		
                   	           		</tbody>
-     	           		
-								           		                 	           		
+     	           										           		                 	           		
                    	           </table>
                             </p>
                         </div>

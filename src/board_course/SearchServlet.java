@@ -19,11 +19,12 @@ import board_course.BoardDAO;
 
 
 
-@WebServlet("/search.do")
+@WebServlet("/searchCourse.do")
 public class SearchServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		System.out.println("doPost메소드 타고 있음");
 		//한글처리
 		request.setCharacterEncoding("UTF-8");
 		
@@ -60,10 +61,8 @@ public class SearchServlet extends HttpServlet {
 			
 			jsonArray.add(jsonObject);			
 			
-		}	
-		
+		}			
 		//JSON 데이터 전송
 		out.print(jsonArray.toString());
 	}
-
 }

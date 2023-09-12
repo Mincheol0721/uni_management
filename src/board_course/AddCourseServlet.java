@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/addCourseServlet")
-public class addCourseServlet extends HttpServlet{
+@WebServlet("/addCourse.do")
+public class AddCourseServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,10 +43,6 @@ public class addCourseServlet extends HttpServlet{
 			out.print("1");
 		}else {
 			out.print("0");
-		}
-		
+		}		
 	}
-	
-	
-	
 }
