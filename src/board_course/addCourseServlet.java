@@ -15,21 +15,20 @@ public class addCourseServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("doPostÅ¸°íÀÖÀ½");
+		System.out.println("doPostë©”ì†Œë“œ íƒ€ê³  ìˆìŒ");
 		request.setCharacterEncoding("UTF-8");
 		
 		response.setContentType("text/html; charset=utf-8");
 		
 		PrintWriter out = response.getWriter();
 
-		//¿äÃ»ÇÑ °ª ¾ò±â
 		String cname = request.getParameter("cname");
 		String compdiv = request.getParameter("compdiv");
 		String compyear = request.getParameter("compyear");	
 		String compsem = request.getParameter("compsem");
 		String grade = request.getParameter("grade");
 		String professor = request.getParameter("professor");
-
+		
 		BoardBean bean = new BoardBean();
 		
 		bean.setCname(cname);

@@ -59,7 +59,7 @@
 			<ul class="sub-menu" id="subMenu">
 			    <li><a href="${path}/course/listCourse.jsp">개설 과목</a></li>
 			    <li><a href="${path}/course/addCourse.jsp">과목 추가</a></li>
-			    <li><a href="#">과목 수정</a></li>
+			    <li><a href="${path}/course/modCourse.jsp">과목 수정</a></li>
 			    <li><a href="#">과목 삭제</a></li>
 			</ul>
 		</c:when>

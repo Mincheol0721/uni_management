@@ -1,21 +1,20 @@
 package board_course;
 
-//°³¼³ °ú¸ñ
+//ê°œì„¤ ê³¼ëª©
 
-//VO¿ªÇÒ
+//VOì—­í• ì„ í•˜ëŠ” í´ë˜ìŠ¤
 public class BoardBean {
 
-	//¸â¹ö º¯¼ö
-	private int ccode; //°ú¸ñ ÄÚµå		    
-	private String cname; //°ú¸ñ¸í
-	private String compdiv; //ÀÌ¼ö ±¸ºĞ
-	private int compyear; //ÀÌ¼ö ÇĞ³â
-	private int compsem; //ÀÌ¼ö ÇĞ±â
-	private int grade; //ÇĞÁ¡
-	private String professor; //´ã´ç ±³¼ö
+	//ë©¤ë²„ ë³€ìˆ˜
+	private int ccode; //ê³¼ëª© ì½”ë“œ		    
+	private String cname; //ê³¼ëª©ëª…
+	private String compdiv; //ì´ìˆ˜ êµ¬ë¶„
+	private int compyear; //ì´ìˆ˜ í•™ë…„
+	private int compsem; //ì´ìˆ˜ í•™ê¸°
+	private int grade; //í•™ì 
+	private String professor; //ë‹´ë‹¹ êµìˆ˜
 	
-	
-	//getter, setter ¸Ş¼Òµåµé
+	//getter, setter ë©”ì†Œë“œ
 	public int getCcode() {
 		return ccode;
 	}

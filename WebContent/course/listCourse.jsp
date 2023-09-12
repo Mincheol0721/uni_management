@@ -24,12 +24,84 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
  
+ 
+  	<script> 
+ 		
+ 		
+ 		$(function(){
+ 			
+ 			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
+ 			$("#searchText").on("keyup", function(){
+ 				
+ 				//listCourse.jsp 서버페이지로 요청할 값 얻기
+ 				//검색 기준값 얻기
+ 				var search = $("select[name=search]").val();
+ 				
+ 				//입력한 검색어 값 얻기
+ 				var searchText = $(this).val();
+ 				
+ 				//서버페이지(listCourse.jsp)로 AJAX비동기 방식으로 요청해서 응답 받기
+ 				$.ajax({
+ 					
+ 					//SearchServlet.java 서블릿 페이지로 검색 요청!
+ 					url : '<%=request.getContextPath()%>/search.do',
+ 					type : 'post',
+ 					data : {search:search, searchText:searchText},
+ 					dataType : 'json',
+ 					success : function(data){
+ 						
+ 						console.log(data);
+ 						
+ 						//서버로부터 받아온 데이터를 동적으로 표시
+ 						var $resultsTable = $('#results');
+ 						
+ 						//이전에 조회된 <tr>태그 요소들은 <tbody>요소 영역에서 삭제
+ 						$resultsTable.empty();
+ 						
+ 						if(data.length > 0){
+ 							
+ 							$.each(data, function(index, boardbean){
+ 								
+ 								$resultsTable.append(
+ 										
+ 								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
+               	           			"<td width=5%>" + boardbean.ccode + "</td>" + 
+               	           			"<td width=5%>" + boardbean.cname + "</td>" + 
+               	           			"<td width=5%>" + boardbean.compdiv + "</td>" + 
+               	           			"<td width=5%>" + boardbean.compyear + "</td>" + 
+               	           			"<td width=5%>" + boardbean.compsem + "</td>" + 
+               	           			"<td width=5%>" + boardbean.grade + "</td>" + 
+               	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
+               	           			"<td width=5%><a href='#' id='modCourse'>과목 수정</td>" + 
+               	           			"<td width=5%><a href='#' id='delCourse'>과목 삭제</td>" +
+ 								"</tr>"							
+ 								);
+								
+ 							});
+ 							
+ 						}else{
+ 							
+ 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>")
+ 						}											
+ 					}					 					
+ 				});								
+ 			}); 			
+ 		});
+ 	
+ 	</script>
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
-				request.setCharacterEncoding("UTF-8");			
-			%>					
+				request.setCharacterEncoding("UTF-8");	
+        	
+        		String search = request.getParameter("search");
+        		String searchText = request.getParameter("searchText");
+        		
+			%>		
+			
+			<jsp:useBean id="boardDAO" class="board_course.BoardDAO"/>			
+			
 			
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -89,38 +161,49 @@
                         	<p class="mb-0">
                         		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%>과목코드</td>
-                   	           			<td width=5%>과목명</td>
-                   	           			<td width=5%>이수구분</td>
-                   	           			<td width=5%>이수학년</td>
-                   	           			<td width=5%>이수학기</td>
-                   	           			<td width=5%>학점</td>
-                   	           			<td width=5%>담당교수</td>                  	           			
-                   	           		</tr>
+                   	           		<thead>
+	                   	           		<tr bgcolor="lightgrey" align="center">
+	                   	           			<td width=5%>과목코드</td>
+	                   	           			<td width=5%>과목명</td>
+	                   	           			<td width=5%>이수구분</td>
+	                   	           			<td width=5%>이수학년</td>
+	                   	           			<td width=5%>이수학기</td>
+	                   	           			<td width=5%>학점</td>
+	                   	           			<td width=5%>담당교수</td>   
+	                   	           			<td width=5%>수정</td> 
+	                   	           			<td width=5%>삭제</td>                	           			
+	                   	           		</tr>
+                   	           		</thead>
                    	           		
-                  	           		<%-- 개설 과목 목록 조회--%> 
-                  	           		<%
-                  	           			ArrayList<BoardBean> courseList = new ArrayList<BoardBean>();
-                  	           			BoardDAO dao = new BoardDAO();
-                  	           			courseList = dao.getList();
-               
-                  	           			//가져온 과목 목록을 반복해서 출력
-                  	           			for(BoardBean course : courseList) {
-                  	           		%>                                   	           		                	    			
-                   	       			<tr align="center" style="border-bottom: 1px, solid, lightgrey;">	
-							            <td><%= course.getCcode() %></td>
-							            <td><%= course.getCname() %></td>
-							            <td><%= course.getCompdiv() %></td>
-							            <td><%= course.getCompyear() %></td>
-							            <td><%= course.getCompsem() %></td>
-							            <td><%= course.getGrade() %></td>
-							            <td><%= course.getProfessor() %></td>												
-									</tr>									
-									<%
-                  	           			}
-									%>									
-								<tbody id="results"></tbody>	           		                 	           		
+                  	           		<%-- 과목 리스트 --%>
+                  	           		<tbody id="results">
+                  	           <%	
+                  	           		List list = boardDAO.getList(); 
+                  	           	
+                  	           		for(int i=0; i < list.size(); i++){
+                  	           			
+                  	           			BoardBean bean = (BoardBean)list.get(i);
+                  	           	%>
+                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+                  	           			<td><%= bean.getCcode() %></td> 
+							            <td><%= bean.getCname() %></td>
+							            <td><%= bean.getCompdiv() %></td>
+							            <td><%= bean.getCompyear() %></td>
+							            <td><%= bean.getCompsem() %></td>
+							            <td><%= bean.getGrade() %></td>
+							            <td><%= bean.getProfessor() %></td>
+							            <td><a href="#">과목 수정</a></td>
+							            <td><a href="#">과목 삭제</a></td>	
+         	           				</tr>
+                  	           	
+                  	           	<%
+                  	           	
+                  	           		} 
+                  	           		
+                  	            %>		
+                  	           		</tbody>
+     	           		
+								           		                 	           		
                    	           </table>
                             </p>
                         </div>

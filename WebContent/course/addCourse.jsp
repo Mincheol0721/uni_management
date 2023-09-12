@@ -202,8 +202,8 @@
                    	           				</select>
                    	           			</td>
                    	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="${id}"/></td>
-                   	           			<td width=5%><input type="button" value="-" id="btn2"></td>
-                   	           			<td width=5%><input type="button" value="등록" id="btn3"></td>             	           			
+                   	           			<td width=5%><input type="button" value="-" class="btn2"></td>
+                   	           			<td width=5%><input type="button" value="등록" class="btn4"></td>             	           			
                    	           		</tr>
                    	           </table>
                             </p>
@@ -263,8 +263,8 @@
 	           				'</select>'+
 	           			'</td>'+
 	           			'<td width="5%" style="text-align:center;"><input type="text" name="professor" value="${id}"/></td>'+
-	           			'<td width="5%"><input type="button" value="-" id="btn2"></td>'+
-	           			'<td width="5%"><input type="button" value="등록" id="btn3"></td>'+
+	           			'<td width="5%"><input type="button" value="-" class="btn2"></td>'+
+	           			'<td width="5%"><input type="button" value="등록" class="btn4"></td>'+
 	           		'</tr>';
 	           
 					$('tbody').append(html);
@@ -272,18 +272,21 @@
 				});   
 
 				// '-' 버튼 클릭 시 해당 행 삭제
-		        $(document).on("click", "#btn2", function () {
+		        $(document).on("click", ".btn2", function () {
 		            $(this).closest("tr").remove();
 		        });
 				
-		        $(document).on("click", "#btn3", function () {
+		        $(document).on("click", ".btn4", function (e) {
 		        	var cname = $("input[name=cname]").val();
 		        	var compdiv = $("select[name=compdiv]").val();
 		        	var compyear = $("select[name=compyear]").val();
 		        	var compsem = $("select[name=compsem]").val();
 		        	var grade = $("select[name=grade]").val();
 		        	var professor = $("input[name=professor]").val();
+		        	var target = $(e.target);
 		        	//alert(compdiv);
+		        	
+		        	console.log("e.target.value: " + e.target.value)
 		        	
 		        	$.ajax({
 		        		
@@ -294,7 +297,9 @@
 		        		success: function(data){
 		        			
 		        			if (data == '1') {
-		        				 $('#btn3').children.hide();
+								alert("과목이 성공적으로 추가됐습니다.");								
+		        				$(target).val('등록완료');
+		        				$(target).attr('disabled', 'disabled');
 							}else {
 								alert("과목 추가 실패했습니다.");								
 							}

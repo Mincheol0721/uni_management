@@ -20,7 +20,7 @@ public class BoardDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private DataSource ds;
-	private DBConnectionMgr pool;
+	//private DBConnectionMgr pool;
 	
 	//DataSource 얻는 기능의 생성자
 	public BoardDAO() {
@@ -60,13 +60,67 @@ public class BoardDAO {
 	}//자원해제 end
 	
 	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
-	public ArrayList<BoardBean> getList() {
+	//검색어가 없으면? 모든 과목 정보 검색 후 리스트에 뿌려줌
+	public ArrayList<BoardBean> getList(String search, String searchText) {
 		
 		//등록된 과목들을 담을 객체
 		ArrayList<BoardBean> list = new ArrayList<BoardBean>();
 		
 		//쿼리를 담을 변수 선언
 		String sql = "";
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			if (searchText.equals("") || searchText.equals(null)) {
+				sql = "select * from course";
+			}else {
+				sql = "select * from course where " + search + " like '%"+searchText+"%'";
+			}
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			//rs객체에 담겨있음 -> 컬렉션 객체에 담기
+			while(rs.next()) {
+				
+				BoardBean bean = new BoardBean();
+				
+				//하나씩 저장
+				bean.setCcode(rs.getInt("ccode"));
+				bean.setCname(rs.getString("cname"));
+				bean.setCompdiv(rs.getString("compdiv"));
+				bean.setCompyear(rs.getInt("compyear"));
+				bean.setCompsem(rs.getInt("compsem"));
+				bean.setGrade(rs.getInt("grade"));
+				bean.setProfessor(rs.getString("professor"));
+				
+				list.add(bean);				
+				
+			}
+			
+			System.out.println("과목 조회 sql구문 실행 완료");
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 freeResource();
+		}
+
+		return list;		
+			
+		}//getList end
+		
+	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
+	public ArrayList<BoardBean> getList() {
+		
+		//등록된 과목들을 담을 객체
+		ArrayList<BoardBean> list = new ArrayList<BoardBean>();
+		
+		//쿼리를 담을 변수 선언
+		String sql = "";	
 		
 		try {
 			
@@ -98,11 +152,11 @@ public class BoardDAO {
 				
 				list.add(bean);
 				
-				System.out.println("과목 정보 저장 완료");
+				//System.out.println("과목 정보 저장 완료");
 				
 			}
 			
-			System.out.println("sql구문 실행 완료");
+			System.out.println("과목 조회 sql구문 실행 완료");
 					
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,7 +165,7 @@ public class BoardDAO {
 		}
 
 		return list;
-		
+	
 	}//조회 end
 	
 	
@@ -194,13 +248,57 @@ public class BoardDAO {
 	    } finally {
 	        freeResource();
 	    }
-	}
+	}//insertMultipleSB end
 
 	
-	//과목 수정
+	//과목 수정을 위해 선택한 한 과목의 정보를 modCourse.jsp에 뿌려주기 위해 리턴하는 메소드
+	public BoardBean getCourse(String cname) {
+		
+		String sql = "select * from course where cname=?";
+		
+		BoardBean bean = new BoardBean();
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(sql);
+			
+			//DB에 전달할  ?값 세팅
+			pstmt.setString(1, cname);
+			
+			rs = pstmt.executeQuery();
+			
+			//수정할 과목 하나의 데이터들을 bean객체에 저장
+			if (rs.next()) {
+				
+				bean.setCname(rs.getString("cname"));
+				bean.setCompdiv(rs.getString("compdiv"));
+				bean.setCompyear(rs.getInt("compyear"));
+				bean.setCompsem(rs.getInt("compsem"));
+				bean.setGrade(rs.getInt("grade"));
+				bean.setProfessor(rs.getString("professor"));
+				
+			}	
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getCourse메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+		//수정할 과목명에 대한 과목 객체 전달
+		return bean;
+
+	}//getCourse end
+
+	
+	//과목 수정하는 기능의 메소드
 	public void modifyCourse(BoardBean bean) {
 		
-		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where ccode=?";
+		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where cname=?";
 		
 		try {
 			
@@ -210,20 +308,25 @@ public class BoardDAO {
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, bean.getCname());
-//			pstmt.setString(2, );
+			pstmt.setString(2, bean.getCompdiv());
+			pstmt.setInt(3, bean.getCompyear());
+			pstmt.setInt(4, bean.getCompsem());
+			pstmt.setInt(5, bean.getGrade());
 			
 			
+			pstmt.executeUpdate();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("modifyCourse메소드 실행 오류 : " + e);
 		} finally {
 			freeResource();
 		}
 		
-	}
+	}//modifyCourse end
 	
 	
-	
+	//과목 삭제하는 기능의 메소드
 	
 	
 }
