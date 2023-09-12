@@ -130,6 +130,106 @@ public class EmployeeDAO {
 		return check;
 	}
 	
+	//Member테이블에 회원정보를 수정하는 기능의 메소드 
+	public int updateMember(MemberDTO dto){
+		
+		int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+		String sql = ""; // insert 쿼리문 저장할 변수 
+		
+		try {
+			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+			//  요약 : DB와의 연결
+			con = getConnection();
+			//2. insert 쿼리문(SQL문) 만들기
+			sql = "update employee set name=?, tel=?, ssn=?, email=?, addr=? where id=?";
+							     
+			
+			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+			pstmt = con.prepareStatement(sql);
+			//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getTel());
+			pstmt.setString(3, dto.getSsn());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getAddr());
+			pstmt.setString(6, dto.getId());
+			
+			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+			result = pstmt.executeUpdate();
+		
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 updateMember메소드 내부에서 예외 발생 : " + e.toString());
+		} finally {
+			freeResource();
+		}
+	
+		//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+		return result;
+	}
+	
+	public MemberDTO selectMember(String id) {
+		MemberDTO dto = null;
+		
+		try {
+			con = getConnection();
+			String sql = "select * from employee where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new MemberDTO();
+				
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setSsn(rs.getString("ssn"));
+				dto.setTel(rs.getString("tel"));
+				dto.setEmail(rs.getString("email"));
+				dto.setAddr(rs.getString("addr"));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 selectMember메소드 내부에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return dto;
+	}
+	
+	public String checkPwd(String id) {
+		String pwd = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql = "select pwd from employee where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pwd = rs.getString("pwd");
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 checkPwd메소드 내부에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		
+		return pwd;
+	}
+	
 	//로그인 처리 시 사용하는 메소드
 	//입력받은 아이디, 비밀번호가 DB(jspbeginner)내부의 member테이블에 저장되어 있는지 확인하기 위해 
 	//입력받은 아이디, 비밀번호와 member테이블에 저장된 아이디, 비밀번호를 비교하는 메소드

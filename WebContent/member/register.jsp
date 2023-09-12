@@ -26,6 +26,8 @@
         			학부의 경우 select를 id속성값으로 할 경우 값을 못받아오거나 null로 받아오게 됨
         			그래서 새로 name속성을 부여하고 name속성으로 선택해왔더니 값을 제대로 전달받음
         			학과는 뒤에 더 추가될 select option태그가 없기 때문에 id값으로 받아와도 제대로 값이 전달됨
+        			JSONObject를 반복문 밖에 생성했을 경우 Object를 하나만 생성하기 때문에, 값을 받아오더라도
+        			계속해서 덮어씌우기 때문에 값을 마지막 값 하나만 받아오게 되므로, 반복문 안에 설정해줘야 함
         			
         			중요.  각각 다른 Servlet을 생성하고 다른 bean파일을 생성하여 따로 요청을 해야지만
         				   ajax 비동기방식으로 요청했을 때 각자가 가진 속성들을 제대로 불러올 수 있음
@@ -37,6 +39,7 @@
         		var $fsel = $("select[name=faculty]");
         		var $dselect = $("#dept");
         		
+        			
         		$fsel.empty();
         		
 				$.ajax({
@@ -44,12 +47,14 @@
 					type : 'POST',
 					dataType : 'json',
 					success : function(data){
-						$.each(data, function(index, dto) {
+						console.log("data: " + JSON.stringify(data));
+						$.each(data, function(i, dto) {
 							$fsel.append("<option value='" + dto.fname + "' name='foption'>" + dto.fname + "</option>"); 
 						});
 					}
 				}); //학부 ajax
 				
+					
 				$(document).on("change", $("#faculty option:selected"), function() {
 					$dselect.empty();
 					
@@ -137,7 +142,7 @@
 						});
 					}
 				});
-				
+        			
 				/* 비밀번호 확인 */
 				$("#pwdConfirm").focusout(function() {
 				

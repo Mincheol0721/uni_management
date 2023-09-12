@@ -56,29 +56,27 @@ public class RegisterServlet extends HttpServlet {
   		String nextPage = "";
 		
 		String action = request.getPathInfo();
-		System.out.println("2단계 요청 주소: " + action);
+		//System.out.println("2단계 요청 주소: " + action);
 		
         JSONArray jsonArray = new JSONArray(); // [ ]
-        JSONObject jsonObject = new JSONObject(); 
         
 		if(action.equals("/faculty.do")) {
 			FacultyDAO dao = new FacultyDAO();
 			
-	        //요청한 값 얻기
-	        String fname2 = request.getParameter("fname");
-	        int fcode2 = dao.getFcode(fname);
-	        
 	        for (FacultyDTO dto : flist) {
-	        	    	
-	        	jsonObject.put("fcode", dto.getFcode());
+	        	JSONObject jsonObject = new JSONObject(); 
+	        	
 	        	jsonObject.put("fname", dto.getFname());
+	        	jsonObject.put("fcode", dto.getFcode());
 	        	
 	        	jsonArray.add(jsonObject);
 	        } //for
 	        
 		} else if(action.equals("/dept.do")) {
 			for (DeptDTO dto : dlist) {
-	        	    	
+				JSONObject jsonObject = new JSONObject();   
+				
+				
 	        	jsonObject.put("fcode", dto.getFcode());
 	        	jsonObject.put("fname", dto.getFname());
 	        	jsonObject.put("dcode", dto.getDcode());
@@ -91,9 +89,11 @@ public class RegisterServlet extends HttpServlet {
 			
 			response.setContentType("text/html");
 			
-			System.out.println("job: " + job);
+			//System.out.println("job: " + job);
 			
 			if(job.equals("교수")) {
+				JSONObject jsonObject = new JSONObject(); 
+				
 				pDao = new ProfessorDAO();
 				int check = pDao.idCheck(id);
 				
@@ -110,6 +110,7 @@ public class RegisterServlet extends HttpServlet {
 			}
         	
         } else if(action.equals("/checkSid.do")) {
+        	JSONObject jsonObject = new JSONObject(); 
         	
         	if(job.equals("학생")) {
             	sDao = new StudentDAO();
@@ -128,6 +129,7 @@ public class RegisterServlet extends HttpServlet {
     		}
         	
         } else if(action.equals("/checkEid.do")) {
+        	JSONObject jsonObject = new JSONObject(); 
         	
 			if(job.equals("교직원")) {
 				eDao = new EmployeeDAO();
@@ -148,8 +150,8 @@ public class RegisterServlet extends HttpServlet {
         	
         }
 		
-    	System.out.println(job);
-		System.out.println(jsonArray.toString());
+    	//System.out.println(job);
+		//System.out.println(jsonArray.toString());
 		
 		// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
 		out.print(jsonArray.toString()); 

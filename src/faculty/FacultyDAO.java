@@ -61,7 +61,7 @@ public class FacultyDAO {
 		String sql = "";
 		
 		try {
-			getConnection();
+			con = getConnection();
 			
 			sql = "select * from faculty order by fcode";
 			
