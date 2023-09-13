@@ -21,10 +21,10 @@ import board_course.BoardDAO;
 
 @WebServlet("/searchCourse.do")
 public class SearchServlet extends HttpServlet {
-
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("doPost메소드 타고 있음");
+		System.out.println("search메소드 타고 있음");
 		//한글처리
 		request.setCharacterEncoding("UTF-8");
 		

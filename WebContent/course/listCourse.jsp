@@ -42,7 +42,7 @@
  				$.ajax({
  					
  					//SearchServlet.java 서블릿 페이지로 검색 요청!
- 					url : '<%=request.getContextPath()%>/search.do',
+ 					url : '<%=request.getContextPath()%>/searchCourse.do',
  					type : 'post',
  					data : {search:search, searchText:searchText},
  					dataType : 'json',
@@ -85,11 +85,7 @@
  				});								
  			}); 			
  		});
- 	 
- 	</script>
- 	
- 	<script type="text/javascript">
- 	
+
 	 	//삭제할 과목 한번 더 확인하는 함수
 	 	function delC(ccode){ 		
 
@@ -205,7 +201,7 @@
 							            <td><%= bean.getCompsem() %></td>
 							            <td><%= bean.getGrade() %></td>
 							            <td><%= bean.getProfessor() %></td>
-							            <td><a href="modCourse.jsp">과목 수정</a></td>
+							            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
 							            <td><a href="javascript:delC(<%=bean.getCcode()%>)">과목 삭제</a></td>	
          	           				</tr>
                   	           	

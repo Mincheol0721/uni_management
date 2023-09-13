@@ -180,7 +180,7 @@ public class BoardDAO {
 			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, professor)"
 					   + "values (?, ?, ?, ?, ?, ?);";
 			
-			System.out.println("insertSB sql문 : " + sql);
+			//System.out.println("insertSB sql문 : " + sql);
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -205,7 +205,7 @@ public class BoardDAO {
 	}//insertSB end
 	
 
-	// 새 과목들을 studyplannerdb 데이터베이스의 Board에 다중 추가시키는 기능의 메소드
+	//새 과목들을 studyplannerdb 데이터베이스의 Board에 다중 추가시키는 기능의 메소드
 	public void insertMultipleSB(List<BoardBean> arrayList) {
 	    try {
 	        // DB 연결
@@ -277,82 +277,84 @@ public class BoardDAO {
 			
 	}//delCourse end
 	
+
+	//과목 수정을 위해 선택한 한 과목의 정보를 modCourse.jsp에 뿌려주기 위해 리턴하는 메소드
+	public BoardBean getCourseInfo(int ccode) {
+		
+		System.out.println("getCourseInfo메소드가 받는 과목코드: " + ccode);
+		String sql = "select * from course where ccode=?";
+		
+		BoardBean bean = new BoardBean();
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(sql);
+			
+			//DB에 전달할 ?값 세팅
+			pstmt.setInt(1, ccode);
+			
+			rs = pstmt.executeQuery();
+			
+			//수정할 과목 하나의 데이터들을 bean객체에 저장
+			if (rs.next()) {
+				
+				bean.setCname(rs.getString("cname"));
+				bean.setCompdiv(rs.getString("compdiv"));
+				bean.setCompyear(rs.getInt("compyear"));
+				bean.setCompsem(rs.getInt("compsem"));
+				bean.setGrade(rs.getInt("grade"));
+				bean.setProfessor(rs.getString("professor"));
+				
+			}	
+			
+			System.out.println("수정할 과목 불러오는 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getCourseInfo메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+		//수정할 과목명에 대한 과목 객체 전달
+		return bean;
+
+	}//getCourse end
+
 	
+	//과목 수정하는 기능의 메소드
+	public void modifyCourse(BoardBean bean) {			
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where ccode=?";
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, bean.getCname());
+			pstmt.setString(2, bean.getCompdiv());
+			pstmt.setInt(3, bean.getCompyear());
+			pstmt.setInt(4, bean.getCompsem());
+			pstmt.setInt(5, bean.getGrade());
+			pstmt.setInt(6, bean.getCcode());		
+			
+			pstmt.executeUpdate();
+			
+			System.out.println("과목 수정 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("modifyCourse메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+	}//modifyCourse end
 	
-	
-//	//과목 수정을 위해 선택한 한 과목의 정보를 modCourse.jsp에 뿌려주기 위해 리턴하는 메소드
-//	public BoardBean getCourse(String cname) {
-//		
-//		String sql = "select * from course where cname=?";
-//		
-//		BoardBean bean = new BoardBean();
-//		
-//		try {
-//			
-//			//DB연결
-//			con = ds.getConnection();
-//			
-//			pstmt = con.prepareStatement(sql);
-//			
-//			//DB에 전달할  ?값 세팅
-//			pstmt.setString(1, cname);
-//			
-//			rs = pstmt.executeQuery();
-//			
-//			//수정할 과목 하나의 데이터들을 bean객체에 저장
-//			if (rs.next()) {
-//				
-//				bean.setCname(rs.getString("cname"));
-//				bean.setCompdiv(rs.getString("compdiv"));
-//				bean.setCompyear(rs.getInt("compyear"));
-//				bean.setCompsem(rs.getInt("compsem"));
-//				bean.setGrade(rs.getInt("grade"));
-//				bean.setProfessor(rs.getString("professor"));
-//				
-//			}	
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.out.println("getCourse메소드 실행 오류 : " + e);
-//		} finally {
-//			freeResource();
-//		}
-//		
-//		//수정할 과목명에 대한 과목 객체 전달
-//		return bean;
-//
-//	}//getCourse end
-//
-//	
-//	//과목 수정하는 기능의 메소드
-//	public void modifyCourse(BoardBean bean) {
-//		
-//		String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where cname=?";
-//		
-//		try {
-//			
-//			//DB연결
-//			con = ds.getConnection();
-//			
-//			pstmt = con.prepareStatement(sql);
-//			
-//			pstmt.setString(1, bean.getCname());
-//			pstmt.setString(2, bean.getCompdiv());
-//			pstmt.setInt(3, bean.getCompyear());
-//			pstmt.setInt(4, bean.getCompsem());
-//			pstmt.setInt(5, bean.getGrade());
-//						
-//			pstmt.executeUpdate();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.out.println("modifyCourse메소드 실행 오류 : " + e);
-//		} finally {
-//			freeResource();
-//		}
-//		
-//	}//modifyCourse end
-//	
 	
 
 	

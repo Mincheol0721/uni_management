@@ -14,6 +14,27 @@ public class BoardBean {
 	private int grade; //학점
 	private String professor; //담당 교수
 	
+
+	
+	public BoardBean() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade) {
+		
+		this.ccode = ccode;
+		this.cname = cname;
+		this.compdiv = compdiv;
+		this.compyear = compyear;
+		this.compsem = compsem;
+		this.grade = grade;
+	}
+
+
+
+
+
 	//getter, setter 메소드
 	public int getCcode() {
 		return ccode;

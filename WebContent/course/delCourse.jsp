@@ -8,7 +8,7 @@
 	//한글처리
 	request.setCharacterEncoding("UTF-8");
 
-	//listCourse.jsp 에서 삭제할 과목 이름 받아오기
+	//listCourse.jsp 에서 삭제할 과목 코드 받아오기
 	int ccode = Integer.parseInt(request.getParameter("ccode"));
 	
 	//DB작업

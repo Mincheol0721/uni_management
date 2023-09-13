@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/addCourse.do")
 public class AddCourseServlet extends HttpServlet{
 
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("doPost메소드 타고 있음");
+		System.out.println("add메소드 타고 있음");
 		request.setCharacterEncoding("UTF-8");
 		
 		response.setContentType("text/html; charset=utf-8");
