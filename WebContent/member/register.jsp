@@ -54,9 +54,9 @@
 					}
 				}); //학부 ajax
 				
+				$dselect.empty();
 					
 				$(document).on("change", $("#faculty option:selected"), function() {
-					$dselect.empty();
 					
 					$.ajax({
 						url : '<%=request.getContextPath()%>/register/dept.do',
@@ -66,7 +66,6 @@
 						success : function(data){
 							$.each(data, function(index, dto) {
 								$dselect.append("<option value='" + dto.dname + "' name='doption'>" + dto.dname + "</option>"); 
-								
 							});
 						}
 					});

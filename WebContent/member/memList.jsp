@@ -27,8 +27,8 @@
 		StudentDAO sdao = new StudentDAO();
 		EmployeeDAO edao = new EmployeeDAO();
 		
-		System.out.println("직업: " + job);
-		System.out.println("id: " + id);
+		//System.out.println("직업: " + job);
+		//System.out.println("id: " + id);
 		
 		
 		if(job.equals("교수")){
