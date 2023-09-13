@@ -29,7 +29,6 @@ public class NoticeDAO {
 	
 	//커넥션풀 생성 및 커넥션 객체를 얻어 커넥션객체자체를 반환 하는  기능의 메소드 
 	private Connection getConnection() throws Exception {
-		
 		//1. InitialContext객체 생성
 		//생성하는 이유는  자바의 네이밍 서비스(JNDI)에서 이름과 실제 객체를 연결해주는 개념이 Context이며,
 		//InitialContext객체는 네이밍 서비스를 이용하기위한 시작점입니다.
@@ -56,6 +55,33 @@ public class NoticeDAO {
 		}
 	}
 	
+
+	//bnotice테이블에 저장된 레코드의 개수를 반환하는 메소드
+	public int getBoardCount() {
+		int count = 0;
+		
+		try {
+			con = getConnection();
+			
+			sql = "select count(*) from bnotice";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("NoticeDAO내부의 getBoardCount메소드에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return count;
+	}
+	
 	//모든 글의 레코드정보를 조회, 반환하는 메소드
 	public List<NoticeDTO> getBoardList() { //content.jsp에서 호출한 메소드
 		
@@ -67,7 +93,7 @@ public class NoticeDAO {
 			con = getConnection();
 			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
 			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
-			pstmt = con.prepareStatement("select * from bnotice order by no desc");
+			pstmt = con.prepareStatement("select * from bnotice order by no desc limit 5");
 
 			//3. rs에 sql문 실행 후 결과 담기
 			rs = pstmt.executeQuery();
@@ -108,7 +134,7 @@ public class NoticeDAO {
 			con = getConnection();
 			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
 			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
-			sql = "select * from board order by no desc limit ?, ?";
+			sql = "select * from bnotice order by no desc limit ?, ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, pageSize);
@@ -256,29 +282,6 @@ public class NoticeDAO {
 			freeResource();
 		}
 		
-	}
-	
-	//bnotice테이블에 저장된 레코드의 개수를 반환하는 메소드
-	public int getBoardCount() {
-		int count = 0;
-		
-		try {
-			con = getConnection();
-			sql = "select count(*) from bnotice";
-			pstmt = con.prepareStatement(sql);
-			
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
-			
-		} catch (Exception e) {
-			System.out.println("NoticeDAO내부의 getBoardCount메소드에서 예외 발생: " + e);
-		} finally {
-			freeResource();
-		}
-		
-		return count;
 	}
 	
 }

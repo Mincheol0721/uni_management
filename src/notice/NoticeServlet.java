@@ -43,18 +43,10 @@ public class NoticeServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    PrintWriter out = response.getWriter();
 	    
-	    //요청한 값 얻기
-	    int startRow = Integer.parseInt("startRow");
-	    int pageSize = Integer.parseInt("pageSize");
-	    
-	    System.out.println("startRow: " + startRow);
-	    System.out.println("pageSize: " + pageSize);
-	    
 	    NoticeDAO dao = new NoticeDAO();
 	    
 	    String nextPage = "";
 	    
-	    List<NoticeDTO> list = dao.getBoardList(startRow, pageSize);
 	    
 		String action = request.getPathInfo();
 		System.out.println("2단계 요청 주소: " + action);
@@ -64,6 +56,14 @@ public class NoticeServlet extends HttpServlet {
         
         try {
 			if(action.equals("/notice.do")) {
+
+				//요청한 값 얻기
+				int startRow = Integer.parseInt( request.getParameter("startRow") );
+				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
+				System.out.println("startRow: " + startRow);
+				System.out.println("pageSize: " + pageSize);
+				
+				List<NoticeDTO> list = dao.getBoardList(startRow, pageSize);
 				
 				for( NoticeDTO dto : list ) {
 					/*
@@ -84,7 +84,37 @@ public class NoticeServlet extends HttpServlet {
 					jsonObject.put("readCount", dto.getReadCount());
 					
 					jsonArray.add(jsonObject);
-				}
+					
+				} //for
+					
+			} else if(action.equals("/index.do")) {
+			    List<NoticeDTO> list = dao.getBoardList();
+				
+				for( NoticeDTO dto : list ) {
+					/*
+					System.out.println("title: " + dto.getTitle());
+					System.out.println("content: " + dto.getContent());
+					System.out.println("writeDate: " + dto.getWriteDate());
+					System.out.println("nclass: " + dto.getNclass());
+					System.out.println("id: " + dto.getId());
+					System.out.println("readCount: " + dto.getReadCount());
+					 */
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("title", dto.getTitle());
+					jsonObject.put("content", dto.getContent());
+					jsonObject.put("writeDate", dto.getWriteDate().toString());
+					jsonObject.put("nclass", dto.getNclass());
+					jsonObject.put("id", dto.getId());
+					jsonObject.put("readCount", dto.getReadCount());
+					
+					jsonArray.add(jsonObject);
+					
+				} //for
+					
+			}
+				
+				
 				
 				// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
 				//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
@@ -92,10 +122,8 @@ public class NoticeServlet extends HttpServlet {
 				
 				// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
 				out.print(jsonArray.toString()); 
-//		out.print("a");
-				System.out.println("jsonArray: " + jsonArray.toString());
+//				System.out.println("jsonArray: " + jsonArray.toString());
 				
-			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -79,6 +79,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <title>OO대학교 학사관리 시스템</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style TYPE="text/css">
             body {
@@ -99,6 +100,24 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
             text-overflow:ellipsis;
             }
        </style>
+       <script type="text/javascript">
+        	$(function() {
+				var $noticeTable = $("#noticeTable");
+        		
+        		$.ajax({
+        			url : '<%=request.getContextPath()%>/board/index.do',
+					type : 'POST',
+					dataType : 'json',
+			        contentType: "application/json; charset=utf-8;",
+					success : function(data){
+						$.each(data, function(index, dto) { 
+							$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td>" + dto.title + "</td> <td>" + dto.writeDate + "</td> <td>" + dto.readCount + "</td> </tr>");
+						}); 
+					}
+        		}); //ajax
+        		
+			});
+        </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -335,18 +354,17 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         <div class="row">
                         	<p class="mb-0">
                    	           <table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%>분류</td>
-                   	           			<td width=15%>제목</td>
-                   	           			<td width=5%>작성일자</td>
-                   	           		</tr>
-                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td width=5%>수강</td>
-                   	           			<td width=15%>수강신청관련 공지</td>
-                   	           			<td width=5%>2023-05-08</td>
-                   	           		</tr>
+                   	           		<thead>
+	                   	           		<tr bgcolor="lightgrey" align="center">
+	                   	           			<td width=5%>분류</td>
+	                   	           			<td width=15%>제목</td>
+	                   	           			<td width=5%>작성일</td>
+	                   	           			<td width=5%>조회수</td>
+	                   	           		</tr>
+                                   	</thead>
+                                   	<tbody id="noticeTable"></tbody>
                    	           </table>
-                   	           <font align="right"><small><a href="${path}/menu/notice.jsp?pageNum=1" style="text-decoration: none; color:black;">더보기...</a></small></font>
+									<font align="right"><small><a href="${path}/menu/notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
                             </p>
                         </div>
                     </div>
