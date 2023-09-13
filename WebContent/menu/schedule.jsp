@@ -117,11 +117,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         </ol>
                         <div class="row">
 						<!-- Pie Chart -->
-                        <div class="col-xl-12 col-lg-5">
+                        <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">일정</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">학사 캘린더</h4>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -265,24 +265,12 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										</form>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                        <div class="row">
-                        	<p class="mb-0">
-                        	
-                            </p>
-                        </div>
-                    </div>
-                        <!-- Area Chart -->
-                        <div class="container-fluid px-4">
-                        <h1 class="mt-4">일정 공지</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Schedule-List</li>
-                        </ol>
+                    <div class="col-xl-6 col-lg-5">
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-								일정리스트
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h4 class="m-0 font-weight-bold text-primary">일정 관리</h4>
                             </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -290,136 +278,37 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">
-		                   	           			<td width=5%>분류</td>
-		                   	           			<td width=15%>제목</td>
-		                   	           			<td width=5%>일정</td>
+		                   	           			<td width=15%>날짜</td>
+		                   	           			<td width=20%>일정</td>
 		                   	           		</tr>
 	                                    </thead>
 	                                    <tbody>
 		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>수강</td>
-		                   	           			<td width=15%>수강신청관련 공지</td>
-		                   	           			<td width=5%>2023-05-08</td>
+		                   	           			<td width=15%>2023-09-01 ~ 2023-09-07</td>
+		                   	           			<td width=15%>2학기 수강신청</td>
 		                   	           		</tr>
 		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
+		                   	           			<td width=5%>2023-09-07 ~ 2023-09-18</td>
+		                   	           			<td width=15%>2학기 이수구분 변경</td>
 		                   	           		</tr>
 		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
+		                   	           			<td width=5%>2023-09-08 ~ 2023-09-21</td>
+		                   	           			<td width=15%>2학기 수강신청 취소</td>
 		                   	           		</tr>
 		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
+		                   	           			<td width=5%>2023-09-11 ~ 2023-09-16</td>
+		                   	           			<td width=15%>2학기 대학원 외국어 및 종합시험 실시</td>
 		                   	           		</tr>
 		                   	           	</tbody>
 	                   	           	</table>
 	                   	           	<br>
-		                   	           	<div class="datatable-bottom">
-										    <div class="datatable-info">현재 게시글 / 전체 게시글</div>
-										    <nav class="datatable-pagination">
-										    	<ul class="datatable-pagination-list">
-										    		<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-										    			<a data-page="1" class="datatable-pagination-list-item-link">‹</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item datatable-active">
-										    			<a data-page="1" class="datatable-pagination-list-item-link">1</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="2" class="datatable-pagination-list-item-link">2</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="3" class="datatable-pagination-list-item-link">3</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="4" class="datatable-pagination-list-item-link">4</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="5" class="datatable-pagination-list-item-link">5</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="6" class="datatable-pagination-list-item-link">6</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="2" class="datatable-pagination-list-item-link">›</a>
-										    		</li>
-										    	</ul>
-										    </nav>
-										</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+					</div>
+					 </div>
+                    </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

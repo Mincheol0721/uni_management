@@ -1,9 +1,44 @@
+<%@page import="notice.NoticeDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="notice.NoticeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<% request.setCharacterEncoding("UTF-8"); %>
+<% 
+	//한글처리
+	request.setCharacterEncoding("UTF-8"); 
+	
+	NoticeDAO dao = new NoticeDAO();
+	List<NoticeDTO> list = null;
+	
+	//전체 글 개수
+	int count = dao.getBoardCount();
+	//하나의 화면에 띄워줄 글 개수 10
+	int pageSize = 5;
+	
+	//현재 보여질 페이지번호 가져오기
+	String pageNum = request.getParameter("pageNum");
+	//현재 보여질 페이지 번호가 없으면 1페이지 처리
+	if(pageNum == null) {
+		pageNum = "1";
+	}
+	//현재 보여질 페이지 번호 "1"을 기본정수 1로 변환
+	int currentPage = Integer.parseInt(pageNum);
+	
+	//각 페이지마다 맨 위에 보여질 시작 글번호 구하기
+	//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
+	int startRow = (currentPage - 1) * pageSize;
+	
+	//게시판에 글이 있다면
+	if(count > 0) {
+		list = dao.getBoardList(startRow, pageSize); 
+	}
+	
+	//날짜 포맷
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,10 +53,27 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="../js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="../js/datatables-simple-demo.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        	$(function() {
+				var $noticeTable = $("#noticeTable");
+        		
+        		$.ajax({
+        			url : '<%=request.getContextPath()%>/board/notice.do',
+					type : 'POST',
+					dataType : 'json',
+			        contentType: "application/json; charset=utf-8;",
+					success : function(data){
+						$.each(data, function(index, dto) { 
+							$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td>" + dto.title + "</td> <td>" + dto.writeDate + "</td> <td>" + dto.readCount + "</td> </tr>");
+						}); 
+					}
+        		}); //ajax
+        		
+			});
+        </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -70,126 +122,75 @@
 		                   	           		<tr bgcolor="lightgrey" align="center">
 		                   	           			<td width=5%>분류</td>
 		                   	           			<td width=15%>제목</td>
-		                   	           			<td width=5%>일정</td>
+		                   	           			<td width=5%>작성일</td>
+		                   	           			<td width=5%>조회수</td>
 		                   	           		</tr>
 	                                    </thead>
-	                                    <tbody>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>수강</td>
-		                   	           			<td width=15%>수강신청관련 공지</td>
-		                   	           			<td width=5%>2023-05-08</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>행사</td>
-		                   	           			<td width=15%>스승의날 행사 관련 공지</td>
-		                   	           			<td width=5%>2023-05-12</td>
-		                   	           		</tr>
-		                   	           	</tbody>
+	                                    <tbody id="noticeTable"></tbody>
 	                   	           	</table>
 	                   	           	<br>
 		                   	           	<div class="datatable-bottom">
-										    <div class="datatable-info">현재 게시글 / 전체 게시글</div>
+										    <div class="datatable-info">
+										    	현재 게시글:  / 
+										    	전체 게시글: <%=count%>개
+										    </div>
 										    <nav class="datatable-pagination">
-										    	<ul class="datatable-pagination-list">
-										    		<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-										    			<a data-page="1" class="datatable-pagination-list-item-link">‹</a>
+											    <ul class="datatable-pagination-list">
+<%
+										    	//전체 페이지 수 구하기
+												//전체 페이지 수 = 전체 글 / 한페이지에 보여줄 글 수 + (전체 글 수를 한페이지에 보여줄 글수로 나눈 나머지 값)
+												int pageCount = count / pageSize + (count%pageSize == 0 ? 0:1);
+												//한 화면에 보여줄 페이지 수 설정
+												int pageBlock = 3;
+												
+												//시작페이지 번호 구하기
+												//( 현재 보여질 페이지 번호 / 한 블럭에 보여줄 페이지 수 ) - ( 현재 보여질 페이지 번호 % 한 화면에 보여줄 페이지수 == 0 ? 1:0 )
+												// * 한 블럭에 보여줄 페이지 수 + 1
+												int startPage = ( (currentPage / pageBlock) - (currentPage % pageBlock == 0 ? 1 : 0) ) * pageBlock + 1;
+												
+												//끝페이지 번호 구하기
+												int endPage = startPage + pageBlock - 1;
+												//끝 페이지 번호가 전체 페이지수보다 클 때
+												if(endPage > pageCount) {
+													endPage = pageCount;
+												}
+												
+												//[이전] 시작 페이지 번호가 한 화면에 보여줄 페이지수보다 클 때
+												if(startPage > pageBlock) {
+%>
+													<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
+										    			<a href="notice.jsp?pageNum=<%=startPage - pageBlock%>" class="datatable-pagination-list-item-link">‹</a>
+										    		</li>
+<%
+												}
+												
+												for(int i = startPage; i <= endPage; i++) {
+%>													
+													<li class="datatable-pagination-list-item datatable-active">
+										    			<a href="notice.jsp?pageNum=<%=i%>" class="datatable-pagination-list-item-link"><%=i %></a>
+										    		</li>
+<%													
+												}
+												//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
+												if(endPage < pageCount) {
+%>													
+													<li class="datatable-pagination-list-item">
+										    			<a href="notice.jsp?pageNum=<%=startPage + pageBlock%>" class="datatable-pagination-list-item-link">›</a>
+										    		</li>
+<%													
+												}
+												
+%>
+										    	
+										    		
+										    		
+										    		<li class="datatable-pagination-list-item datatable-active">
+										    			<a data-page="1" class="datatable-pagination-list-item-link">2</a>
 										    		</li>
 										    		<li class="datatable-pagination-list-item datatable-active">
-										    			<a data-page="1" class="datatable-pagination-list-item-link">1</a>
+										    			<a data-page="1" class="datatable-pagination-list-item-link">3</a>
 										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="2" class="datatable-pagination-list-item-link">2</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="3" class="datatable-pagination-list-item-link">3</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="4" class="datatable-pagination-list-item-link">4</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="5" class="datatable-pagination-list-item-link">5</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="6" class="datatable-pagination-list-item-link">6</a>
-										    		</li>
-										    		<li class="datatable-pagination-list-item">
-										    			<a data-page="2" class="datatable-pagination-list-item-link">›</a>
-										    		</li>
+										    		
 										    	</ul>
 										    </nav>
 										</div>

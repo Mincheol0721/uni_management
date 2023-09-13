@@ -346,7 +346,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                    	           			<td width=5%>2023-05-08</td>
                    	           		</tr>
                    	           </table>
-                   	           <font align="right"><small><a href="${path}/menu/notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
+                   	           <font align="right"><small><a href="${path}/menu/notice.jsp?pageNum=1" style="text-decoration: none; color:black;">더보기...</a></small></font>
                             </p>
                         </div>
                     </div>
