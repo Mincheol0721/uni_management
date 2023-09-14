@@ -3,6 +3,8 @@
 <%@page import="java.util.Calendar"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:set var="path" value="${pageContext.request.contextPath }" />
+
 <%
 
 Calendar cal = Calendar.getInstance();
@@ -99,19 +101,34 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
             overflow:hidden;
             text-overflow:ellipsis;
             }
+            a {
+        	text-decoration: none;
+        	color: black;
+	        }
+	        a:hover {
+	        	text-decoration: underline;
+	        	color: black;
+	        }
        </style>
        <script type="text/javascript">
         	$(function() {
 				var $noticeTable = $("#noticeTable");
+				var $path = '<%=request.getContextPath()%>';
         		
         		$.ajax({
-        			url : '<%=request.getContextPath()%>/board/index.do',
+        			url : $path + '/board/index.do',
 					type : 'POST',
 					dataType : 'json',
 			        contentType: "application/json; charset=utf-8;",
 					success : function(data){
 						$.each(data, function(index, dto) { 
-							$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td>" + dto.title + "</td> <td>" + dto.writeDate + "</td> <td>" + dto.readCount + "</td> </tr>");
+							if(dto != null){
+								$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td><a href='" + $path 
+														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+							} else {
+								$noticeTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
+							}
 						}); 
 					}
         		}); //ajax

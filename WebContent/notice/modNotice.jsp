@@ -10,6 +10,17 @@
 	//한글처리
 	request.setCharacterEncoding("UTF-8"); 
 
+	int no = Integer.parseInt( request.getParameter("no") );
+	
+	System.out.println("no: " + no);
+	
+	NoticeDAO dao = new NoticeDAO();
+	
+	dao.updateReadCount(no);
+	
+	NoticeDTO dto = new NoticeDTO();
+	dto = dao.getBoard(no);
+	
 	//id, 직업 값 얻어오기
 	String id = (String)session.getAttribute("id");
 	String job = (String)session.getAttribute("job");
@@ -38,14 +49,18 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
         	$(function() {
+        		var $job = '<%=job%>';
+        		var $no = <%=no%>;
         		var $id = '<%=id%>';
-        		var $path = '<%=path%>';
+        		var $path = '<%=request.getContextPath()%>';
         		
-        		if($id == 'null') {
-        			alert('관리자만 접근가능한 페이지입니다.');
-        			location.href = $path + '/index.jsp';
+        		if($job != '교직원') {
+        			$('#modNotice').remove();
+        			$('#delNoitec').remove();
         		}
+        		
 			});
+        	
         </script>
         <style type="text/css">
 	        .notice_title {
@@ -116,35 +131,36 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                    <form action="nwritePro.jsp" method="post">
+                                    <form method="post">
 	                   	           		<div class="col-md-12">
 											<div class="row">
 											<input type="hidden" value="<%=id%>" name="id">
+											<input type="hidden" value="<%=no%>" name="no">
 												<div class="col-md-2">
 													<span class="notice_title">분류</span>
 												</div>
 												<div class="col-md-10">
-													<input type="text" class="notice" name="nclass">
+													<input type="text" class="notice" name="nclass" value="<%=dto.getNclass()%>">
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
 													<span class="notice_title">제목</span>
 												</div>
 												<div class="col-md-10">
-													<input type="text" class="notice" name="title">
+													<input type="text" class="notice" name="title" value="<%=dto.getTitle()%>">
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
 													<span class="notice_title">내용</span>
 												</div>
 												<div class="col-md-10">
-													<textarea class="notice" name="content" rows="20"></textarea>
+													<textarea class="notice" name="content" rows="20"><%=dto.getContent()%></textarea>
 												</div>
 												<br><br><hr>
 											</div>
 										</div>
-	                   	           		<input type="submit" value="작성완료"  class="writeBtn"> &nbsp;&nbsp;
-	                   	           		<input type="reset" value="다시쓰기" class="writeBtn"> &nbsp;&nbsp;
+	                   	           		<input type="submit" value="글수정"  class="writeBtn" id="modNotice" onclick="location.href='modNoticePro.jsp'"> &nbsp;&nbsp;
+	                   	           		<input type="button" value="글삭제"  class="writeBtn" id="delNotice" onclick="confirm('해당 공지를 삭제하시겠습니까?'); location.href='delNotice.jsp?no=<%=no%>'"> &nbsp;&nbsp;
 	                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/notice.jsp'">
 	                   	           	</form>
 	                   	           	<br>

@@ -60,8 +60,8 @@ public class NoticeServlet extends HttpServlet {
 				//요청한 값 얻기
 				int startRow = Integer.parseInt( request.getParameter("startRow") );
 				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
-				System.out.println("startRow: " + startRow);
-				System.out.println("pageSize: " + pageSize);
+//				System.out.println("startRow: " + startRow);
+//				System.out.println("pageSize: " + pageSize);
 				
 				List<NoticeDTO> list = dao.getBoardList(startRow, pageSize);
 				
@@ -76,6 +76,7 @@ public class NoticeServlet extends HttpServlet {
 					*/
 					JSONObject jsonObject = new JSONObject();
 					
+					jsonObject.put("no", dto.getNo());
 					jsonObject.put("title", dto.getTitle());
 					jsonObject.put("content", dto.getContent());
 					jsonObject.put("writeDate", dto.getWriteDate().toString());
@@ -101,6 +102,7 @@ public class NoticeServlet extends HttpServlet {
 					 */
 					JSONObject jsonObject = new JSONObject();
 					
+					jsonObject.put("no", dto.getNo());
 					jsonObject.put("title", dto.getTitle());
 					jsonObject.put("content", dto.getContent());
 					jsonObject.put("writeDate", dto.getWriteDate().toString());
@@ -112,16 +114,15 @@ public class NoticeServlet extends HttpServlet {
 					
 				} //for
 					
-			}
+			} 
+			
 				
-				
-				
-				// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
-				//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
-				//dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
-				
-				// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
-				out.print(jsonArray.toString()); 
+			// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
+			//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
+			//dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
+			
+			// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
+			out.print(jsonArray.toString()); 
 //				System.out.println("jsonArray: " + jsonArray.toString());
 				
 		} catch (Exception e) {

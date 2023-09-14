@@ -20,24 +20,13 @@
 	job = (String)session.getAttribute("job");
 	id = (String)session.getAttribute("id");
 	
+	int no = Integer.parseInt( request.getParameter("no") );
+	
+	//System.out.println("delNotice.jsp no: " + no);
+	
 	dto = new MemberDTO();
 	
-	if(id != null) {
-		ProfessorDAO pdao = new ProfessorDAO();
-		StudentDAO sdao = new StudentDAO();
-		EmployeeDAO edao = new EmployeeDAO();
-		
-		System.out.println("직업: " + job);
-		System.out.println("id: " + id);
-		
-		if(job.equals("교수")){
-			dto = pdao.selectMember(id);
-		} else if(job.equals("학생")){
-			dto = sdao.selectMember(id);
-		} else if(job.equals("교직원")){
-			dto = edao.selectMember(id);
-		}
-	}
+	EmployeeDAO dao = new EmployeeDAO();
 %>
 
 <!DOCTYPE html>
@@ -109,6 +98,7 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
+					<input type="hidden" value="<%=no%>" name="no">
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">회원정보 수정</h1>
                         <ol class="breadcrumb mb-4">
@@ -123,7 +113,7 @@
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     	<div class="container-fluid">
 										<div class="row">
-										<form action="checkPwdPro.jsp" method="post">
+										<form action="delNoticePro.jsp?no=<%=no %>" method="post">
 											<div class="col-md-12">
 												<div class="row">
 <%
@@ -133,7 +123,7 @@
 														<span class="info_title">비밀번호 입력</span>
 													</div>
 													<div class="col-md-10">
-														<input type="password" name="pwd">
+														<input type="password" name="pwd" style="width: 30%">
 													</div>
 													<br><br><hr>
 		                                    		<small><input type="submit" id="btn" value="제출"></small>

@@ -6,6 +6,8 @@
 <%@page import="java.util.Calendar"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<c:set var="path" value="${pageContext.request.contextPath}" />
+
 <%
 	//한글처리
 	request.setCharacterEncoding("UTF-8"); 
@@ -18,6 +20,7 @@
 // 	System.out.println("notice.jsp job: " + job);
 	 
 	NoticeDAO dao = new NoticeDAO();
+	NoticeDTO dto = new NoticeDTO();
 	List<NoticeDTO> list = null;
 	
 	//전체 글 개수
@@ -69,11 +72,13 @@
         <script type="text/javascript">
         	$(function() {
 				var $noticeTable = $("#noticeTable");
-        		var $startRow = '<%=startRow%>';
-        		var $pageSize = '<%=pageSize%>';
+        		var $startRow = <%=startRow%>;
+        		var $pageSize = <%=pageSize%>;
+        		var $path = '<%=request.getContextPath()%>';
         		
-        		console.log("startRow: " + $startRow);
-        		console.log("pageSize: " + $pageSize);
+//         		console.log("startRow: " + $startRow);
+//         		console.log("pageSize: " + $pageSize);
+				console.log("path: " + $path);
 				
         		$.ajax({
         			url : '<%=request.getContextPath()%>/board/notice.do',
@@ -82,13 +87,38 @@
 					dataType : 'json',
 					success : function(data){
 						$.each(data, function(index, dto) { 
-							$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td>" + dto.title + "</td> <td>" + dto.writeDate + "</td> <td>" + dto.readCount + "</td> </tr>");
+							if(dto != null){
+								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
+														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+							} else {
+								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+							}
 						}); 
 					}
         		}); //ajax
         		
+        		//교직원만 공지작성 가능하게 input태그 숨김처리
+        		var $id = '<%=id%>';
+        		var $job = '<%=job%>';
+        		var $input = $('#writeBtn');
+        		
+        		if($job != '교직원') {
+        			$input.hide();
+        		} 
+        		
 			});
         </script>
+        <style type="text/css">
+        a {
+        	text-decoration: none;
+        	color: black;
+        }
+        a:hover {
+        	text-decoration: underline;
+        	color: black;
+        }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -126,22 +156,17 @@
                             <li class="breadcrumb-item active">Notice</li>
                         </ol>
                         <div class="card mb-4">
-                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                 <h4 class="m-0 font-weight-bold text-primary">공지</h4>
-<%
-                                 if(job.equals("교직원")) {
-%>                                	 
-                                	 <a href="<%=request.getContextPath() %>/notice/notice_write.jsp"><input type="button" value="공지 작성"></a>
-<%                                	 
-                                 }
-%>
-                             </div>
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        		<h4 class="m-0 font-weight-bold text-primary">공지</h4>
+								<a id="writeBtn" href="${path}/notice/notice_write.jsp"><input type="button" value="공지작성"></a>	
+							</div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">
+		                   	           			<td width="5%">글번호</td>
 		                   	           			<td width=5%>분류</td>
 		                   	           			<td width=15%>제목</td>
 		                   	           			<td width=5%>작성일</td>
@@ -154,7 +179,6 @@
 		                   	           	<div class="datatable-bottom">
 
 										    <div class="datatable-info">
-										    	현재 게시글:  / 
 										    	전체 게시글: <%=count%>개
 										    </div>
 										    <nav>
