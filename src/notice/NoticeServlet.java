@@ -43,11 +43,6 @@ public class NoticeServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    PrintWriter out = response.getWriter();
 	    
-	    String id = request.getParameter("id");
-	    int no = Integer.parseInt( request.getParameter("no") );
-	    System.out.println("id: "+id);
-	    System.out.println("no: "+no);
-	    
 	    NoticeDAO dao = new NoticeDAO();
 	    
 	    String nextPage = "";
@@ -119,20 +114,15 @@ public class NoticeServlet extends HttpServlet {
 					
 				} //for
 					
-			} else if(action.equals("/delNotice.do")) {
+			} 
+			
 				
-				dao.deleteBoard(no);
-				
-				response.sendRedirect("../menu/noitce.jsp");
-				
-			}
-				
-				// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
-				//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
-				//dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
-				
-				// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
-				out.print(jsonArray.toString()); 
+			// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
+			//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
+			//dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
+			
+			// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
+			out.print(jsonArray.toString()); 
 //				System.out.println("jsonArray: " + jsonArray.toString());
 				
 		} catch (Exception e) {

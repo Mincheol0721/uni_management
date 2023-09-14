@@ -113,7 +113,7 @@
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     	<div class="container-fluid">
 										<div class="row">
-										<form action="delNoticePro.jsp" method="post">
+										<form action="delNoticePro.jsp?no=<%=no %>" method="post">
 											<div class="col-md-12">
 												<div class="row">
 <%

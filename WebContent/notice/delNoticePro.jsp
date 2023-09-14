@@ -45,7 +45,7 @@
 			if(pwd.equals( edao.checkPwd(id) )) {
 				ndao.deleteBoard(no);
 				
-				response.sendRedirect(path + "/menu/noitce.jsp");
+				response.sendRedirect(path + "/menu/notice.jsp");
 			} else{
 %>		
 					<script type="text/javascript">
