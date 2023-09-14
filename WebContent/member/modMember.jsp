@@ -85,10 +85,47 @@
         </style>
         <script type="text/javascript">
         	$(function() {
+        		
+        		/* 비밀번호 확인 */
+				$("#pwdConfirm").focusout(function() {
+				
+					var $pwd = $("#pwd").val();
+					var $pwdConfirm = $("#pwdConfirm").val();
+					var $msg = $("#pwdConfirmMsg");
+					
+					if($pwd != $pwdConfirm) {
+						$msg.attr('style', 'color:red; font-size: small;');
+						$msg.text("비밀번호가 일치하지 않습니다.");
+						return false;
+					} else {
+						$msg.attr('style', 'color:grey; font-size: small;');
+						$msg.text("비밀번호가 일치합니다.");
+						return true;
+					}
+				});//비밀번호 확인
+				
+				/* 비밀번호 유효성 체크 */
+				$("#pwd").focusout(function() {
+					
+					var $pwd = $("#pwd").val();
+					var $msg = $("#pwdMsg");
+					
+					if( $pwd.length < 8 || $pwd.length > 16 ) {
+						$msg.attr("style", "color:red; font-size:small;");
+						$msg.text("비밀번호는 8자~16자 사이로 입력해주세요");
+						return false;
+					} else {
+						$msg.text("");
+						return true;
+					}
+				}); //비밀번호 유효성
+        		
+				//교직원일 경우 학부 및 학과 태그 제거
 	        	if('<%=job%>' == '교직원') {
 	        		$(".faculty").remove();
 	        		$(".dept").remove();
 	        	};
+	        	
 			});
         </script>
     </head>
@@ -155,6 +192,23 @@
 													<div class="col-md-10">
 														<input type="text" value="<%=dto.getId() %>" class="info" name="id" disabled>
 														<input type="hidden" value="<%=dto.getId() %>" name="id">
+													</div>
+													<br><br><hr>
+													<div class="col-md-2">
+														<span class="info_title">비밀번호 변경</span>
+													</div>
+													<div class="col-md-10">
+														<input type="password" class="info" name="pwd" id="pwd">
+														<span id="pwdMsg"></span>
+														<input type="hidden" value="<%=dto.getPwd()%>" name="pwd">
+													</div>
+													<br><br><hr>
+													<div class="col-md-2">
+														<span class="info_title">비밀번호 확인</span>
+													</div>
+													<div class="col-md-10">
+														<input type="password" class="info" name="pwdConfirm" id="pwdConfirm">
+														<span id="pwdConfirmMsg"></span>
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">

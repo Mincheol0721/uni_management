@@ -30,9 +30,9 @@
 			
 			String job = (String)session.getAttribute("job");
 			
-			/* 
+			
 			System.out.println("id: " + id);
-			//System.out.println("pwd: " + pwd);
+			System.out.println("pwd: " + pwd);
 			System.out.println("name: " + name);
 			System.out.println("tel: " + tel);
 			System.out.println("ssn: " + ssn);
@@ -41,14 +41,14 @@
 			System.out.println("faculty: " + faculty);
 			System.out.println("dept: " + dept);
 			System.out.println("job: " + job);
-			 */
+			
 			
 			int result = 0;
 			
 			//2.1 요청한 값을 DB에 insert를 위해  MemberBean객체단위로 DAO에 전달하기 위해
 			//    요청해서 얻은 값들을 MemberBean객체의 각변수에 저장 시켜야 합니다.
-			MemberDTO dto = new MemberDTO(id, name, email, addr, tel, ssn, dept, faculty);
-			MemberDTO edto = new MemberDTO(id, name, email, addr, tel, ssn); 
+			MemberDTO dto = new MemberDTO(id, pwd, name, email, addr, tel, ssn, dept, faculty);
+			MemberDTO edto = new MemberDTO(id, pwd, name, email, addr, tel, ssn); 
 			/* 
 			System.out.println("dto.id: " + dto.getId());
 			System.out.println("dto.name: " + dto.getName());

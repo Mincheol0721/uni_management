@@ -54,9 +54,9 @@
 					}
 				}); //학부 ajax
 				
-				$dselect.empty();
 					
 				$(document).on("change", $("#faculty option:selected"), function() {
+					$dselect.empty();
 					
 					$.ajax({
 						url : '<%=request.getContextPath()%>/register/dept.do',
@@ -176,7 +176,7 @@
 					}
 				}); //비밀번호 유효성
 				
-				/* 교직원의 경우 필요없는 학부 및 학과 선택 태그 숨김처리 */
+				/* 교직원의 경우 필요없는 학부 및 학과 선택 태그 제거 */
 				$("input[type='radio'][name='job']").on('click', function() {
 					var checked = $("input[type='radio'][name='job']:checked").val();
 					
