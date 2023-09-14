@@ -131,7 +131,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                    <form method="post">
+                                    <form action="modNoticePro.jsp?no=<%=no %>" method="post">
 	                   	           		<div class="col-md-12">
 											<div class="row">
 											<input type="hidden" value="<%=id%>" name="id">
@@ -159,9 +159,9 @@
 												<br><br><hr>
 											</div>
 										</div>
-	                   	           		<input type="submit" value="글수정"  class="writeBtn" id="modNotice" onclick="location.href='modNoticePro.jsp'"> &nbsp;&nbsp;
-	                   	           		<input type="button" value="글삭제"  class="writeBtn" id="delNotice" onclick="confirm('해당 공지를 삭제하시겠습니까?'); location.href='delNotice.jsp?no=<%=no%>'"> &nbsp;&nbsp;
-	                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/notice.jsp'">
+	                   	           		<input type="submit" value="수정하기"  class="writeBtn" id="modNotice"> &nbsp;&nbsp;
+	                   	           		<input type="button" value="삭제하기"  class="writeBtn" id="delNotice" onclick="confirm('해당 공지를 삭제하시겠습니까?'); location.href='delNotice.jsp?no=<%=no%>'"> &nbsp;&nbsp;
+	                   	           		<input type="button" value="글목록보기" class="writeBtn" onclick="location.href='../menu/notice.jsp'">
 	                   	           	</form>
 	                   	           	<br>
                                     </div>
