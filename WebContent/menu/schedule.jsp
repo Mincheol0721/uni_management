@@ -104,13 +104,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+	           		<%--사이드바--%>
+	                <jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -122,11 +117,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         </ol>
                         <div class="row">
 						<!-- Pie Chart -->
-                        <div class="col-xl-12 col-lg-5">
+                        <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-primary">일정</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">학사 캘린더</h4>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -270,44 +265,50 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										</form>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                        <div class="row">
-                        	<p class="mb-0">
-                        	
-                            </p>
-                        </div>
-                    </div>
-                        <!-- Area Chart -->
-                        <div class="container-fluid px-4">
-                        <h1 class="mt-4">공지사항</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Notice</li>
-                        </ol>
-                        <div class="row">
+                    <div class="col-xl-6 col-lg-5">
+                        <div class="card mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h4 class="m-0 font-weight-bold text-primary">일정 관리</h4>
+                            </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                   	         		<table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%>분류</td>
-	                   	           			<td width=15%>제목</td>
-	                   	           			<td width=5%>작성일자</td>
-	                   	           		</tr>
-	                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-	                   	           			<td width=5%>수강</td>
-	                   	           			<td width=15%>수강신청관련 공지</td>
-	                   	           			<td width=5%>2023-05-08</td>
-	                   	           		</tr>
+                                    <table id="datatablesSimple">
+	                                    <thead>
+		                   	           		<tr bgcolor="lightgrey" align="center">
+		                   	           			<td width=15%>날짜</td>
+		                   	           			<td width=20%>일정</td>
+		                   	           		</tr>
+	                                    </thead>
+	                                    <tbody>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=15%>2023-09-01 ~ 2023-09-07</td>
+		                   	           			<td width=15%>2학기 수강신청</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>2023-09-07 ~ 2023-09-18</td>
+		                   	           			<td width=15%>2학기 이수구분 변경</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>2023-09-08 ~ 2023-09-21</td>
+		                   	           			<td width=15%>2학기 수강신청 취소</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td width=5%>2023-09-11 ~ 2023-09-16</td>
+		                   	           			<td width=15%>2학기 대학원 외국어 및 종합시험 실시</td>
+		                   	           		</tr>
+		                   	           	</tbody>
 	                   	           	</table>
-		                   	           	<div class="pagination" align="center">
-	    	               	           		페이징처리
-		                   	           	</div>
+	                   	           	<br>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+					</div>
+					 </div>
+                    </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

@@ -100,9 +100,9 @@
                    	           			<td width=5%><input type="text" name="cname" value="<%=bean.getCname()%>"/></td> 
                    	           			<td>   
 									        <select name="compdiv">
-									            <option value="required" <%if(bean.getCompdiv().equals("required")){ %>selected<% }%>>전공필수</option>
-									            <option value="optional" <%if(bean.getCompdiv().equals("optional")){ %>selected<% }%>>전공선택</option>
-									            <option value="subject" <%if(bean.getCompdiv().equals("subject")){ %>selected<% }%>>교양</option>                   	           					
+									            <option value="전공필수" <%if(bean.getCompdiv().equals("전공필수")){ %>selected<% }%>>전공필수</option>
+									            <option value="전공선택" <%if(bean.getCompdiv().equals("전공선택")){ %>selected<% }%>>전공선택</option>
+									            <option value="교양" <%if(bean.getCompdiv().equals("교양")){ %>selected<% }%>>교양</option>                   	           					
 									        </select>
 									    </td>       	           			
 									    <td width="5%">

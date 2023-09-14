@@ -175,9 +175,9 @@
                    	           			<td width=5%><input type="text" name="cname"/></td> 
                    	           			<td width=5%>
                    	           				<select name="compdiv">
-                   	           					<option value="required">전공필수</option>
-                   	           					<option value="optional">전공선택</option>
-                   	           					<option value="subject">교양</option>                   	           					
+                   	           					<option value="전공필수">전공필수</option>
+                   	           					<option value="전공선택">전공선택</option>
+                   	           					<option value="교양">교양</option>                   	           					
                    	           				</select>
                    	           			</td>       	           			
                    	           			<td width=5%>

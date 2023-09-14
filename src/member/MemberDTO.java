@@ -1,3 +1,4 @@
+
 package member;
 
 import java.sql.Timestamp;
@@ -9,12 +10,61 @@ public class MemberDTO {
 	//멤버변수(인스턴스변수)
 	//private으로 은닉보호되게 생성
 	private String id, pwd, name, email, addr, tel, ssn, faculty, dept;
+	private int jobCode;
 	private Timestamp reg_date;
 	
 	//생성자
 	public MemberDTO() {}
 
 	//변수들을 초기화할 생성자
+	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
+			String dept, String faculty) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+		this.dept = dept;
+		this.faculty = faculty;
+	}
+	
+	public MemberDTO(String id, String name, String email, String addr, String tel, String ssn,
+			String dept, String faculty) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+		this.dept = dept;
+		this.faculty = faculty;
+	}
+	
+	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+	}
+	
+	public MemberDTO(String id, String name, String email, String addr, String tel, String ssn) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+	}
+
 	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
 			String dept, String faculty, Timestamp reg_date) {
 		super();
@@ -110,8 +160,18 @@ public class MemberDTO {
 	public void setReg_date(Timestamp reg_date) {
 		this.reg_date = reg_date;
 	}
+
+	public int getJobCode() {
+		return jobCode;
+	}
+
+	public void setJobCode(int jobCode) {
+		this.jobCode = jobCode;
+	}
+	
 	
 	
 	
 	
 }
+
