@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
+import org.json.simple.JSONArray; 
 import org.json.simple.JSONObject;
 
 import faculty.DeptDAO;
@@ -89,7 +89,7 @@ public class RegisterServlet extends HttpServlet {
 			
 			//System.out.println("job: " + job);
 			
-			if(job.equals("교수")) {
+			if(job.equals("교수")) { 
 				JSONObject jsonObject = new JSONObject(); 
 				
 				pDao = new ProfessorDAO();
@@ -124,7 +124,7 @@ public class RegisterServlet extends HttpServlet {
 		        	jsonArray.add(jsonObject);
 				}
     			
-    		}
+    		} 
         	
         } else if(action.equals("/checkEid.do")) {
         	JSONObject jsonObject = new JSONObject(); 

@@ -43,6 +43,11 @@ public class NoticeServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    PrintWriter out = response.getWriter();
 	    
+	    String id = request.getParameter("id");
+	    int no = Integer.parseInt( request.getParameter("no") );
+	    System.out.println("id: "+id);
+	    System.out.println("no: "+no);
+	    
 	    NoticeDAO dao = new NoticeDAO();
 	    
 	    String nextPage = "";
@@ -60,8 +65,8 @@ public class NoticeServlet extends HttpServlet {
 				//요청한 값 얻기
 				int startRow = Integer.parseInt( request.getParameter("startRow") );
 				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
-				System.out.println("startRow: " + startRow);
-				System.out.println("pageSize: " + pageSize);
+//				System.out.println("startRow: " + startRow);
+//				System.out.println("pageSize: " + pageSize);
 				
 				List<NoticeDTO> list = dao.getBoardList(startRow, pageSize);
 				
@@ -76,6 +81,7 @@ public class NoticeServlet extends HttpServlet {
 					*/
 					JSONObject jsonObject = new JSONObject();
 					
+					jsonObject.put("no", dto.getNo());
 					jsonObject.put("title", dto.getTitle());
 					jsonObject.put("content", dto.getContent());
 					jsonObject.put("writeDate", dto.getWriteDate().toString());
@@ -101,6 +107,7 @@ public class NoticeServlet extends HttpServlet {
 					 */
 					JSONObject jsonObject = new JSONObject();
 					
+					jsonObject.put("no", dto.getNo());
 					jsonObject.put("title", dto.getTitle());
 					jsonObject.put("content", dto.getContent());
 					jsonObject.put("writeDate", dto.getWriteDate().toString());
@@ -112,9 +119,13 @@ public class NoticeServlet extends HttpServlet {
 					
 				} //for
 					
+			} else if(action.equals("/delNotice.do")) {
+				
+				dao.deleteBoard(no);
+				
+				response.sendRedirect("../menu/noitce.jsp");
+				
 			}
-				
-				
 				
 				// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
 				//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 

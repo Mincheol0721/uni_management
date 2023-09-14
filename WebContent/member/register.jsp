@@ -40,23 +40,25 @@
         		var $dselect = $("#dept");
         		
         			
-        		$fsel.empty();
         		
 				$.ajax({
 					url : '<%=request.getContextPath()%>/register/faculty.do',
 					type : 'POST',
 					dataType : 'json',
 					success : function(data){
-						console.log("data: " + JSON.stringify(data));
+						
+						if(data != null) {
+			        		$fsel.empty();
+						}
+						
 						$.each(data, function(i, dto) {
-							$fsel.append("<option value='" + dto.fname + "' name='foption'>" + dto.fname + "</option>"); 
+							$fsel.append("<option value='" + dto.fname + "'>" + dto.fname + "</option>"); 
 						});
 					}
 				}); //학부 ajax
 				
 					
-				$(document).on("change", $("#faculty option:selected"), function() {
-					$dselect.empty();
+				$("#faculty").on("change", function() {
 					
 					$.ajax({
 						url : '<%=request.getContextPath()%>/register/dept.do',
@@ -64,9 +66,17 @@
 						data : {foption : $(this).val(), fname : $fsel.val()},
 						dataType : 'json',
 						success : function(data){
+							
+							if(data != null) {
+								$dselect.empty();
+							}
+							
 							$.each(data, function(index, dto) {
-								$dselect.append("<option value='" + dto.dname + "' name='doption'>" + dto.dname + "</option>"); 
+								$dselect.append("<option value='" + dto.dname + "'>" + dto.dname + "</option>"); 
+							
+								console.log("dname: " + dto.dname);
 							});
+							
 						}
 					});
 					
