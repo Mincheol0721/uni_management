@@ -141,8 +141,12 @@ public class EmployeeDAO {
 			//  요약 : DB와의 연결
 			con = getConnection();
 			//2. insert 쿼리문(SQL문) 만들기
-			sql = "update employee set name=?, tel=?, ssn=?, email=?, addr=? where id=?";
-							     
+			sql = "update employee set name=?, tel=?, ssn=?, email=?, addr=?";
+			
+			if(dto.getPwd() != "") {
+				sql += ", pwd=?";
+			} 
+			sql += " where id=?";
 			
 			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
 			pstmt = con.prepareStatement(sql);
@@ -152,7 +156,13 @@ public class EmployeeDAO {
 			pstmt.setString(3, dto.getSsn());
 			pstmt.setString(4, dto.getEmail());
 			pstmt.setString(5, dto.getAddr());
-			pstmt.setString(6, dto.getId());
+			
+			if(dto.getPwd() != "") {
+				pstmt.setString(6, dto.getPwd());
+				pstmt.setString(7, dto.getId());
+			} else {
+				pstmt.setString(6, dto.getId());
+			}
 			
 			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
 			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
