@@ -1,3 +1,4 @@
+
 package faculty;
 
 public class FacultyDTO {
@@ -30,3 +31,4 @@ public class FacultyDTO {
 	};
 	
 }
+

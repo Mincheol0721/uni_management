@@ -1,3 +1,4 @@
+
 <%@page import="member.EmployeeDAO"%>
 <%@page import="member.StudentDAO"%>
 <%@page import="member.ProfessorDAO"%>
@@ -39,6 +40,7 @@
 	}
 
 %>
+
 <c:set var="path" value="${pageContext.request.contextPath }" />
 
 <c:set var="job" value="${sessionScope.job}" />
