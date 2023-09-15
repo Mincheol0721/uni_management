@@ -96,14 +96,40 @@
 							}
 						}); 
 					}
-        		}); //ajax
+        		}); //공지사항 띄워주는 ajax
+				
+        		var $keyField = $('select[name=keyField]').val();
+     			var $searchText = $('#searchText').val();
         		
-        		//교직원만 공지작성 가능하게 input태그 숨김처리
+       			$('select[name=keyField]').on("change", function() {
+					$keyField = $('select[name=keyField]').val();
+// 	  				console.log("keyField: " + $keyField);
+				});
+       			
+       			$('#searchText').on("keyup", function() {
+       				
+       				$searchText = $('#searchText').val();
+       				
+        			$.ajax({
+        				url : $path + '/board/search.do',
+        				type : 'POST',
+        				data : {keyField : $keyField, searchText : $searchText},
+        				dataType : 'json',
+        				success : function(data) {
+							
+//         					console.log("searchText: " + $searchText);
+        					
+						}
+        			});
+        			
+				});
+        		
+        		//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
         		var $id = '<%=id%>';
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
         		
-        		if($job != '교직원') {
+        		if($job != '교직원' || $job != '교수') {
         			$input.hide();
         		} 
         		
@@ -117,6 +143,9 @@
         a:hover {
         	text-decoration: underline;
         	color: black;
+        }
+        #searchArea {
+        	margin-bottom: 10px;
         }
         </style>
     </head>
@@ -163,6 +192,16 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                    <div id="searchArea" align="right">
+                                    	<select name="keyField">
+                                    		<option name="nclass" value="nclass">분류</option>
+                                    		<option name="title" value="title">제목</option>
+                                    		<option name="content" value="content">내용</option>
+                                    	</select>
+                                    	<span>
+		                                    <input type="text" name="searchText" style="width: 300px;" id="searchText">
+		                                </span>
+                                    </div>
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">

@@ -55,9 +55,9 @@
 		<div class="sb-sidenav-menu">
 			<div class="nav">
 				<div class="sb-sidenav-menu-heading">메뉴</div>
-				<a class="nav-link menu" href="${path}/index.jsp">
-					홈
-				</a>
+				<a class="nav-link menu" href="${path}/index.jsp">홈</a>
+				<a class="nav-link menu" href="${path}/menu/notice.jsp">공지사항</a>
+				<a class="nav-link menu" href="${path}/menu/schedule.jsp">학사일정</a>
 		<c:choose>
 			<c:when test="${job eq '교수'}">
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">

@@ -49,7 +49,7 @@ public class NoticeServlet extends HttpServlet {
 	    
 	    
 		String action = request.getPathInfo();
-		System.out.println("2단계 요청 주소: " + action);
+//		System.out.println("2단계 요청 주소: " + action);
 		
         JSONArray jsonArray = new JSONArray(); // [ ]
         
@@ -114,7 +114,33 @@ public class NoticeServlet extends HttpServlet {
 					
 				} //for
 					
-			} 
+			} else if(action.equals("/search.do")) {
+
+			    //요청한 값 얻기
+			    String keyField = request.getParameter("keyField");
+			    String searchText = request.getParameter("searchText");
+			    System.out.println("keyField: " + keyField);
+			    System.out.println("searchText: " + searchText);
+			    
+				List<NoticeDTO> list = dao.getBoardList(keyField, searchText);
+				
+				for( NoticeDTO dto : list ) {
+					
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("no", dto.getNo());
+					jsonObject.put("title", dto.getTitle());
+					jsonObject.put("content", dto.getContent());
+					jsonObject.put("writeDate", dto.getWriteDate().toString());
+					jsonObject.put("nclass", dto.getNclass());
+					jsonObject.put("id", dto.getId());
+					jsonObject.put("readCount", dto.getReadCount());
+					
+					jsonArray.add(jsonObject);
+					
+				} //for
+				
+			}
 			
 				
 			// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
