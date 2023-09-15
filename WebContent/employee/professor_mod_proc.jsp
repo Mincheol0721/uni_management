@@ -25,7 +25,7 @@
 			dept,faculty);
 	
 	dao.updateProfessor(dto);
-	
+	 
 	RequestDispatcher dispatcher = request.getRequestDispatcher("professorList.jsp");
 		dispatcher.forward(request, response);
 %>

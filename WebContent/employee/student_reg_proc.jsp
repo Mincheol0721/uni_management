@@ -27,4 +27,4 @@
 	dao.insertMember(dto);
 	
 	response.sendRedirect("studentList.jsp");
-%>
+%> 

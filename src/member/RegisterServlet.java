@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
         MemberDTO mDto = null;
         
         String fname = request.getParameter("fname");
-        int fcode = new DeptDAO().getFcode(fname);
+        int fcode = new DeptDAO().getFcode(fname); 
         
         List<FacultyDTO> flist = new FacultyDAO().fList();
   		List<DeptDTO>  dlist = new DeptDAO().dList(fcode);

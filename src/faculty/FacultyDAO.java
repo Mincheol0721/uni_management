@@ -3,6 +3,7 @@ package faculty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -51,8 +52,77 @@ public class FacultyDAO {
 		}
 	}
 	
+	
+	public ArrayList fList() {
 		
 		
+		ArrayList list = new ArrayList();		
 		
+		String sql = "";
+		
+		try {
+			con = getConnection();
+			
+			sql = "select * from faculty order by fcode";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				FacultyDTO dto = new FacultyDTO();
+				
+				dto.setFcode(rs.getInt("fcode"));
+				dto.setFname(rs.getString("fname"));
+				
+				list.add(dto);
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("FacultyDAO의 fList메소드 내부에서 예외발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		
+		return list;
+	}
+	
+	public int getFcode(String fname) {
+		DeptDTO dto = new DeptDTO();
+		
+		int fcode = 0;
+		
+		String sql = "";
+		
+		try {
+			getConnection();
+			
+			sql = "select fcode from faculty where fname=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, fname);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				fcode = rs.getInt("fcode");
+			}
+			
+			
+			
+		} catch (Exception e) {
+			System.out.println("FacultyDAO의 getFcode메소드 내부에서 예외발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return fcode;
+	}
+	
+	
+	
 		
 }

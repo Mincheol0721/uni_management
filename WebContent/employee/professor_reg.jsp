@@ -110,7 +110,7 @@
 						
 						List listf = dao.listFaculty();
 						
-						List listd = dao.listDept();
+						List listd = dao.listDept(); 
 						
 						%>
 						<tr>
