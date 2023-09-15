@@ -32,9 +32,6 @@ public class BoardBean {
 	}
 
 
-
-
-
 	//getter, setter 메소드
 	public int getCcode() {
 		return ccode;
