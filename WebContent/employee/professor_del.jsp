@@ -76,7 +76,7 @@
 					ProfessorDAO dao = new ProfessorDAO();
 					
 					dao.delProfessor(id);
-					 
+					
 					RequestDispatcher dispatcher = request.getRequestDispatcher("professorList.jsp");
 			    	dispatcher.forward(request, response);
 					

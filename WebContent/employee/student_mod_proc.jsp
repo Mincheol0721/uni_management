@@ -19,7 +19,7 @@
 	String dept = request.getParameter("dept");
 	
 	
- 
+
 	
 	StudentDAO dao = new StudentDAO();
 	

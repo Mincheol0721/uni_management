@@ -84,7 +84,7 @@
 					
 					ProfessorDAO dao = new ProfessorDAO();
 					
-					List listf = dao.listFaculty(); 
+					List listf = dao.listFaculty();
 					
 					List listd = dao.listDept();
 					
