@@ -104,30 +104,47 @@
 							<td><input type="text" name="pwd"></td>
 							
 						</tr>
+						<%
+						
+						ProfessorDAO dao = new ProfessorDAO();
+						
+						List listf = dao.listFaculty();
+						
+						List listd = dao.listDept();
+						
+						%>
 						<tr>
 							<th>소속 학부</th>
 							<td><select name="faculty">
+								<%for(int i=0; i<listf.size(); i++ ){
+									MemberDTO dto = (MemberDTO)listf.get(i);
 									
-									<option value="Engine">엔진</option>
-									<option value="Science">과학</option>
-									<option value="Arts">예술</option>
-									<option value="Business">경영</option>
-									<option value="Medicine">의학</option>
-									<option value="Social">사회</option>
-									<option value="Education">교육</option>
+									
+								    %>
+								    
+										<option id="option" value="<%= dto.getFaculty()%>">
+										<%=dto.getFaculty()%>
+										</option>
+								<% 	
+								}
+								%>
 							</select></td>
 						</tr>
 						<tr>
 							<th>소속 전공</th>
 							<td><select name="dept">
+									<%
+							for(int i=0; i<listd.size(); i++ ){
+								MemberDTO dto = (MemberDTO)listd.get(i);
+								
+						    %>
+								<option id="option" value="<%= dto.getDept()%>">
+								<%= dto.getDept()%>
+								</option>
+							<%	
+							}
+							%>
 									
-									<option value="Computer">컴퓨터</option>
-									<option value="Physics">물리학</option>
-									<option value="History">역사학</option>
-									<option value="Marketing">마케팅</option>
-									<option value="Biology">생물학</option>
-									<option value="Economics">경제학</option>
-									<option value="Mathema">수학</option>
 							</select></td>
 						</tr>
 					</table>
@@ -160,5 +177,8 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script>
+        
+        </script>
     </body>
 </html>

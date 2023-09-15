@@ -61,9 +61,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수 정보 수정</h1>
+                        <h1 class="mt-4">학생 정보 수정</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_mod</li>
+                            <li class="breadcrumb-item active">student_mod</li>
                         </ol>
                         <div class="row">
 
@@ -78,6 +78,7 @@
 					String email = request.getParameter("email");
 					String addr = request.getParameter("addr");
 					String pwd = request.getParameter("pwd");
+					String professor = request.getParameter("professor");
 					String faculty = request.getParameter("faculty");
 					String dept = request.getParameter("dept");
 					
@@ -91,7 +92,7 @@
 					
 					%>
 				
-					<form action="professor_mod_proc.jsp" method="post">
+					<form action="student_mod_proc.jsp" method="post">
 
 					<table>
 						<tr>
@@ -127,6 +128,11 @@
 						<tr>
 							<th>비밀번호</th>
 							<td><input type="text" name="pwd" value="<%= pwd%>"></td>
+							
+						</tr>
+						<tr>
+							<th>교수</th>
+							<td><input type="text" name="professor" value="<%= professor%>"></td>
 							
 						</tr>
 						<tr>
@@ -172,8 +178,8 @@
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_mod" value="등록">
-                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
+							<input type="submit" id="student_reg" name="student_reg" value="등록">
+                   	  	    <input type="reset" id="student_del" name="student_del" value="다시작성">
 				</form>
 
 

@@ -1,3 +1,5 @@
+<%@page import="member.StudentDAO"%>
+<%@page import="org.apache.tomcat.jni.Stdlib"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="member.ProfessorDAO"%>
@@ -15,7 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 교수정보게시판</title>
+        <title>OO대학교 학사관리 시스템 - 학생정보게시판</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -26,15 +28,15 @@
         	
         	
         	
-        	//-----------------------교수등록-------------------------------
-        	$("#professor_reg").click(function(){
-        	   document.mainform.action = "professor_reg.jsp";	
+        	//-----------------------학생등록-------------------------------
+        	$("#student_reg").click(function(){
+        	   document.mainform.action = "student_reg.jsp";	
           	   document.mainform.submit();
      	      
      		});
         	
          	checked = $("input[name=checkbox]");
-         	//교수수정
+         	///학생수정
 //          	$("#professor_mod").click(function(){
         		
 //          	   document.mainform.action = "professor_mod.jsp";
@@ -71,7 +73,7 @@
        	   });
 
      	//       체크박스에체크된모든행(Row)의값가져오기
-            $("#professor_mod").click(function(){     
+            $("#student_mod").click(function(){     
 //            	먼저 2개의 배열을 선언하였다. 
 //             	rowData는 행의 값을 모두 담을 배열이고, 
 //             	tdArr은 각각 td의 값을 담을 배열이다. 
@@ -86,6 +88,7 @@
                 var email;
                 var addr;
                 var pwd;
+                var professor;                
                 var faculty;
                 var dept;
                 
@@ -123,11 +126,14 @@
 
                     pwd = td.eq(7).text();
                     console.log("pwd : " + pwd);
+                    
+                    professor = td.eq(8).text();
+                    console.log("professor : " + professor);
 
-                    faculty = td.eq(8).text();
+                    faculty = td.eq(9).text();
                     console.log("faculty : " + faculty);
 
-                    dept = td.eq(9).text();
+                    dept = td.eq(10).text();
                     console.log("dept : " + dept);
                     
                     
@@ -140,7 +146,7 @@
                  //professor_mod에 보낼 값을 동적으로 만들어서 submit할 데이터
                 var form = document.createElement("form");
                 form.setAttribute("method", "post");  //Post 방식
-                form.setAttribute("action", "professor_mod.jsp"); //요청 보낼 주소
+                form.setAttribute("action", "student_mod.jsp"); //요청 보낼 주소
 				//<form method="post" action="professor_mod.jsp"></form>
 
                 var hiddenIdField = document.createElement("input");
@@ -230,6 +236,26 @@
 				  	
 				//</form>
 				
+				var hiddenProfessorField = document.createElement("input");
+				hiddenProfessorField.setAttribute("type", "hidden");
+				hiddenProfessorField.setAttribute("name", "professor");
+				hiddenProfessorField.setAttribute("value", professor);
+				                //<input type="hidden" name="professor" value="professor">
+				              
+				form.appendChild(hiddenProfessorField);
+				                
+				//<form method="post" action="professor_mod.jsp">
+					//<input type="hidden" name="id" value="id">
+					//<input type="hidden" name="name" value="name">
+					//<input type="hidden" name="tel" value="tel">
+					//<input type="hidden" name="ssn" value="ssn">
+				  	//<input type="hidden" name="email" value="email">
+				  	 //<input type="hidden" name="addr" value="addr">
+				  	 //<input type="hidden" name="pwd" value="pwd">
+				  	 //<input type="hidden" name="professor" value="professor">
+				  	
+				//</form>
+				
 				
 				var hiddenFacultyField = document.createElement("input");
 				hiddenFacultyField.setAttribute("type", "hidden");
@@ -247,6 +273,7 @@
 				  	//<input type="hidden" name="email" value="email">
 				  	 //<input type="hidden" name="addr" value="addr">
 				  	 //<input type="hidden" name="pwd" value="pwd">
+				  	  //<input type="hidden" name="professor" value="professor">
 				  	 //<input type="hidden" name="faculty" value="faculty">
 				  	
 				//</form>
@@ -268,6 +295,7 @@
 				  	//<input type="hidden" name="email" value="email">
 				  	 //<input type="hidden" name="addr" value="addr">
 				  	 //<input type="hidden" name="pwd" value="pwd">
+				  	  //<input type="hidden" name="professor" value="professor">
 				  	 //<input type="hidden" name="faculty" value="faculty">
 				  	  //<input type="hidden" name="dept" value="dept">	  	
 				//</form>
@@ -289,6 +317,7 @@
 			  	//<input type="hidden" name="email" value="email">
 			  	 //<input type="hidden" name="addr" value="addr">
 			  	 //<input type="hidden" name="pwd" value="pwd">
+			  	  //<input type="hidden" name="professor" value="professor">
 			  	 //<input type="hidden" name="faculty" value="faculty">
 			  	  //<input type="hidden" name="dept" value="dept">	  	
 				//</form>
@@ -299,8 +328,8 @@
                  
             });
      		
-          //-----------------------교수삭제-------------------------------
-        	$("#professor_del").click(function(){
+          //-----------------------학생삭제-------------------------------
+        	$("#student_del").click(function(){
 //          	   document.mainform.action = "professor_del.jsp";	
 //           	   document.mainform.submit();
 				var rowData = new Array();
@@ -323,11 +352,11 @@
                     console.log("id : " + id);
                     
 				});
-         	//professor_del에 보낼 값을 동적으로 만들어서 submit할 데이터
+         	//student_del에 보낼 값을 동적으로 만들어서 submit할 데이터
                var form = document.createElement("form");
                from = document.body.appendChild(form);
                form.setAttribute("method", "post");  //Post 방식
-               form.setAttribute("action", "professor_del.jsp"); //요청 보낼 주소
+               form.setAttribute("action", "student_del.jsp"); //요청 보낼 주소
 				//<form method="post" action="professor_mod.jsp"></form>
 
                var hiddenIdField = document.createElement("input");
@@ -386,7 +415,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수정보 관리</h1>
+                        <h1 class="mt-4">학생정보 관리</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">professorList</li>
                         </ol>
@@ -395,28 +424,29 @@
                    	           <table id="main_tabel" border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
                    	           		<tr bgcolor="lightgrey" align="center">
                    	           			<td width=5%></td>
-                   	           			<td width=5%>교번</td>
+                   	           			<td width=5%>학번</td>
                    	           			<td width=5%>이름</td>
                    	           			<td width=5%>연락처</td>
                    	           			<td width=5%>주민등록번호</td>
                    	           			<td width=5%>이메일</td>
                    	           			<td width=5%>주소</td>
                    	           			<td width=5%>비밀번호</td>
+                   	           			<td width=5%>교수</td>
                    	           			<td width=5%>학부</td>
                    	           			<td width=5%>전공</td>
                    	           		</tr>
                    	       			<%
-                   	       			ProfessorDAO dao = new ProfessorDAO();
+                   	       			StudentDAO dao = new StudentDAO();
                    	       			
                    	       			
-                   	       			List profMem = dao.listProfessor();
+                   	       			List studMem = dao.listStudent();
                    	       			
                    	    			MemberDTO Mem = null;
                    	    			
                    	    			
                    	       			
-                   	       			for(int i=0; i < profMem.size(); i++){
-                   	       			Mem = (MemberDTO)profMem.get(i);
+                   	       			for(int i=0; i < studMem.size(); i++){
+                   	       			Mem = (MemberDTO)studMem.get(i);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                    	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>"></td>
@@ -427,6 +457,7 @@
                    	           			<td width=5%><%=Mem.getEmail() %></td>
                    	           			<td width=5%><%=Mem.getAddr() %></td>
                    	           			<td width=5%><%=Mem.getPwd() %></td>
+                   	           			<td width=5%><%=Mem.getProfessor() %></td>
                    	           			<td width=5%><%=Mem.getFaculty() %></td>
                    	           			<td width=5%><%=Mem.getDept() %></td>
                    	           			
@@ -441,9 +472,9 @@
                    	          		
                    	           		
                    	           		
-                   	           	 <input style="float: right" type="button" id="professor_del" name="professor_del" value="삭제">
-                   	           	 <input style="float: right" type="button" id="professor_mod" name="professor_mod" value="수정">
-                   	           	 <input style="float: right" type="button" id="professor_reg" name="professor_reg" value="등록">
+                   	           	 <input style="float: right" type="button" id="student_del" name="student_del" value="삭제">
+                   	           	 <input style="float: right" type="button" id="student_mod" name="student_mod" value="수정">
+                   	           	 <input style="float: right" type="button" id="student_reg" name="student_reg" value="등록">
                    	         </form>
                    	          		
                    	           		

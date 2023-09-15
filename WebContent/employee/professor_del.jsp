@@ -68,69 +68,20 @@
                         <div class="row">
 
 
-					<table>
-						<tr>
-							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
-							
-						</tr>
-						<tr>
-							<th>이름</th>
-							<td><input type="text" name="name"></td>
-							
-						</tr>
-						<tr>
-							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
-							
-						</tr>
-						<tr>
-							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
-							
-						</tr>
-						<tr>
-							<th>이메일</th>
-							<td><input type="text" name="email"></td>
-							
-						</tr>
-						<tr>
-							<th>주소</th>
-							<td><input type="text" name="addr"></td>
-							
-						</tr>
-						<tr>
-							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
-							
-						</tr>
-						<tr>
-							<th>소속 학부</th>
-							<td><select name="faculty">
-									
-									<option value="Engine">엔진</option>
-									<option value="Science">과학</option>
-									<option value="Arts">예술</option>
-									<option value="Business">경영</option>
-									<option value="Medicine">의학</option>
-									<option value="Social">사회</option>
-									<option value="Education">교육</option>
-							</select></td>
-						</tr>
-						<tr>
-							<th>소속 전공</th>
-							<td><select name="dept">
-									
-									<option value="Computer">컴퓨터</option>
-									<option value="Physics">물리학</option>
-									<option value="History">역사학</option>
-									<option value="Marketing">마케팅</option>
-									<option value="Biology">생물학</option>
-									<option value="Economics">경제학</option>
-									<option value="Mathema">수학</option>
-							</select></td>
-						</tr>
-					</table>
+					<%
+					 request.setCharacterEncoding("utf-8");
+					
+					String id = request.getParameter("id");
+					System.out.print(id);
+					ProfessorDAO dao = new ProfessorDAO();
+					
+					dao.delProfessor(id);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("professorList.jsp");
+			    	dispatcher.forward(request, response);
+					
+					
+					%>
 
 
 
