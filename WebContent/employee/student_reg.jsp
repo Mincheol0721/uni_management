@@ -61,12 +61,12 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수 정보 등록</h1>
+                        <h1 class="mt-4">학생 정보 등록</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_reg</li>
+                            <li class="breadcrumb-item active">student_reg</li>
                         </ol>
                         <div class="row">
-				<form action="professor_reg_proc.jsp" method="post">
+				<form action="student_reg_proc.jsp" method="post">
 
 					<table>
 						<tr>
@@ -101,6 +101,11 @@
 						</tr>
 						<tr>
 							<th>비밀번호</th>
+							<td><input type="text" name="pwd"></td>
+							
+						</tr>
+						<tr>
+							<th>교수</th>
 							<td><input type="text" name="pwd"></td>
 							
 						</tr>
@@ -145,12 +150,11 @@
 							}
 							%>
 									
-
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록">
-                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
+							<input type="submit" id="student_reg" name="student_reg" value="등록">
+                   	  	    <input type="reset" id="student_del" name="student_del" value="다시작성">
 				</form>
 
 
@@ -178,5 +182,8 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script>
+        
+        </script>
     </body>
 </html>

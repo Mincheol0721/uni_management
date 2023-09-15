@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class MemberDTO {
 	//멤버변수(인스턴스변수)
 	//private으로 은닉보호되게 생성
-	private String id, pwd, name, email, addr, tel, ssn, faculty, dept;
+	private String id, pwd, name, email, addr, tel, ssn, faculty, dept, professor;
 	private int jobCode;
 	private Timestamp reg_date;
 	
@@ -79,7 +79,23 @@ public class MemberDTO {
 		this.faculty = faculty;
 		this.reg_date = reg_date;
 	}
-
+  
+	//professor까지 있는 생성자
+	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
+			String professor, String dept, String faculty) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.addr = addr;
+		this.tel = tel;
+		this.ssn = ssn;
+		this.dept = dept;
+		this.faculty = faculty;
+		this.professor = professor;
+	}
+	
 	//getter, setter 메소드
 	public String getId() {
 		return id;
@@ -168,6 +184,17 @@ public class MemberDTO {
 	public void setJobCode(int jobCode) {
 		this.jobCode = jobCode;
 	}
+
+	
+	public String getProfessor() {
+		return professor;
+	}
+
+	
+	public void setProfessor(String professor) {
+		this.professor = professor;
+	}
+	
 	
 	
 	

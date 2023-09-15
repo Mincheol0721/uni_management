@@ -61,97 +61,28 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수 정보 등록</h1>
+                        <h1 class="mt-4">교수삭제</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_reg</li>
+                            <li class="breadcrumb-item active">professor_del</li>
                         </ol>
                         <div class="row">
-				<form action="professor_reg_proc.jsp" method="post">
 
-					<table>
-						<tr>
-							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
-							
-						</tr>
-						<tr>
-							<th>이름</th>
-							<td><input type="text" name="name"></td>
-							
-						</tr>
-						<tr>
-							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
-							
-						</tr>
-						<tr>
-							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
-							
-						</tr>
-						<tr>
-							<th>이메일</th>
-							<td><input type="text" name="email"></td>
-							
-						</tr>
-						<tr>
-							<th>주소</th>
-							<td><input type="text" name="addr"></td>
-							
-						</tr>
-						<tr>
-							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
-							
-						</tr>
-						<%
-						
-						ProfessorDAO dao = new ProfessorDAO();
-						
-						List listf = dao.listFaculty();
-						
-						List listd = dao.listDept();
-						
-						%>
-						<tr>
-							<th>소속 학부</th>
-							<td><select name="faculty">
-								<%for(int i=0; i<listf.size(); i++ ){
-									MemberDTO dto = (MemberDTO)listf.get(i);
-									
-									
-								    %>
-								    
-										<option id="option" value="<%= dto.getFaculty()%>">
-										<%=dto.getFaculty()%>
-										</option>
-								<% 	
-								}
-								%>
-							</select></td>
-						</tr>
-						<tr>
-							<th>소속 전공</th>
-							<td><select name="dept">
-									<%
-							for(int i=0; i<listd.size(); i++ ){
-								MemberDTO dto = (MemberDTO)listd.get(i);
-								
-						    %>
-								<option id="option" value="<%= dto.getDept()%>">
-								<%= dto.getDept()%>
-								</option>
-							<%	
-							}
-							%>
-									
 
-							</select></td>
-						</tr>
-					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록">
-                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
-				</form>
+					<%
+					 request.setCharacterEncoding("utf-8");
+					
+					String id = request.getParameter("id");
+					System.out.print(id);
+					ProfessorDAO dao = new ProfessorDAO();
+					
+					dao.delProfessor(id);
+					
+					RequestDispatcher dispatcher = request.getRequestDispatcher("professorList.jsp");
+			    	dispatcher.forward(request, response);
+					
+					
+					%>
+
 
 
 				</div>
