@@ -109,8 +109,15 @@ public class ProfessorDAO {
 				//  요약 : DB와의 연결
 				con = getConnection();
 				//2. insert 쿼리문(SQL문) 만들기
-				sql = "update professor set name=?, tel=?, ssn=?, email=?, addr=?, faculty=?, dept=? where id=?";
-								     
+				sql = "update professor set name=?, tel=?, ssn=?, email=?, addr=?, faculty=?, dept=?";
+				
+				if(dto.getPwd() != "") {
+					sql += ", pwd=?";
+				} 
+				sql += " where id=?";
+				
+				System.out.println("dto.getPwd(): " + dto.getPwd());
+				System.out.println("sql: " + sql);
 				
 				//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
 				pstmt = con.prepareStatement(sql);
@@ -122,7 +129,13 @@ public class ProfessorDAO {
 				pstmt.setString(5, dto.getAddr());
 				pstmt.setString(6, dto.getFaculty());
 				pstmt.setString(7, dto.getDept());
-				pstmt.setString(8, dto.getId());
+				
+				if(dto.getPwd() != "") {
+					pstmt.setString(8, dto.getPwd());
+					pstmt.setString(9, dto.getId());
+				} else {
+					pstmt.setString(8, dto.getId());
+				}
 				
 				//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
 				// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.

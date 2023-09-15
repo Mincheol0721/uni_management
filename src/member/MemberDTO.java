@@ -78,6 +78,7 @@ public class MemberDTO {
 		this.faculty = faculty;
 		this.reg_date = reg_date;
 	}
+  
 	//professor까지 있는 생성자
 	public MemberDTO(String id, String pwd, String name, String email, String addr, String tel, String ssn,
 			String professor, String dept, String faculty) {

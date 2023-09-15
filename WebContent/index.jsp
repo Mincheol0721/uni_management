@@ -3,6 +3,8 @@
 <%@page import="java.util.Calendar"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:set var="path" value="${pageContext.request.contextPath }" />
+
 <%
 
 Calendar cal = Calendar.getInstance();
@@ -65,6 +67,9 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 
 %>
 
+<c:set var="id" value="${sessionScope.id}" />
+<c:set var="path" value="${pageContext.request.contextPath }" />
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -76,6 +81,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <title>OO대학교 학사관리 시스템</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style TYPE="text/css">
             body {
@@ -95,7 +101,40 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
             overflow:hidden;
             text-overflow:ellipsis;
             }
+            a {
+        	text-decoration: none;
+        	color: black;
+	        }
+	        a:hover {
+	        	text-decoration: underline;
+	        	color: black;
+	        }
        </style>
+       <script type="text/javascript">
+        	$(function() {
+				var $noticeTable = $("#noticeTable");
+				var $path = '<%=request.getContextPath()%>';
+        		
+        		$.ajax({
+        			url : $path + '/board/index.do',
+					type : 'POST',
+					dataType : 'json',
+			        contentType: "application/json; charset=utf-8;",
+					success : function(data){
+						$.each(data, function(index, dto) { 
+							if(dto != null){
+								$noticeTable.append("<tr align='center'><td> " + dto.nclass + " </td> <td><a href='" + $path 
+														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+							} else {
+								$noticeTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
+							}
+						}); 
+					}
+        		}); //ajax
+        		
+			});
+        </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -123,14 +162,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                   		 <%--사이드바--%>
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+	           		<%--사이드바--%>
+	                <jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <%--메인 페이지부분 --%>
@@ -165,7 +198,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 	                   	           			<td width=5%>2023-05-08</td>
 	                   	           		</tr>
 	                   	           	</table>
-                   	         		<span align="right"><small><a href="schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
+                   	         		<span align="right"><small><a href="${path}/menu/schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
                                     </div>
                                 </div>
                             </div>
@@ -338,18 +371,17 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         <div class="row">
                         	<p class="mb-0">
                    	           <table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%>분류</td>
-                   	           			<td width=15%>제목</td>
-                   	           			<td width=5%>작성일자</td>
-                   	           		</tr>
-                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td width=5%>수강</td>
-                   	           			<td width=15%>수강신청관련 공지</td>
-                   	           			<td width=5%>2023-05-08</td>
-                   	           		</tr>
+                   	           		<thead>
+	                   	           		<tr bgcolor="lightgrey" align="center">
+	                   	           			<td width=5%>분류</td>
+	                   	           			<td width=15%>제목</td>
+	                   	           			<td width=5%>작성일</td>
+	                   	           			<td width=5%>조회수</td>
+	                   	           		</tr>
+                                   	</thead>
+                                   	<tbody id="noticeTable"></tbody>
                    	           </table>
-                   	           <font align="right"><small><a href="notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
+									<font align="right"><small><a href="${path}/menu/notice.jsp" style="text-decoration: none; color:black;">더보기...</a></small></font>
                             </p>
                         </div>
                     </div>

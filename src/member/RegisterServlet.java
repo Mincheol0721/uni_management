@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
+import org.json.simple.JSONArray; 
 import org.json.simple.JSONObject;
 
 import faculty.DeptDAO;
@@ -48,13 +48,13 @@ public class RegisterServlet extends HttpServlet {
         MemberDTO mDto = null;
         
         String fname = request.getParameter("fname");
-        int fcode = new DeptDAO().getFcode(fname); 
+        int fcode = new DeptDAO().getFcode(fname);
         
         List<FacultyDTO> flist = new FacultyDAO().fList();
   		List<DeptDTO>  dlist = new DeptDAO().dList(fcode);
 
   		String nextPage = "";
-		
+    
 		String action = request.getPathInfo();
 		//System.out.println("2단계 요청 주소: " + action);
 		
@@ -90,8 +90,8 @@ public class RegisterServlet extends HttpServlet {
 			response.setContentType("text/html");
 			
 			//System.out.println("job: " + job);
-			
-			if(job.equals("교수")) {
+      
+			if(job.equals("교수")) { 
 				JSONObject jsonObject = new JSONObject(); 
 				
 				pDao = new ProfessorDAO();
@@ -126,7 +126,7 @@ public class RegisterServlet extends HttpServlet {
 		        	jsonArray.add(jsonObject);
 				}
     			
-    		}
+    		} 
         	
         } else if(action.equals("/checkEid.do")) {
         	JSONObject jsonObject = new JSONObject(); 
