@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-        
-    <wb-module deploy-name="YH_팀프로젝트">
-                
-        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-                
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-                
-        <wb-resource deploy-path="/WEB-INF/classes/" source-path="/ImportedClasses"/>
-                
-        <property name="context-root" value="YH-9.8지켜야하는_와르"/>
-                
-        <property name="java-output-path" value="/YH_팀프로젝트/build/classes"/>
             
-    </wb-module>
     
+    <wb-module deploy-name="YH_팀프로젝트">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+                        
+        
+        <wb-resource deploy-path="/WEB-INF/classes/" source-path="/ImportedClasses"/>
+                        
+        
+        <property name="java-output-path" value="/YH_팀프로젝트/build/classes"/>
+        <property name="context-root" value="uni_management"/>
+                    
+    
+    </wb-module>
+        
+
 </project-modules>
