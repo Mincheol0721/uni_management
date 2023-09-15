@@ -166,7 +166,7 @@
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">
-		                   	           			<td width="5%">글번호</td>
+		                   	           			<td width="0.9%">글번호</td>
 		                   	           			<td width=5%>분류</td>
 		                   	           			<td width=15%>제목</td>
 		                   	           			<td width=5%>작성일</td>

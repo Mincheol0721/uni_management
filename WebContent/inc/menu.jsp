@@ -42,6 +42,7 @@
 <c:set var="path" value="${pageContext.request.contextPath }" />
 
 <c:set var="job" value="${sessionScope.job}" />
+<c:set var="id" value="${sessionScope.id}" />
 
 <!DOCTYPE html>
 <html>
@@ -56,15 +57,6 @@
 				<div class="sb-sidenav-menu-heading">메뉴</div>
 				<a class="nav-link menu" href="${path}/index.jsp">
 					홈
-				</a>
-				<a class="nav-link menu" href="${path}/menu/lecture.jsp">
-					수강신청
-				</a>
-				<a class="nav-link menu" href="${path}/menu/grade.jsp">
-					성적
-				</a>
-				<a class="nav-link menu" href="${path}/menu/info.jsp">
-					학사정보
 				</a>
 		<c:choose>
 			<c:when test="${job eq '교수'}">
@@ -98,8 +90,9 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="#">하위메뉴1</a>
-	                    <a class="nav-link" href="#">하위메뉴2</a>
+	                    <a class="nav-link menu" href="${path}/menu/lecture.jsp">수강신청</a>
+						<a class="nav-link menu" href="${path}/menu/grade.jsp">성적</a>
+						<a class="nav-link menu" href="${path}/menu/info.jsp">학사정보</a>
 	                </nav>
 	            </div>
 			</c:when>
@@ -107,7 +100,12 @@
 			</div>
 		</div>
         <div class="sb-sidenav-footer">
-            <div class="small">Logged in as: <b><%=dto.getName() %></b></div>
+        	<c:if test="${id ne null}">
+	            <div class="small"><b><%=dto.getName() %>님 반갑습니다.</b></div>
+        	</c:if>
+        	<c:if test="${id eq null}">
+	            <div class="small"><b>로그인 상태가 아닙니다.</b></div>
+        	</c:if>
             
         </div>
 		
