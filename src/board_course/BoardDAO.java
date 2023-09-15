@@ -31,7 +31,7 @@ public class BoardDAO {
 			Context ctx = new InitialContext();
 			
 			//기본 경로 주소 설정
-			Context envContext = (Context) ctx.lookup("java:/comp/env");
+			Context envContext = (Context) ctx.lookup("java:comp/env");
 
 			//DataSource커넥션풀 객체 찾아 반환
 			ds = (DataSource) envContext.lookup("jdbc/studyplannerdb");
