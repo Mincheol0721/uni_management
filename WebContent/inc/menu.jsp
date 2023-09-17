@@ -74,8 +74,8 @@
             </a>
             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="#">하위메뉴1</a>
-                    <a class="nav-link" href="#">하위메뉴2</a>
+                    <a class="nav-link" href="${path}/course/listCourse.jsp">개설 과목</a>
+                    <a class="nav-link" href="${path}/course/addCourse.jsp">과목 추가</a>
                 </nav>
             </div>
 		</c:when>
