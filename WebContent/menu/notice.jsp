@@ -77,35 +77,125 @@
         		var $startRow = <%=startRow%>;
         		var $pageSize = <%=pageSize%>;
         		var $path = '<%=request.getContextPath()%>';
+        		var $pageNum = '<%=pageNum%>';
         		
 //         		console.log("startRow: " + $startRow);
 //         		console.log("pageSize: " + $pageSize);
-				console.log("path: " + $path);
+// 				console.log("path: " + $path);
+// 				console.log("pageNum: " + $pageNum);
 				
-        		$.ajax({
-        			url : '<%=request.getContextPath()%>/board/notice.do',
-					type : 'POST',
-					data : {startRow:$startRow, pageSize:$pageSize},
-					dataType : 'json',
-					success : function(data){
-						$.each(data, function(index, dto) { 
-							if(dto != null){
-								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
-														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
-															+ "</td> <td>" + dto.readCount + "</td> </tr>");
-							} else {
-								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
-							}
-						}); 
-					}
-        		}); //ajax
+				$.ajax({
+           			url : '<%=request.getContextPath()%>/board',
+   					type : 'POST',
+   					data : {startRow:$startRow, pageSize:$pageSize},
+   					dataType : 'json',
+   					success : function(data){
+						$noticeTable.empty();
+						
+   						$.each(data, function(index, dto) { 
+   							if(dto != null){
+   			     				
+   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
+   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+   							} else {
+   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+   							}
+   						}); 
+   					}
+           		}); //공지사항 띄워주는 ajax
+				
+				
+        		//검색 시 검색한 필드 및 텍스트값에 해당하는 게시글만 띄우기 위한 ajax
+        		var $keyField = $('select[name=keyField]').val();
+     			var $searchText = $('#searchText').val();
         		
-        		//교직원만 공지작성 가능하게 input태그 숨김처리
+     			$('select[name=keyField]').on("change", function() {
+					$keyField = $('select[name=keyField]').val();
+// 	  				console.log("keyField: " + $keyField);
+				});
+     			
+     			$('#searchText').on("keyup", function() {
+     				$searchText = $('#searchText').val();
+     				
+//       				console.log("keyfield: " + $keyField);
+//       				console.log("searchText: " + $searchText);
+//       				console.log("startRow: " + $startRow);
+//       				console.log("pageSize: " + $pageSize);
+      				
+     				$.ajax({
+	           			url : '<%=request.getContextPath()%>/board/search.do',
+	   					type : 'POST',
+	   					data : {keyField : $keyField, searchText : $searchText, startRow:$startRow, pageSize:$pageSize},
+	   					dataType : 'json',
+	   					success : function(data){
+							$noticeTable.empty();
+							
+	   						$.each(data, function(index, dto) { 
+	   							if(dto != null){
+	   			     				
+	   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
+	   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+	   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+	   							} else {
+	   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+	   							}
+	   						}); 
+	   					}
+	           		}); //공지사항 띄워주는 ajax
+	      			
+	           		$('.pagination').on('click',function() {
+						$searchText = $('#searchText').val();
+// 						console.log('paging searchText: ' + $searchText);
+						console.log('pagenum: ' + $pageNum);
+						$.ajax({
+							url : '<%=request.getContextPath()%>/board/paging.do',
+		   					type : 'POST',
+		   					data : {keyField : $keyField, searchText : $searchText, startRow:$startRow, pageSize:$pageSize, pageNum:$pageNum},
+		   					dataType : 'json',
+		   					success : function(data){
+								$noticeTable.empty();
+								$(this).preventDefault();
+								
+		   						$.each(data, function(index, dto) { 
+		   							if(dto != null){
+		   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
+		   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+		   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
+		   							} else {
+		   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+		   							}
+		   						}); 
+		   					}
+						});
+						
+					});
+	           		
+     			});
+     			/* 
+     			$('.active').on('change', function() {
+     				if($(this).val() == $('.pagination>li>a').val()) {
+						$(this).style.cssText = 'background-color: #0d6efd; color: white;'
+     				}
+					
+				});
+     			 */
+     			
+     			/* 
+    			$(".pagination").on("click", function() {
+					
+    				alert("클릭함수 작동");
+    				
+    				
+				});
+				 */
+    			
+        		//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
         		var $id = '<%=id%>';
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
         		
-        		if($job != '교직원') {
+        		if($job == '학생' || $job == null) {
         			$input.hide();
         		} 
         		
@@ -119,6 +209,9 @@
         a:hover {
         	text-decoration: underline;
         	color: black;
+        }
+        #searchArea {
+        	margin-bottom: 10px;
         }
         </style>
     </head>
@@ -165,10 +258,22 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                    
+                                    <div id="searchArea" align="right">
+                                    	<select name="keyField">
+                                    		<option name="nclass" value="nclass">분류</option>
+                                    		<option name="title" value="title">제목</option>
+                                    		<option name="content" value="content">내용</option>
+                                    	</select>
+                                    	<span>
+		                                    <input type="text" name="searchText" style="width: 300px;" id="searchText">
+		                                </span>
+                                    </div>
+                                    
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">
-		                   	           			<td width="5%">글번호</td>
+		                   	           			<td width="0.9%">글번호</td>
 		                   	           			<td width=5%>분류</td>
 		                   	           			<td width=15%>제목</td>
 		                   	           			<td width=5%>작성일</td>
@@ -219,11 +324,16 @@
 												}
 												
 												for(int i = startPage; i <= endPage; i++) {
-%>													
-													<li class="page-item">
-										    			<a href="notice.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a>
-										    		</li>
-<%													
+													if(i == currentPage) {
+%>											
+										    			<li class="page-item active"><a href="notice.jsp?pageNum=<%=currentPage%>" class="page-link"><%=currentPage %></a></li>
+<%
+													} else {
+%>	
+										    			<li class="page-item"><a href="notice.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a></li>
+<%	
+													}
+												
 												}
 												//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
 												if(endPage < pageCount) {

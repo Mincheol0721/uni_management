@@ -152,6 +152,13 @@
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
+														<span class="info_title">구분</span>
+													</div>
+													<div class="col-md-10">
+														<span class="info"><%=job %></span>
+													</div>
+													<br><br><hr>
+													<div class="col-md-2">
 														<span class="info_title">아이디</span>
 													</div>
 													<div class="col-md-10">
