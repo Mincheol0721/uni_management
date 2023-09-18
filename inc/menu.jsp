@@ -66,8 +66,8 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="${path}/course/listCourse.jsp">개설과목</a>
-	                    <a class="nav-link" href="${path}/grade/listGrade.jsp">성적조회</a>
+	                    <a class="nav-link" href="#">하위메뉴1</a>
+	                    <a class="nav-link" href="#">하위메뉴2</a>
 	                </nav>
 	            </div>
 			</c:when>
@@ -78,8 +78,8 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="${path}/employee/professorList.jsp">교수정보 관리 게시판</a>
-	                    <a class="nav-link" href="${path}/employee/studentList.jsp">학생정보 관리 게시판</a>
+	                    <a class="nav-link" href="#">하위메뉴1</a>
+	                    <a class="nav-link" href="#">하위메뉴2</a>
 	                </nav>
 	            </div>
 			</c:when>
@@ -90,9 +90,10 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link menu" href="${path}/menu/lecture.jsp">수강신청</a>
-						<a class="nav-link menu" href="${path}/menu/grade.jsp">성적</a>
-						<a class="nav-link menu" href="${path}/menu/info.jsp">학사정보</a>
+	                    <a class="nav-link menu" href="${path}/student/lecture.jsp">수강신청</a>
+						<a class="nav-link menu" href="${path}/student/grade.jsp">성적</a>
+						<a class="nav-link menu" href="${path}/student/info.jsp">학사정보</a>
+						<a class="nav-link menu" href="${path}/lectureBoard/lectureNotice.jsp">강의평가 게시판</a>
 	                </nav>
 	            </div>
 			</c:when>
