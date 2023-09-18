@@ -10,8 +10,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import dbcp.DBConnectionMgr;
-
 //DAO(DB연결 후 DB작업하는 클래스)
 public class BoardDAO {
 

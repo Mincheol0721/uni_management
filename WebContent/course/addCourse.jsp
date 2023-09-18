@@ -277,15 +277,21 @@
 		        });
 				
 		        $(document).on("click", ".btn4", function (e) {
-		        	var cname = $("input[name=cname]").val();
-		        	var compdiv = $("select[name=compdiv]").val();
-		        	var compyear = $("select[name=compyear]").val();
-		        	var compsem = $("select[name=compsem]").val();
-		        	var grade = $("select[name=grade]").val();
-		        	var professor = $("input[name=professor]").val();
+
+		        	//'등록' 버튼 클릭 시 해당 tr의 정보만 DB에 전송!
+		            var trElement = $(e.target).closest("tr");
+		            var cname = trElement.find("input[name=cname]").val();
+		            var compdiv = trElement.find("select[name=compdiv]").val();
+		            var compyear = trElement.find("select[name=compyear]").val();
+		            var compsem = trElement.find("select[name=compsem]").val();
+		            var grade = trElement.find("select[name=grade]").val();
+		            var professor = trElement.find("input[name=professor]").val();		        			        	
 		        	var target = $(e.target);		        	
 		        	
-		        	console.log("e.target.value: " + e.target.value)
+		        	console.log("e.target.value: " + e.target.value);
+		        	
+		        	console.log("등록버튼을 클릭한 행의 과목 정보 : " + cname + ", " + compdiv + ", " + 
+		        			    compyear + ", " + compsem + ", " + grade + ", " + professor);
 		        	
 		        	$.ajax({
 		        		
