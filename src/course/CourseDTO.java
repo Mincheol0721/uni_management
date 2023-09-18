@@ -1,3 +1,4 @@
+
 package course;
 
 public class CourseDTO {
@@ -6,3 +7,4 @@ public class CourseDTO {
 	private int compyear, compsem, grade;
 	
 }
+

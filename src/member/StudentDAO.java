@@ -1,9 +1,11 @@
+
 package member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -298,8 +300,169 @@ public class StudentDAO {
 		
 		
 		return pwd;
-	}
+	}//checkPwd닫는부분
 	
+	
+	public ArrayList listStudent() {
+		
+		ArrayList list = new ArrayList();
+		
+		try {
+		
+			con = getConnection();
+			
+			String sql="select * from student";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				String id = rs.getString("id");
+				String name = rs.getString("name");
+				String tel = rs.getString("tel");
+				String ssn = rs.getString("ssn");
+				String email = rs.getString("email");
+				String addr = rs.getString("addr");
+				String pwd = rs.getString("pwd");
+				String faculty = rs.getString("faculty");
+				String dept = rs.getString("dept");
+				String professor = rs.getString("professor");
+				
+				MemberDTO dto = new MemberDTO(id, pwd, name, email, addr, tel, ssn, professor, dept, faculty);
+				
+				list.add(dto);
+			}
+		} catch (Exception e) {
+		
+		}
+		
+		
+		return list;
+	}//listStudent끝
+	
+		public int insertStudent(MemberDTO dto){
+				
+				int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+				String sql = ""; // insert 쿼리문 저장할 변수 
+				
+				try {
+					//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+					//  요약 : DB와의 연결
+					con = getConnection();
+					//2. insert 쿼리문(SQL문) 만들기
+					sql = "insert into student(id,pwd,name,tel,ssn,email,addr,faculty,dept) " +
+									     "values( ?,  ?,   ?,  ?,  ?,    ?,   ?,      ?,   ?)";
+					
+					//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+					pstmt = con.prepareStatement(sql);
+					//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+					pstmt.setString(1, dto.getId());
+					pstmt.setString(2, dto.getPwd());
+					pstmt.setString(3, dto.getName());
+					pstmt.setString(4, dto.getTel());
+					pstmt.setString(5, dto.getSsn());
+					pstmt.setString(6, dto.getEmail());
+					pstmt.setString(7, dto.getAddr());
+					pstmt.setString(8, dto.getProfessor());
+					pstmt.setString(9, dto.getFaculty());
+					pstmt.setString(10, dto.getDept());
+					
+					//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+					// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+					result = pstmt.executeUpdate();
+				
+				} catch (Exception e) {
+					System.out.println("studentDAO클래스의 insertMember내부에서  insert문장 실행 예외발생 : " + e.toString());
+				} finally {
+					freeResource();
+				}
+			
+				//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+				return result;
+			}//insertStudent끝
+
+			
+				public int updateStudent(MemberDTO dto){
+					
+					int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+					String sql = ""; // insert 쿼리문 저장할 변수 
+					
+					try {
+						//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+						//  요약 : DB와의 연결
+						con = getConnection();
+						//2. insert 쿼리문(SQL문) 만들기
+						sql = "update student set name=?, tel=?, ssn=?, email=?, addr=?, pwd=?, professor=?, faculty=?, dept=? where id=?";
+										     
+						//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+						pstmt = con.prepareStatement(sql);
+						//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+						pstmt.setString(1, dto.getName());
+						pstmt.setString(2, dto.getTel());
+						pstmt.setString(3, dto.getSsn());
+						pstmt.setString(4, dto.getEmail());
+						pstmt.setString(5, dto.getAddr());
+						pstmt.setString(6, dto.getPwd());
+						pstmt.setString(7, dto.getProfessor());
+						pstmt.setString(8, dto.getFaculty());
+						pstmt.setString(9, dto.getDept());
+						pstmt.setString(10, dto.getId());
+						
+						System.out.println( dto.getName());
+						System.out.println( dto.getTel());
+						System.out.println( dto.getSsn());
+						System.out.println( dto.getEmail());
+						System.out.println( dto.getAddr());
+						System.out.println( dto.getPwd());
+						System.out.println( dto.getProfessor());						
+						System.out.println( dto.getFaculty());
+						System.out.println( dto.getDept());
+						System.out.println( dto.getId());
+						
+						String queryString = pstmt.toString();
+						System.out.println(queryString);
+						//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+						// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+						result = pstmt.executeUpdate();
+					
+					} catch (Exception e) {
+						System.out.println("StudentDAO클래스의 updateStudent메소드 내부에서 예외 발생 : " + e.toString());
+					} finally {
+						freeResource();
+					}
+				
+					//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+					return result;
+				}//updateStudent끝
+				
+				public void delStudent(String id) {
+					
+					
+					try {
+						con = getConnection();
+						
+						String sql = "delete from student where id=?";
+						
+						pstmt = con.prepareStatement(sql);
+						
+						pstmt.setString(1, id);
+						
+						pstmt.executeUpdate();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						freeResource();
+					}
+					
+				
+			
+			}//delProfessor끝
 	
 }
 

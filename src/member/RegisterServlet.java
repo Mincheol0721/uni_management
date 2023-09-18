@@ -53,6 +53,8 @@ public class RegisterServlet extends HttpServlet {
         List<FacultyDTO> flist = new FacultyDAO().fList();
   		List<DeptDTO>  dlist = new DeptDAO().dList(fcode);
 
+  		String nextPage = "";
+    
 		String action = request.getPathInfo();
 		//System.out.println("2단계 요청 주소: " + action);
 		
@@ -88,7 +90,7 @@ public class RegisterServlet extends HttpServlet {
 			response.setContentType("text/html");
 			
 			//System.out.println("job: " + job);
-			
+      
 			if(job.equals("교수")) { 
 				JSONObject jsonObject = new JSONObject(); 
 				

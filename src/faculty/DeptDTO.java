@@ -1,3 +1,4 @@
+
 package faculty;
 
 public class DeptDTO {
@@ -50,3 +51,4 @@ public class DeptDTO {
 	
 
 }
+

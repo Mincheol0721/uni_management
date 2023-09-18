@@ -28,7 +28,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
+            <a class="navbar-brand ps-3" href="index.jsp">OO대학교</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -61,97 +61,121 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수 정보 등록</h1>
+                        <h1 class="mt-4">교수 정보 수정</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_reg</li>
+                            <li class="breadcrumb-item active">professor_mod</li>
                         </ol>
                         <div class="row">
-				<form action="professor_reg_proc.jsp" method="post">
+
+					<%
+					request.setCharacterEncoding("utf-8");
+
+				
+					String id = request.getParameter("id");
+					String name = request.getParameter("name");
+					String tel = request.getParameter("tel");
+					String ssn = request.getParameter("ssn");
+					String email = request.getParameter("email");
+					String addr = request.getParameter("addr");
+					String pwd = request.getParameter("pwd");
+					String faculty = request.getParameter("faculty");
+					String dept = request.getParameter("dept");
+					
+					
+					ProfessorDAO dao = new ProfessorDAO();
+					
+					List listf = dao.listFaculty();
+					
+					List listd = dao.listDept();
+					
+					
+					%>
+				
+					<form action="professor_mod_proc.jsp" method="post">
 
 					<table>
 						<tr>
 							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
+							<td ><input type="text" name="id" value="<%=id%>" readonly></td>
 							
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name"></td>
+							<td><input type="text" name="name"  value="<%= name%>"></td>
 							
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
+							<td><input type="text" name="tel" value="<%= tel%>"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
+							<td><input type="text" name="ssn" value="<%= ssn%>" readonly></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email"></td>
+							<td><input type="text" name="email" value="<%= email%>"></td>
 							
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td><input type="text" name="addr"></td>
+							<td><input type="text" name="addr" value="<%= addr%>"></td>
 							
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
+							<td><input type="text" name="pwd" value="<%= pwd%>"></td>
 							
 						</tr>
-						<%
-						
-						ProfessorDAO dao = new ProfessorDAO();
-						
-						List listf = dao.listFaculty();
-						
-						List listd = dao.listDept();
-						
-						%>
 						<tr>
 							<th>소속 학부</th>
-							<td><select name="faculty">
-								<%for(int i=0; i<listf.size(); i++ ){
-									MemberDTO dto = (MemberDTO)listf.get(i);
+							<td><select  id="faculty" name="faculty">
+							<%
+							
+							for(int i=0; i<listf.size(); i++ ){
+								MemberDTO dto = (MemberDTO)listf.get(i);
+								
+								
+						    %>
+						    
+								<option id="option" value="<%= dto.getFaculty()%>"<%if(dto.getFaculty().equals(faculty)){%>selected<%}%>>
+								<%= dto.getFaculty()%>
+								</option>
+							<%	
+								
+							}//for문
+							
+							%>
 									
-									
-								    %>
-								    
-										<option id="option" value="<%= dto.getFaculty()%>">
-										<%=dto.getFaculty()%>
-										</option>
-								<% 	
-								}
-								%>
-							</select></td>
+								</select>
 						</tr>
 						<tr>
 							<th>소속 전공</th>
-							<td><select name="dept">
-									<%
+							<td><select  id="dept" name="dept">
+							<%
 							for(int i=0; i<listd.size(); i++ ){
 								MemberDTO dto = (MemberDTO)listd.get(i);
 								
 						    %>
-								<option id="option" value="<%= dto.getDept()%>">
+								<option id="option" value="<%= dto.getDept()%>"<%if(dto.getDept().equals(dept)){%>selected<%}%>>
 								<%= dto.getDept()%>
 								</option>
 							<%	
 							}
+							
+							
+							
+							
 							%>
-									
-
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록">
+							<input type="submit" id="professor_reg" name="professor_mod" value="등록">
                    	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
 				</form>
+
 
 
 				</div>
@@ -178,5 +202,11 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script type="text/javascript"> 
+		
+       
+        
+		
+   		</script> 
     </body>
 </html>
