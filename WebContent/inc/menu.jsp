@@ -66,8 +66,8 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="#">하위메뉴1</a>
-	                    <a class="nav-link" href="#">하위메뉴2</a>
+	                    <a class="nav-link" href="${path}/course/listCourse.jsp">개설과목</a>
+	                    <a class="nav-link" href="${path}/grade/listGrade.jsp">성적조회</a>
 	                </nav>
 	            </div>
 			</c:when>
@@ -101,7 +101,7 @@
 		</div>
         <div class="sb-sidenav-footer">
         	<c:if test="${id ne null}">
-	            <div class="small"><b><%=dto.getName() %>님 반갑습니다.</b></div>
+	            <div class="small"><b><%=dto.getName()%>님 반갑습니다.</b></div>
         	</c:if>
         	<c:if test="${id eq null}">
 	            <div class="small"><b>로그인 상태가 아닙니다.</b></div>

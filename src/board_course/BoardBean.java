@@ -6,20 +6,15 @@ package board_course;
 public class BoardBean {
 
 	//멤버 변수
-	private int ccode; //과목 코드		    
-	private String cname; //과목명
-	private String compdiv; //이수 구분
-	private int compyear; //이수 학년
-	private int compsem; //이수 학기
-	private int grade; //학점
-	private String professor; //담당 교수
+	private int ccode; 			//과목 코드		    
+	private String cname; 		//과목명
+	private String compdiv; 	//이수 구분
+	private int compyear; 		//이수 학년
+	private int compsem; 		//이수 학기
+	private int grade; 			//학점
+	private String professor; 	//담당 교수
 	
-
-	
-	public BoardBean() {
-		// TODO Auto-generated constructor stub
-	}
-	
+	public BoardBean() { }	
 	
 	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade) {
 		
