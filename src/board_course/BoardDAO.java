@@ -18,7 +18,6 @@ public class BoardDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	private DataSource ds;
-	//private DBConnectionMgr pool;
 	
 	//DataSource 얻는 기능의 생성자
 	public BoardDAO() {
@@ -33,8 +32,6 @@ public class BoardDAO {
 
 			//DataSource커넥션풀 객체 찾아 반환
 			ds = (DataSource) envContext.lookup("jdbc/studyplannerdb");
-			
-			//pool = DBConnectionMgr.getInstance();
 			
 		} catch (Exception e) {
 			System.out.println("BoardDAO의 생성자 내부에서 커넥션풀 얻기 실패 : " + e.toString());
