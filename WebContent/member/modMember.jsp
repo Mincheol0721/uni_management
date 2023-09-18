@@ -187,6 +187,13 @@
 													</div>
 													<br><br><hr>
 													<div class="col-md-2">
+														<span class="info_title">구분</span>
+													</div>
+													<div class="col-md-10">
+														<input type="text" value="<%=job %>" class="info" disabled="disabled">
+													</div>
+													<br><br><hr>
+													<div class="col-md-2">
 														<span class="info_title">아이디</span>
 													</div>
 													<div class="col-md-10">
