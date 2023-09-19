@@ -22,7 +22,7 @@ int year = cal.get(Calendar.YEAR);
 int month = cal.get(Calendar.MONTH);
 
 int date = cal.get(Calendar.DATE);
-
+ 
  
 
 if(strYear != null)

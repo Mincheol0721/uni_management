@@ -175,7 +175,7 @@
                    	           	}
                    	         
                    	         	%>
-                   	         	<table style="border-collapse: collapse; border-color: lightgrey; border-top: none;" id="addChistory"></table>       			 
+                   	         	       			 
                    	           </table>		
 							
                             </p>
