@@ -1,3 +1,6 @@
+<%@page import="schedule.ScheduleDTO"%>
+<%@page import="schedule.ScheduleDAO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
@@ -66,6 +69,12 @@ Calendar todayCal = Calendar.getInstance();
 SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
 
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
+
+
+//DAO객체 생성
+ScheduleDAO dao = new ScheduleDAO();
+ScheduleDTO dto = new ScheduleDTO();
+List<ScheduleDTO> list = dao.getScheduleList();
 
 %>
 
@@ -198,28 +207,18 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 	                   	           			<td width=10%>날짜</td>
 	                   	           			<td width=15%>일정</td>
 	                   	           		</tr>
-	                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-	                   	           			<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td>[수강]</td>
-		                   	           			<td>2023-09-01 ~ 2023-09-07</td>
-		                   	           			<td>2학기 수강신청</td>
+                 	           			<%
+	                                    for(int i=0; i<list.size(); i++) {
+	                                    	dto = list.get(i);
+	                                    %>
+	                                    	<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td><%=dto.getSclass() %></td>
+		                   	           			<td><%=dto.getSdate() %></td>
+		                   	           			<td><%=dto.getTitle() %></td>
 		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td>[수강]</td>
-		                   	           			<td>2023-09-07 ~ 2023-09-18</td>
-		                   	           			<td>2학기 이수구분 변경</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td>[수강]</td>
-		                   	           			<td>2023-09-08 ~ 2023-09-21</td>
-		                   	           			<td>2학기 수강신청 취소</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td>[수강]</td>
-		                   	           			<td>2023-09-11 ~ 2023-09-16</td>
-		                   	           			<td>2학기 대학원 외국어 및 종합시험 실시</td>
-		                   	           		</tr>
-	                   	           		</tr>
+	                                    <%	
+	                                    }
+	                                    %>
 	                   	           	</table>
                    	         		<span align="right"><small><a href="${path}/menu/schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
                                     </div>
