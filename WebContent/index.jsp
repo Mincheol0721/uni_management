@@ -7,6 +7,8 @@
 
 <%
 
+String job = (String)session.getAttribute("job");
+
 Calendar cal = Calendar.getInstance();
 
  
@@ -114,6 +116,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         	$(function() {
 				var $noticeTable = $("#noticeTable");
 				var $path = '<%=request.getContextPath()%>';
+				var $job = '<%=job%>';
+				
+				if($job != '교직원') {
+					$('#calTd').removeAttr('onclick');
+				}
         		
         		$.ajax({
         			url : $path + '/board/index.do',
@@ -188,13 +195,30 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                    	         		<table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
 	                   	           		<tr bgcolor="lightgrey" align="center">
 	                   	           			<td width=5%>분류</td>
-	                   	           			<td width=15%>제목</td>
-	                   	           			<td width=5%>작성일자</td>
+	                   	           			<td width=10%>날짜</td>
+	                   	           			<td width=15%>일정</td>
 	                   	           		</tr>
 	                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-	                   	           			<td width=5%>수강</td>
-	                   	           			<td width=15%>수강신청관련 공지</td>
-	                   	           			<td width=5%>2023-05-08</td>
+	                   	           			<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td>[수강]</td>
+		                   	           			<td>2023-09-01 ~ 2023-09-07</td>
+		                   	           			<td>2학기 수강신청</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td>[수강]</td>
+		                   	           			<td>2023-09-07 ~ 2023-09-18</td>
+		                   	           			<td>2학기 이수구분 변경</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td>[수강]</td>
+		                   	           			<td>2023-09-08 ~ 2023-09-21</td>
+		                   	           			<td>2학기 수강신청 취소</td>
+		                   	           		</tr>
+		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td>[수강]</td>
+		                   	           			<td>2023-09-11 ~ 2023-09-16</td>
+		                   	           			<td>2학기 대학원 외국어 및 종합시험 실시</td>
+		                   	           		</tr>
 	                   	           		</tr>
 	                   	           	</table>
                    	         		<span align="right"><small><a href="${path}/menu/schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
@@ -316,7 +340,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										       if(iUseDate == intToday ) {
 										             backColor = "#c9c9c9";
 										       }
-										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' nowrap>");
+										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' id='calTd' onclick=\"location.href='" 
+										       												+ request.getContextPath() + "/schedule/newSchedule.jsp?date=" + index + "'\" nowrap>");
 %>
 										
 										       <font color='<%=color%>'>
@@ -325,6 +350,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 <%
 										       out.println("<BR>");
 										       out.println(iUseDate);
+										       out.println("<BR>");
+										       out.println("<font size=2><b>일정 입력</b></font>");
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");
