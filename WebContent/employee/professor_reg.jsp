@@ -43,42 +43,42 @@
                             <li class="breadcrumb-item active">professor_reg</li>
                         </ol>
                         <div class="row">
-				<form action="professor_reg_proc.jsp" method="post">
+				<form action="professor_reg_proc.jsp" method="post" onsubmit="return valid();">
 
 					<table>
 						<tr>
 							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
+							<td ><input type="text" name="id" id="id"></td>
 							
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name"></td>
+							<td><input type="text" name="name" id="name"></td>
 							
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
+							<td><input type="text" name="tel" id="tel"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
+							<td><input type="text" name="ssn" id="ssn"></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email"></td>
+							<td><input type="text" name="email" id="email"></td>
 							
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td><input type="text" name="addr"></td>
+							<td><input type="text" name="addr" id="addr"></td>
 							
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
+							<td><input type="text" name="pwd" id="pwd"></td>
 							
 						</tr>
 						<%
@@ -126,7 +126,7 @@
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록">
+							<input type="submit" id="professor_reg" name="professor_reg" value="등록"">
                    	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
 				</form>
 
@@ -155,5 +155,63 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        <script type="text/javascript">
+        
+        	function valid(){
+        		
+        		var id = document.getElementById("id"); 
+        		
+        		if(id.value ==""){
+        			alert("아이디를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+				var name = document.getElementById("name"); 
+        		
+        		if(name.value ==""){
+        			alert("이름을 입력해주세요");
+        			
+        			return false;
+        		}
+        			
+				var tel = document.getElementById("tel"); 
+        		
+        		if(tel.value ==""){
+        			alert("전화번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+        		
+				var ssn = document.getElementById("ssn"); 
+        		
+        		if(ssn.value ==""){
+        			alert("주민등록번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+				var email = document.getElementById("email"); 
+        		
+        		if(email.value ==""){
+        			alert("이메일을 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+				var pwd = document.getElementById("pwd"); 
+        		
+        		if(pwd.value ==""){
+        			alert("비밀번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+        		return true;
+        		
+        		
+        	}
+        </script>
     </body>
 </html>
