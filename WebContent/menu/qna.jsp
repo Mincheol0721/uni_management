@@ -1,11 +1,9 @@
-<%@page import="notice.NoticeDTO"%>
+<%@page import="qna.QnaDTO"%>
+<%@page import="qna.QnaDAO"%>
 <%@page import="java.util.List"%>
-<%@page import="notice.NoticeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:set var="path" value="${pageContext.request.contextPath}" />
@@ -18,12 +16,12 @@
 	String id = (String)session.getAttribute("id");
 	String job = (String)session.getAttribute("job");
 	
-// 	System.out.println("notice.jsp id: " + id);
-// 	System.out.println("notice.jsp job: " + job);
+// 	System.out.println("qna.jsp id: " + id);
+// 	System.out.println("qna.jsp job: " + job);
 	 
-	NoticeDAO dao = new NoticeDAO();
-	NoticeDTO dto = new NoticeDTO();
-	List<NoticeDTO> list = null;
+	QnaDAO dao = new QnaDAO();
+	QnaDTO dto = new QnaDTO();
+	List<QnaDTO> list = null;
 	
 	//전체 글 개수
 	int count = dao.getBoardCount();
@@ -73,38 +71,37 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
         	$(function() {
-				var $noticeTable = $("#noticeTable");
+				var $qnaTable = $("#qnaTable");
         		var $startRow = <%=startRow%>;
         		var $pageSize = <%=pageSize%>;
         		var $path = '<%=request.getContextPath()%>';
         		var $pageNum = '<%=pageNum%>';
         		
-//         		console.log("startRow: " + $startRow);
-//         		console.log("pageSize: " + $pageSize);
-// 				console.log("path: " + $path);
-// 				console.log("pageNum: " + $pageNum);
+        		console.log("startRow: " + $startRow);
+        		console.log("pageSize: " + $pageSize);
+				console.log("path: " + $path);
+				console.log("pageNum: " + $pageNum);
 				
 				$.ajax({
-           			url : '<%=request.getContextPath()%>/board',
+           			url : '<%=request.getContextPath()%>/qnas',
    					type : 'POST',
-   					data : {startRow:$startRow, pageSize:$pageSize},
    					dataType : 'json',
+   					data : {startRow: $startRow, pageSize:$pageSize},
    					success : function(data){
-						$noticeTable.empty();
+						$qnaTable.empty();
 						
    						$.each(data, function(index, dto) { 
    							if(dto != null){
    			     				
-   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
-   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+   								$qnaTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td><a href='" + $path 
+   														+ "/qna/viewQna.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
    															+ "</td> <td>" + dto.readCount + "</td> </tr>");
    							} else {
-   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+   								$qnaTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
    							}
    						}); 
    					}
            		}); //공지사항 띄워주는 ajax
-				
 				
         		//검색 시 검색한 필드 및 텍스트값에 해당하는 게시글만 띄우기 위한 ajax
         		var $keyField = $('select[name=keyField]').val();
@@ -115,82 +112,37 @@
 // 	  				console.log("keyField: " + $keyField);
 				});
      			
-     			$('#searchText').on("keyup", function() {
+     			$('input[type=submit]').on("click", function() {
+     				alert('onclick 함수 호출');
      				$searchText = $('#searchText').val();
-     				
-//       				console.log("keyfield: " + $keyField);
-//       				console.log("searchText: " + $searchText);
-//       				console.log("startRow: " + $startRow);
-//       				console.log("pageSize: " + $pageSize);
-      				
-     				$.ajax({
-	           			url : '<%=request.getContextPath()%>/board/search.do',
-	   					type : 'POST',
-	   					data : {keyField : $keyField, searchText : $searchText, startRow:$startRow, pageSize:$pageSize},
-	   					dataType : 'json',
-	   					success : function(data){
-							$noticeTable.empty();
-							
-	   						$.each(data, function(index, dto) { 
-	   							if(dto != null){
-	   			     				
-	   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
-	   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
-	   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
-	   							} else {
-	   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
-	   							}
-	   						}); 
-	   					}
-	           		}); //공지사항 띄워주는 ajax
-	      			
-	           		$('.pagination').on('click',function() {
-						$searchText = $('#searchText').val();
-// 						console.log('paging searchText: ' + $searchText);
-						console.log('pagenum: ' + $pageNum);
-						$.ajax({
-							url : '<%=request.getContextPath()%>/board/paging.do',
+     				if($searchText != 'null') {
+     					
+	     				$.ajax({
+		           			url : '<%=request.getContextPath()%>/qnas/search.do',
 		   					type : 'POST',
-		   					data : {keyField : $keyField, searchText : $searchText, startRow:$startRow, pageSize:$pageSize, pageNum:$pageNum},
+		   					data : {keyField : $keyField, searchText : $searchText, startRow:$startRow, pageSize:$pageSize},
 		   					dataType : 'json',
 		   					success : function(data){
-								$noticeTable.empty();
-								$(this).preventDefault();
+								$qnaTable.empty();
 								
 		   						$.each(data, function(index, dto) { 
 		   							if(dto != null){
-		   								$noticeTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td> " + dto.nclass + " </td> <td><a href='" + $path 
-		   														+ "/notice/viewNotice.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+		   			     				
+		   								$qnaTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td><a href='" + $path 
+		   														+ "/qna/viewQna.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
 		   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
 		   							} else {
-		   								$noticeTable.append("<tr align='center'><td colspan='5'> 등록된 글이 없습니다. </td></tr>");
+		   								$qnaTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
 		   							}
 		   						}); 
 		   					}
-						});
-						
-					});
+		           		}); //공지사항 띄워주는 ajax
+		      			
+     				}
 	           		
      			});
-     			/* 
-     			$('.active').on('change', function() {
-     				if($(this).val() == $('.pagination>li>a').val()) {
-						$(this).style.cssText = 'background-color: #0d6efd; color: white;'
-     				}
-					
-				});
-     			 */
-     			
-     			/* 
-    			$(".pagination").on("click", function() {
-					
-    				alert("클릭함수 작동");
-    				
-    				
-				});
-				 */
-    			
-        		//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
+
+     			//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
         		var $id = '<%=id%>';
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
@@ -229,41 +181,41 @@
             <div id="layoutSidenav_content">
                 <main>
                      <div class="container-fluid px-4">
-                        <h1 class="mt-4">공지사항</h1>
+                        <h1 class="mt-4">질의응답</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Notice</li>
+                            <li class="breadcrumb-item active">Q&A</li>
                         </ol>
                         <div class="card mb-4">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        		<h4 class="m-0 font-weight-bold text-primary">공지</h4>
-								<a id="writeBtn" href="${path}/notice/notice_write.jsp"><input type="button" value="공지작성"></a>	
+                        		<h4 class="m-0 font-weight-bold text-primary">질의응답</h4>
+								<a id="writeBtn" href="${path}/qna/qna_write.jsp"><input type="button" value="공지작성"></a>	
 							</div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                    
-                                    <div id="searchArea" align="right">
-                                    	<select name="keyField">
-                                    		<option name="nclass" value="nclass">분류</option>
-                                    		<option name="title" value="title">제목</option>
-                                    		<option name="content" value="content">내용</option>
-                                    	</select>
-                                    	<span>
-		                                    <input type="text" name="searchText" style="width: 300px;" id="searchText">
-		                                </span>
-                                    </div>
-                                    
+                                    <form method="post">
+	                                    <div id="searchArea" align="right">
+	                                    	<select name="keyField">
+	                                    		<option name="title" value="title">제목</option>
+	                                    		<option name="content" value="content">내용</option>
+	                                    	</select>
+	                                    	<span>
+			                                    <input type="text" name="searchText" style="width: 300px;" id="searchText">
+			                                    <input type="submit" value="검색">
+			                                </span>
+	                                    </div>
+                                    </form>
                                     <table id="datatablesSimple">
 	                                    <thead>
 		                   	           		<tr bgcolor="lightgrey" align="center">
 		                   	           			<td width="0.9%">글번호</td>
-		                   	           			<td width=5%>분류</td>
 		                   	           			<td width=15%>제목</td>
 		                   	           			<td width=5%>작성일</td>
 		                   	           			<td width=5%>조회수</td>
 		                   	           		</tr>
 	                                    </thead>
-	                                    <tbody id="noticeTable"></tbody>
+	                                    <tbody id="qnaTable">
+	                                    </tbody>
 	                   	           	</table>
 	                   	           	<br>
 		                   	           	<div class="datatable-bottom">
@@ -301,7 +253,7 @@
 												if(startPage > pageBlock) {
 %>
 													<li class="page-item">
-										    			<a href="notice.jsp?pageNum=<%=startPage - pageBlock%>" class="page-link">‹</a>
+										    			<a href="qna.jsp?pageNum=<%=startPage - pageBlock%>" class="page-link">‹</a>
 										    		</li>
 <%
 												}
@@ -309,11 +261,11 @@
 												for(int i = startPage; i <= endPage; i++) {
 													if(i == currentPage) {
 %>											
-										    			<li class="page-item active"><a href="notice.jsp?pageNum=<%=currentPage%>" class="page-link"><%=currentPage %></a></li>
+										    			<li class="page-item active"><a href="qna.jsp?pageNum=<%=currentPage%>" class="page-link"><%=currentPage %></a></li>
 <%
 													} else {
 %>	
-										    			<li class="page-item"><a href="notice.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a></li>
+										    			<li class="page-item"><a href="qna.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a></li>
 <%	
 													}
 												
@@ -322,7 +274,7 @@
 												if(endPage < pageCount) {
 %>													
 													<li class="page-item">
-										    			<a href="notice.jsp?pageNum=<%=startPage + pageBlock%>" class="page-link">›</a>
+										    			<a href="qna.jsp?pageNum=<%=startPage + pageBlock%>" class="page-link">›</a>
 										    		</li>
 <%													
 												}
