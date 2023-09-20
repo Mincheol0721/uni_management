@@ -56,6 +56,41 @@ public class NoticeDAO {
 		}
 	}
 	
+	public List<NoticeDTO> getNClass(){
+		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
+		
+		try {
+			con = getConnection();
+			String sql = "select clsname as nclass from boardclass";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+//			System.out.println("sql문: " + sql);
+			
+			while(rs.next()) {
+				NoticeDTO dto = new NoticeDTO();
+				
+				dto.setNclass( rs.getString("nclass") );
+				
+				list.add(dto);
+			}
+//			System.out.println("dto.getNclass: " + list.get(0).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(1).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(2).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(3).getNclass());
+//			System.out.println("list.get(): " + list.get(0));
+//			System.out.println("list.get(): " + list.get(1));
+//			System.out.println("list.get(): " + list.get(2));
+//			System.out.println("list.get(): " + list.get(3));
+			
+		} catch (Exception e) {
+			System.out.println("NoticeDAO내부 getNClass메소드에서 쿼리문 실행 오류: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return list;
+	}
 
 	//bnotice테이블에 저장된 레코드의 개수를 반환하는 메소드
 	public int getBoardCount() {

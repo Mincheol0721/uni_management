@@ -93,6 +93,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
         <script type="text/javascript">
         	$(function() {
 				var $job = '<%=job%>';
+				var $td = $('#calTd');
+				
 				
 				if($job != '교직원') {
 					$('#calTd').removeAttr('onclick');
@@ -249,7 +251,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										             backColor = "#c9c9c9";
 										       }
 										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' id='calTd' onclick=\"location.href='" 
-	       												+ request.getContextPath() + "/schedule/newSchedule.jsp?date=" + index + "'\" nowrap>");
+	       												+ request.getContextPath() + "/schedule/newSchedule.jsp?year=" + year + "&month=" + (month+1) 
+	       												+ "&date=" + index + "'\" nowrap>");
 %>
 										
 										       <font color='<%=color%>'>
@@ -259,7 +262,7 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       out.println("<BR>");
 										       out.println("<font size=2>" + iUseDate + "</font>");
 										       out.println("<BR>");
-										       out.println("<font size=2><b>일정 입력</b></font>");
+										       out.println("<font size=2><b><span id='calBoard'>일정 입력</span></b></font>");
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");

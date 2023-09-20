@@ -40,6 +40,23 @@
         	$(function() {
         		var $id = '<%=id%>';
         		var $path = '<%=path%>';
+        		var $csel = $('select[id=clsSelc]');
+        		
+        		$.ajax({
+        			url : '<%=request.getContextPath()%>/board/selclass',
+        			type : 'POST',
+        			dataType : 'json',
+        			success : function(data) {
+						
+        				if(data != null) $csel.empty();
+        				
+        				$.each(data, function(i, dto) {
+							//console.log('dto: ' + dto.nclass);
+							$csel.append('<option value="' + dto.nclass + '"> ' + dto.nclass + ' </option>')
+						});
+        				
+					}
+        		});//대분류 셀렉트 옵션태그
         		
         		if($id == 'null') {
         			alert('관리자만 접근가능한 페이지입니다.');
@@ -124,7 +141,7 @@
 													<span class="notice_title">분류</span>
 												</div>
 												<div class="col-md-10">
-													<input type="text" class="notice" name="nclass">
+													<select id="clsSelc"></select>
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">

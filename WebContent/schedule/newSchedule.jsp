@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@page import="notice.NoticeDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="notice.NoticeDAO"%>
@@ -14,7 +15,21 @@
 	String id = (String)session.getAttribute("id");
 	String job = (String)session.getAttribute("job");
 	String path = request.getContextPath();
+	
+	int year = Integer.parseInt( request.getParameter("year") );
+	int month = Integer.parseInt( request.getParameter("month") );
 	int date = Integer.parseInt( request.getParameter("date") );
+ 	System.out.println("year: " + year);
+ 	System.out.println("month: " + month);
+ 	System.out.println("date: " + date);
+ 	
+ 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+ 	Date today = new Date();
+ 	String minDate = sdf.format(today);
+ 	
+ 	String clickDate = year + "-0" + month + "-" + date;
+ 	System.out.println("clickDate: " + clickDate);
+ 	
 	
 // 	System.out.println("notice.jsp id: " + id);
 // 	System.out.println("notice.jsp job: " + job);
@@ -41,6 +56,28 @@
         	$(function() {
         		var $id = '<%=id%>';
         		var $path = '<%=path%>';
+				var $csel = $('select[id=clsSelc]');
+				var $sdate = $('input[name=startDate]');
+				var $edate = $('input[name=endDate]');
+				var $minDate = '<%=minDate%>';
+        		
+        		$.ajax({
+        			url : '<%=request.getContextPath()%>/sched/selclass',
+        			type : 'POST',
+        			dataType : 'json',
+        			success : function(data) {
+        				if(data != null) $csel.empty();
+						
+        				$.each(data, function(i, dto) {
+							$csel.append('<option value="' + dto.sclass + '"> ' + dto.sclass + ' </option>')
+						});
+        				
+					}
+        		});//대분류 셀렉트 옵션태그
+        		
+        		//오늘날짜 이전 날짜는 선택 불가능하게 최소값 지정
+        		$sdate.attr("min", $minDate);
+        		$edate.attr("min", '<%=clickDate%>');
         		
         		if($id == 'null') {
         			alert('관리자만 접근가능한 페이지입니다.');
@@ -125,7 +162,7 @@
 													<span class="notice_title">분류</span>
 												</div>
 												<div class="col-md-10">
-													<input type="text" class="notice" name="nclass">
+													<select id="clsSelc"></select>
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
@@ -133,6 +170,19 @@
 												</div>
 												<div class="col-md-10">
 													<input type="text" class="notice" name="title">
+												</div>
+												<br><br><hr>
+												<div class="col-md-2">
+													<span class="notice_title">시작일</span>
+												</div>
+												<div class="col-md-4">
+													<input type="date" class="notice" name="startDate" value="<%=clickDate%>">
+												</div>
+												<div class="col-md-2">
+													<span class="notice_title">종료일</span>
+												</div>
+												<div class="col-md-4">
+													<input type="date" class="notice" name="endDate">
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
@@ -146,7 +196,7 @@
 										</div>
 	                   	           		<input type="submit" value="작성완료"  class="writeBtn"> &nbsp;&nbsp;
 	                   	           		<input type="reset" value="다시쓰기" class="writeBtn"> &nbsp;&nbsp;
-	                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/notice.jsp'">
+	                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/schedule.jsp'">
 	                   	           	</form>
 	                   	           	<br>
                                     </div>

@@ -77,4 +77,41 @@ public class ScheduleDAO {
 			
 			return list;
 		}
-}
+		
+		public List<ScheduleDTO> getSClass(){
+			List<ScheduleDTO> list = new ArrayList<ScheduleDTO>();
+			
+			try {
+				con = getConnection();
+				String sql = "select clsname as sclass from boardclass";
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+//				System.out.println("sql문: " + sql);
+				
+				while(rs.next()) {
+					ScheduleDTO dto = new ScheduleDTO();
+					
+					dto.setSclass( rs.getString("sclass") );
+					
+					list.add(dto);
+				}
+//				System.out.println("dto.getSclass: " + list.get(0).getSclass());
+//				System.out.println("dto.getSclass: " + list.get(1).getSclass());
+//				System.out.println("dto.getSclass: " + list.get(2).getSclass());
+//				System.out.println("dto.getSclass: " + list.get(3).getSclass());
+//				System.out.println("list.get(): " + list.get(0));
+//				System.out.println("list.get(): " + list.get(1));
+//				System.out.println("list.get(): " + list.get(2));
+//				System.out.println("list.get(): " + list.get(3));
+				
+			} catch (Exception e) {
+				System.out.println("ScheduleDAO내부 getSClass메소드에서 쿼리문 실행 오류: " + e);
+			} finally {
+				freeResource();
+			}
+			
+			return list;
+		}
+		
+}//ScheduleDAO
