@@ -1,10 +1,10 @@
+<%@page import="member.StudentDAO"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="member.ProfessorDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-
-<% 
+    
+    <% 
 	request.setCharacterEncoding("utf-8");
 
 	String id = request.getParameter("id");
@@ -14,16 +14,30 @@
 	String email = request.getParameter("email");
 	String addr = request.getParameter("addr");
 	String pwd = request.getParameter("pwd");
+	String professor = request.getParameter("professor");
 	String faculty = request.getParameter("faculty");
 	String dept = request.getParameter("dept");
+	
+	
 
 	
-	ProfessorDAO dao = new ProfessorDAO();
+	StudentDAO dao = new StudentDAO();
 	
-	MemberDTO dto = new MemberDTO(id,pwd,name,email,addr,tel,ssn,
-			dept,faculty);
+	MemberDTO dto = new MemberDTO(id, pwd, name, email, addr, tel, ssn,
+			professor, dept, faculty);
 	
-	dao.insertMember(dto);
+	dao.updateStudent(dto);
 	
-	response.sendRedirect("professorList.jsp");
+	RequestDispatcher dispatcher = request.getRequestDispatcher("studentList.jsp");
+		dispatcher.forward(request, response);
 %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body>
+</html>
