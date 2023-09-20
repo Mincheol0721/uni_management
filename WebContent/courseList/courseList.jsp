@@ -1,6 +1,8 @@
+<%@page import="courseList.MoreInfoBean"%>
+<%@page import="courseList.MoreInfoDAO"%>
+<%@page import="courseList.CourseDAO"%>
+<%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="board_course.BoardBean"%>
-<%@page import="board_course.BoardDAO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -18,7 +20,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 강의</title>
+        <title>OO대학교 학사관리 시스템 - 전체강의</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -42,7 +44,7 @@
  				$.ajax({
  					
  					//SearchServlet.java 서블릿 페이지로 검색 요청!
- 					url : '<%=request.getContextPath()%>/searchCourse.do',
+ 					url : '<%=request.getContextPath()%>/search.do',
  					type : 'post',
  					data : {search:search, searchText:searchText},
  					dataType : 'json',
@@ -58,20 +60,17 @@
  						
  						if(data.length > 0){
  							
- 							$.each(data, function(index, boardbean){
+ 							$.each(data, function(index, coursebean){
  								
  								$resultsTable.append(
  										
  								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
-               	           			"<td width=5%>" + boardbean.ccode + "</td>" + 
-               	           			"<td width=5%>" + boardbean.cname + "</td>" + 
-               	           			"<td width=5%>" + boardbean.compdiv + "</td>" + 
-               	           			"<td width=5%>" + boardbean.compyear + "학년" + "</td>" + 
-               	           			"<td width=5%>" + boardbean.compsem + "학기" +"</td>" + 
-               	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
-               	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
-               	           			"<td width=5%><a href='modCourse.jsp' id='modCourse'>과목 수정</td>" + 
-               	           			"<td width=5%><a href='delCourse.jsp' id='delCourse'>과목 삭제</td>" +
+ 									"<td width=5%>" + coursebean.grade + "학점" + "</td>" +
+ 									"<td width=5%>" + coursebean.compyear + "학년" + "</td>" + 
+               	           			"<td width=5%>" + coursebean.compsem + "학기" + "</td>" + 
+               	           			"<td width=5%><a href='moreInfo.jsp' id='moreInfo'>" + coursebean.cname + "</td>" + 
+               	           			"<td width=5%>" + coursebean.professor + "</td>"  + 
+               	           			"<td width=5%>" + coursebean.compdiv + "</td>" +         			                	           			
  								"</tr>"							
  								);
 								
@@ -86,17 +85,6 @@
  			}); 			
  		});
 
-	 	//삭제할 과목 한번 더 확인하는 함수
-	 	function delC(ccode){ 		
-
- 			var result = confirm("해당 과목을 삭제하시겠습니까?");
- 			
- 			if (result == true) {
-				
- 				location.href = "delCourse.jsp?ccode=" + ccode;
-			}			
- 		}	 		
- 	 	
  	</script>
  	
  	
@@ -108,10 +96,10 @@
         	
         		String search = request.getParameter("search");
         		String searchText = request.getParameter("searchText");
-        		
+
 			%>		
 			
-			<jsp:useBean id="boardDAO" class="board_course.BoardDAO"/>			
+			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>		
 					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -136,69 +124,62 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-	           		<%--사이드바--%>
-	                <jsp:include page="/inc/menu.jsp" />
+                    <div class="sb-sidenav-menu">
+                        <jsp:include page="/inc/menu.jsp" />
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>                        
+                    </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">전체 강의</h1>
+                        <h1 class="mt-4">강의리스트</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">course</li>
+                            <li class="breadcrumb-item active">courseList</li>
                         </ol>
-                        <form action="listCourse.jsp" method="post">
+                        <form action="courseList.jsp" method="post">
                         	<select name="search">
-                        		<option value="ccode">과목코드</option>
-                        		<option value="cname">과목명</option>
-                        		<option value="compdiv">이수구분</option>
-                        		<option value="compyear">이수학년</option>
-                        		<option value="compsem">이수학기</option>
                         		<option value="grade">학점</option>
-                        		<option value="professor">담당교수</option>                       		                      		                   		
+                        		<option value="compyear">이수학년</option>
+                        		<option value="compsem">이수학기</option>                       		
+                        		<option value="cname">과목명</option>
+                        		<option value="professor">담당교수</option> 
+                        		<option value="compdiv">이수구분</option>            		                      		                      		                   		
                         	</select>
-                        	<input type="text" name="searchText" id="searchText"/>
-                        	
-                        	<%-- 교수님이 과목을 직접 추가하는 페이지로 이동하는 링크 --%>
-                        	<a href="addCourse.jsp">과목 추가</a>
+                        	<input type="text" name="searchText" id="searchText"/>                    
                         </form>
                         <div class="row">
-                        	<p class="mb-0">
-                        		
+                        	<p class="mb-0">    		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="lec"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%>과목코드</td>
-	                   	           			<td width=5%>과목명</td>
-	                   	           			<td width=5%>이수구분</td>
+	                   	           			<td width=5%>학점</td>
 	                   	           			<td width=5%>이수학년</td>
 	                   	           			<td width=5%>이수학기</td>
-	                   	           			<td width=5%>학점</td>
-	                   	           			<td width=5%>담당교수</td>   
-	                   	           			<td width=5%>수정</td> 
-	                   	           			<td width=5%>삭제</td>                	           			
+	                   	           			<td width=5%>과목명</td>
+	                   	           			<td width=5%>담당교수</td>	                   	           			
+	                   	           			<td width=5%>이수구분</td>                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead>
                    	           		
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
                   	           <%	
-                  	           		List list = boardDAO.getList(); 
+                  	           		List list = courseDAO.getList(); 
                   	           	
                   	           		for(int i=0; i < list.size(); i++){
                   	           			
-                  	           			BoardBean bean = (BoardBean)list.get(i);
+                  	           			CourseBean bean = (CourseBean)list.get(i);
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><%= bean.getCcode() %></td>
-							            <td><%= bean.getCname() %></td>
-							            <td><%= bean.getCompdiv() %></td>
-							            <td><%= bean.getCompyear() %>학년</td>
-							            <td><%= bean.getCompsem() %>학기</td>
-							            <td><%= bean.getGrade() %>학점</td>
+                  	           			<td><%= bean.getGrade() %>학점</td>
+                  	           			<td><%= bean.getCompyear() %>학년</td>
+                  	           			<td><%= bean.getCompsem() %>학기</td>                 	           			
+										<td><a href='moreInfo.jsp?cname=<%= bean.getCname() %>' id='moreInfo'><%= bean.getCname() %></a></td>
 							            <td><%= bean.getProfessor() %></td>
-							            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
-							            <td><a href="javascript:delC(<%=bean.getCcode()%>)">과목 삭제</a></td>	
+							            <td><%= bean.getCompdiv() %></td>   							            
          	           				</tr>
                   	           	
                   	           	<%
