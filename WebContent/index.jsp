@@ -83,6 +83,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <link href="css/styles.css" rel="stylesheet" />
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+       
         <style TYPE="text/css">
             body {
             scrollbar-face-color: #F6F6F6;
@@ -133,6 +134,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 					}
         		}); //ajax
         		
+        	
 			});
         </script>
     </head>
@@ -213,10 +215,10 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                                 <!-- 달력부분 내용 -->
                                 <div class="card-body">
                                 	<form name="calendarFrm" id="calendarFrm" action="" method="post">
-										<DIV id="content" style="width:99%;">
+										<DIV id="content" style="width: 99%">
 										<table width="100%" border="0" cellspacing="1" cellpadding="1">
 											<tr>
-										       <td align ="right">
+										       <td align ="right"> 
 										             <input type="button" onclick="javascript:location.href='<c:url value='/index.jsp' />'" value="오늘"/>
 										       </td>
 											</tr>
@@ -361,6 +363,25 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                             </p>
                         </div>
                     </div>
+                    
+                    
+                    
+                    <%--bx슬라이더 쓰는 부분--%>
+                   <h1>시설전경</h1>
+                   <div class="bxslider">
+					  <div><img src="assets/img/uni.jpg" width="100%"/></div>
+					  <div><img src="assets/img/lib.jpg" width="100%" /></div>
+					  <div><img src="assets/img/school.jpg" width="100%" /></div>
+					</div>
+					                   
+                   
+                   
+                   
+         		
+                    
+                    
+ 
+                    
                     <%--공지사항 --%>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">공지사항</h1>
@@ -406,5 +427,33 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+    	
+    	
+    	
+	    <%-- bx슬라이더 부분 --%>	
+	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+	    <script type="text/javascript">
+	    $(function(){
+	    	var slider = $('.bxslider').bxSlider({
+	    		  mode: 'fade'
+	    		});
+	
+	    		$('#slider-next').click(function(){
+	    		  slider.goToNextSlide();
+	    		  return false;
+	    		});
+	
+	    		$('#slider-count').click(function(){
+	    		  var count = slider.getSlideCount();
+	    		  alert('Slide count: ' + count);
+	    		  return false;
+	    		});
+	      });
+    
+    </script>
+    	
+    	
     </body>
 </html>

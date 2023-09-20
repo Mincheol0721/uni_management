@@ -91,7 +91,7 @@
 					
 					%>
 				
-					<form action="professor_mod_proc.jsp" method="post">
+					<form id="myForm" action="professor_mod_proc.jsp" method="post">
 
 					<table>
 						<tr>
@@ -101,7 +101,7 @@
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name"  value="<%= name%>"></td>
+							<td><input type="text" name="name" id="name"  value="<%= name%>" ></td>
 							
 						</tr>
 						<tr>
@@ -203,10 +203,17 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         <script type="text/javascript"> 
-		
-       
-        
-		
+//         document.getElementById("myForm").addEventListener("submit", function(event) {
+           
+        	
+//         	 event.preventDefault(); // 폼 제출을 막음
+//         	var name = document.getElementById("name").value;
+        	
+//             if (name.trim() == "") {
+//                 alert("이름을 입력하세요.");
+               
+//             }
+//         });
    		</script> 
     </body>
 </html>
