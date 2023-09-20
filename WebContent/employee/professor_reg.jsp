@@ -66,7 +66,7 @@
                             <li class="breadcrumb-item active">professor_reg</li>
                         </ol>
                         <div class="row">
-				<form action="professor_reg_proc.jsp" method="post">
+				<form action="professor_reg_proc.jsp" method="post" onsubmit="return valid();">
 
 					<table>
 						<tr>
@@ -149,7 +149,7 @@
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록" onclick="valid">
+							<input type="submit" id="professor_reg" name="professor_reg" value="등록"">
                    	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
 				</form>
 
@@ -182,13 +182,58 @@
         
         	function valid(){
         		
-        		var id = document.getElementById('id'); 
+        		var id = document.getElementById("id"); 
         		
-        		if(id ==""){
+        		if(id.value ==""){
         			alert("아이디를 입력해주세요");
         			
         			return false;
         		}
+        		
+				var name = document.getElementById("name"); 
+        		
+        		if(name.value ==""){
+        			alert("이름을 입력해주세요");
+        			
+        			return false;
+        		}
+        			
+				var tel = document.getElementById("tel"); 
+        		
+        		if(tel.value ==""){
+        			alert("전화번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+        		
+				var ssn = document.getElementById("ssn"); 
+        		
+        		if(ssn.value ==""){
+        			alert("주민등록번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+				var email = document.getElementById("email"); 
+        		
+        		if(email.value ==""){
+        			alert("이메일을 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+				var pwd = document.getElementById("pwd"); 
+        		
+        		if(pwd.value ==""){
+        			alert("비밀번호를 입력해주세요");
+        			
+        			return false;
+        		}
+        		
+        		return true;
+        		
+        		
         	}
         </script>
     </body>
