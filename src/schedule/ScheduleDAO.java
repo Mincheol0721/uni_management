@@ -10,6 +10,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import notice.NoticeDTO;
+
 public class ScheduleDAO {
 	//DB작업에 쓰일 객체들을 저장할 변수들
 		private DataSource ds;	//커넥션풀 DataSource 저장할 변수
@@ -112,6 +114,86 @@ public class ScheduleDAO {
 			}
 			
 			return list;
+		}
+		
+		//게시판의 새 글 정보를 DB의 board테이블에 추가하는 기능의 메소드
+		public void insertBoard(ScheduleDTO dto, String sdate) {
+			
+			try {
+				//1. 커넥션풀에서 커넥션 객체 빌려오기
+				con = getConnection();
+				//insert문 작성
+				sql = "insert into bschedule (title, content, writeDate, sclass, id, sdate) " + 
+							"values(?, ?, now(), ?, ?, ?)";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getTitle());
+				pstmt.setString(2, dto.getContent());
+				pstmt.setString(3, dto.getSclass());
+				pstmt.setString(4, dto.getId());
+				pstmt.setString(5, sdate);
+				
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				System.out.println("ScheduleDAO의 insertBoard메소드 내부에서 쿼리문 실행오류: " + e.toString());
+			} finally {
+				//자원해제
+				freeResource();
+			}
+			
+		}//insertBoard메소드 끝
+		
+		public List<String> getSdate() {
+			List<String> list = new ArrayList<String>();
+			String sdate = null;
+			
+			try {
+				con = getConnection();
+				String sql = "select sdate from bschedule ";
+				pstmt = con.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					sdate = rs.getString("sdate");
+					
+					list.add(sdate);
+				}
+				
+			} catch (Exception e) {
+				System.out.println("ScheduleDAO의 getSdate메소드 내부에서 쿼리 실행 오류: " + e);
+			} finally {
+				freeResource();
+			}
+			
+			return list;
+		}
+		
+		public String getTitle(String sdate) {
+			String title = null;
+			System.out.println("getTitle메소드 sdate: " + sdate);
+			try {
+				con = getConnection();
+				String sql = "select title from bschedule where sdate=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, sdate);
+				System.out.println("sql문 : " + sql);
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					title = rs.getString("title");
+				}
+				
+				System.out.println("title: " + title);
+				
+			} catch (Exception e) {
+				System.out.println("ScheduleDAO의 getTitle메소드 내부에서 쿼리 실행 오류: " + e);
+			} finally {
+				freeResource();
+			}
+			
+			return title;
 		}
 		
 }//ScheduleDAO

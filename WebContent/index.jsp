@@ -154,25 +154,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- 로고-->
-            <a class="navbar-brand ps-3" href="index.jsp">OO대학교</a>
-            <!-- 사이드바 열기닫기-->
-            <!-- 상단검은색 바-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                	<%-- 검색창인풋 --%>
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- 사이드바-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <%--조회, 수정, 로그아웃--%>
-                    <jsp:include page="/inc/member.jsp" />
-                </li>
-            </ul>
+            <jsp:include page="/inc/logo.jsp" />
+            
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -350,7 +333,37 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       out.println("<BR>");
 										       out.println(iUseDate);
 										       out.println("<BR>");
-										       out.println("<font size=2><b>일정 입력</b></font>");
+										       //시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+										       int i=0;
+										       int sYear = 0,
+										       	   sMonth = 0,
+										       	   sDate = 0,
+										       	   eYear = 0,
+										       	   eMonth = 0,
+										       	   eDate = 0;
+										       List<String> scheduleDate = dao.getSdate();
+										       
+										       for(String s : scheduleDate) {
+										       	s = scheduleDate.get(i);
+										       	sYear = Integer.parseInt( s.substring(0, 4) );
+										       	sMonth = Integer.parseInt( s.substring(5, 7) );
+										       	sDate = Integer.parseInt( s.substring(8, 10));
+										       	eYear = Integer.parseInt( s.substring(13, 17) );
+										       	eMonth = Integer.parseInt( s.substring(18, 20) );
+										       	eDate = Integer.parseInt( s.substring(21, 23) );
+										       	
+										       	String title = dao.getTitle(s);
+										       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
+										       		if(dao.getTitle(s).length() >= 5) {
+									       				title = title.substring(0, 5);
+									       				title += "...";
+										       		}
+											       	out.println("<font size=0.8><b><span style='color: #0d6efd;'>" + title + "</span></b></font><br>");
+										       	} 
+										       	
+										       	
+										       	i++;
+										       }
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");
