@@ -1,8 +1,8 @@
-<%@page import="course.CourseDAO"%>
+<%@page import="courseList.MoreInfoBean"%>
+<%@page import="courseList.MoreInfoDAO"%>
+<%@page import="courseList.CourseDAO"%>
 <%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="board_course.BoardBean"%>
-<%@page import="board_course.BoardDAO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -96,10 +96,10 @@
         	
         		String search = request.getParameter("search");
         		String searchText = request.getParameter("searchText");
-        		
+
 			%>		
 			
-			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>			
+			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>		
 					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -177,7 +177,7 @@
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			
-							            <td><a href='moreInfo.jsp' id='moreInfo'><%= bean.getCname() %></td>
+										<td><a href='moreInfo.jsp?cname=<%= bean.getCname() %>' id='moreInfo'><%= bean.getCname() %></a></td>
 							            <td><%= bean.getProfessor() %></td>
 							            <td><%= bean.getCompdiv() %></td>   							            
          	           				</tr>

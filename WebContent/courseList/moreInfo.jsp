@@ -1,10 +1,7 @@
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
-<%@page import="course.CourseDAO"%>
 <%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="board_course.BoardBean"%>
-<%@page import="board_course.BoardDAO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -32,7 +29,7 @@
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-        	        		
+        	
 			%>		
 			
 			<jsp:useBean id="moreInfoDAO" class="courseList.MoreInfoDAO"/>			
@@ -68,8 +65,9 @@
                     </div>
                 </nav>
             </div>
+           
             <div id="layoutSidenav_content">
-                <main>
+                <main>           
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">세부 강의 페이지</h1>
                         <ol class="breadcrumb mb-4">
@@ -92,11 +90,17 @@
   		
                   	           		<tbody>
                   	           <%	
-                   	           		List list = moreInfoDAO.getList(); 
+                  	           
+	                        		MoreInfoDAO dao = new MoreInfoDAO();
+	                   	           
+	                        		String cname = request.getParameter("cname");         		
+	
+	                        	    System.out.println("cname 파라미터 값: " + cname);       		     		
+                  	           		
+                   	           		List<MoreInfoBean> list = dao.getmoreList(cname);
                   	           	
-                   	           		for(int i=0; i < list.size(); i++){ 
-                  	           			
-                   	           			MoreInfoBean bean = (MoreInfoBean)list.get(i);
+                   	           		for(MoreInfoBean bean : list){ 
+                   	          		
                    	           	%> 
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           			
                   	           			<td><%= bean.getWeek() %>주차</td>
