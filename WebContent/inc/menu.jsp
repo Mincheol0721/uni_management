@@ -59,6 +59,7 @@
 				<a class="nav-link menu" href="${path}/menu/notice.jsp">공지사항</a>
 				<a class="nav-link menu" href="${path}/menu/qna.jsp">질의응답</a>
 				<a class="nav-link menu" href="${path}/menu/schedule.jsp">학사일정</a>
+				<a class="nav-link menu" href="${path}/courseList/courseList_student.jsp">강의리스트</a>
 		<c:choose>
 			<c:when test="${job eq '교수'}">
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -67,8 +68,8 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="${path}/course/listCourse.jsp">개설과목</a>
-	                    <a class="nav-link" href="${path}/grade/listGrade.jsp">성적조회</a>
+	                    <a class="nav-link" href="${path}/course/listCourse.jsp">전체강의</a>
+	                    <a class="nav-link" href="${path}/courseList/courseList_professor.jsp">세부강의 수정</a>
 	                </nav>
 	            </div>
 			</c:when>
