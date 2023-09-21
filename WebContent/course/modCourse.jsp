@@ -88,13 +88,13 @@
                         	<p class="mb-0">
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec" id="t"> 
                    	           		<tr bgcolor="lightgrey" align="center">
-                   	           			<td width=5%>과목명</td>
-                   	           			<td width=5%>이수구분</td>
-                   	           			<td width=5%>이수학년</td>
-                   	           			<td width=5%>이수학기</td>
-                   	           			<td width=5%>학점</td>
-                   	           			<td width=5%>담당교수</td>
-                   	           			<td width=2%></td>                  	           		                 	           			
+                   	           			<th width=5%>과목명</th>
+                   	           			<th width=5%>이수구분</th>
+                   	           			<th width=5%>이수학년</th>
+                   	           			<th width=5%>이수학기</th>
+                   	           			<th width=5%>학점</th>
+                   	           			<th width=5%>담당교수</th>
+                   	           			<th width=2%></th>                  	           		                 	           			
                    	           		</tr>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">             	  
                    	           			<td width=5%><input type="text" name="cname" value="<%=bean.getCname()%>"/></td> 

@@ -26,6 +26,7 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
     </head>
     <body class="sb-nav-fixed">    
         	<%
@@ -77,16 +78,16 @@
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%>주차</td>
-	                   	           			<td width=5%>차시</td>                   	           			
-	                   	           			<td width=5%>강의주제</td>
-	                   	           			<td width=5%>강의방식</td>
-	                   	           			<td width=5%>강의기간</td>
-	                   	           			<td width=5%>과제</td>	
-	                   	           			<td width=5%></td>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%>주차</td>
+	                   	           			<th width=5%>차시</td>                   	           			
+	                   	           			<th width=5%>강의주제</td>
+	                   	           			<th width=5%>강의방식</td>
+	                   	           			<th width=5%>강의기간</td>
+	                   	           			<th width=5%>과제</td>	
+	                   	           			<th width=5%></td>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
   		
