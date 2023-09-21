@@ -91,10 +91,10 @@ public class QnaServlet extends HttpServlet {
 				String keyField = request.getParameter("keyField");
 			    String searchText = request.getParameter("searchText");
 			    
-//				System.out.println("startRow: " + startRow);
-//				System.out.println("pageSize: " + pageSize);
-//			    System.out.println("keyField: " + keyField);
-//			    System.out.println("searchText: " + searchText);
+				System.out.println("startRow: " + startRow);
+				System.out.println("pageSize: " + pageSize);
+			    System.out.println("keyField: " + keyField);
+			    System.out.println("searchText: " + searchText);
 				
 				List<QnaDTO> list = dao.getBoardList(keyField, searchText, startRow, pageSize);
 					
