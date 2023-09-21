@@ -239,4 +239,32 @@ public class MoreInfoDAO {
 		
 	}//modifyMoreInfo end
 	
+	
+	//세부 정보 삭제하는 기능의 메소드
+	public void delMoreInfo(String cname, int week) {
+		
+		String sql = "delete from moreInfo where cname=? and week=?";
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+	
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setString(1, cname);
+			pstmt.setInt(2, week);
+			
+			pstmt.executeUpdate();
+						
+			System.out.println("세부정보 삭제 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delMoreInfo메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+			
+	}//delMoreInfo end
+	
 }

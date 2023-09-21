@@ -40,8 +40,8 @@
 				
 				MoreInfoBean bean = dao.getMoreInfo(Integer.parseInt(week));
 				
-				System.out.print("수정할 주차 : " + week);
-				System.out.print("수정할 과목명 : " + cname);
+				System.out.println("수정할 주차 : " + week);
+				System.out.println("수정할 과목명 : " + cname);
 			%>		
 			
 						

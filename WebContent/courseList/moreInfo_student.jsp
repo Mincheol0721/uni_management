@@ -81,12 +81,12 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</td>
-	                   	           			<th width=5%>차시</td>                   	           			
-	                   	           			<th width=5%>강의주제</td>
-	                   	           			<th width=5%>강의방식</td>
-	                   	           			<th width=5%>강의기간</td>
-	                   	           			<th width=5%>과제</td>		                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%>주차</th>
+	                   	           			<th width=5%>차시</th>                   	           			
+	                   	           			<th width=5%>강의주제</th>
+	                   	           			<th width=5%>강의방식</th>
+	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>과제</th>		                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
   		
