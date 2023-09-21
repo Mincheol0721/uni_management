@@ -396,7 +396,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">학생정보 관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professorList</li>
+                            <li class="breadcrumb-item active">studentList</li>
                         </ol>
                         <div class="row">
                         	<form id="mainform" action="" method="post" name="mainform">
