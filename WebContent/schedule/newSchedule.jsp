@@ -19,16 +19,16 @@
 	int year = Integer.parseInt( request.getParameter("year") );
 	int month = Integer.parseInt( request.getParameter("month") );
 	int date = Integer.parseInt( request.getParameter("date") );
- 	System.out.println("year: " + year);
- 	System.out.println("month: " + month);
- 	System.out.println("date: " + date);
+//  	System.out.println("year: " + year);
+//  	System.out.println("month: " + month);
+//  	System.out.println("date: " + date);
  	
  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
  	Date today = new Date();
  	String minDate = sdf.format(today);
  	
  	String clickDate = year + "-0" + month + "-" + date;
- 	System.out.println("clickDate: " + clickDate);
+//  	System.out.println("clickDate: " + clickDate);
  	
 	
 // 	System.out.println("notice.jsp id: " + id);
@@ -114,7 +114,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="../inc/logo.jsp" />
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">

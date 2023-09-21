@@ -40,6 +40,23 @@
         	$(function() {
         		var $id = '<%=id%>';
         		var $path = '<%=path%>';
+        		var $csel = $('select[id=clsSelc]');
+        		
+        		$.ajax({
+        			url : '<%=request.getContextPath()%>/board/selclass',
+        			type : 'POST',
+        			dataType : 'json',
+        			success : function(data) {
+						
+        				if(data != null) $csel.empty();
+        				
+        				$.each(data, function(i, dto) {
+							//console.log('dto: ' + dto.nclass);
+							$csel.append('<option value="' + dto.nclass + '"> ' + dto.nclass + ' </option>')
+						});
+        				
+					}
+        		});//대분류 셀렉트 옵션태그
         		
         		if($id == 'null') {
         			alert('관리자만 접근가능한 페이지입니다.');
@@ -76,24 +93,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <jsp:include page="/inc/member.jsp" />
-                </li>
-            </ul>
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -124,7 +124,7 @@
 													<span class="notice_title">분류</span>
 												</div>
 												<div class="col-md-10">
-													<input type="text" class="notice" name="nclass">
+													<select id="clsSelc"></select>
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">

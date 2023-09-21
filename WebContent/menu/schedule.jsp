@@ -1,21 +1,24 @@
+<%@page import="schedule.ScheduleDAO"%>
+<%@page import="java.util.List"%>
+<%@page import="schedule.ScheduleDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<% request.setCharacterEncoding("UTF-8"); %>
 
 <%
 
-Calendar cal = Calendar.getInstance();
+request.setCharacterEncoding("UTF-8");
 
- 
+Calendar cal = Calendar.getInstance();
 
 String strYear = request.getParameter("year"); 
 
 String strMonth = request.getParameter("month");
 
- 
+String job = (String)session.getAttribute("job");
+String id = (String)session.getAttribute("id");
 
 int year = cal.get(Calendar.YEAR);
 
@@ -23,6 +26,9 @@ int month = cal.get(Calendar.MONTH);
 
 int date = cal.get(Calendar.DATE);
 
+// System.out.println("year: " + year);
+// System.out.println("month: " + month);
+// System.out.println("date: " + date);
  
 
 if(strYear != null)
@@ -61,9 +67,57 @@ int newLine = 0;
 
 Calendar todayCal = Calendar.getInstance();
 
-SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
+SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
+
+//DAO객체 생성
+ScheduleDAO dao = new ScheduleDAO();
+ScheduleDTO dto = new ScheduleDTO();
+
+//전체 글 개수
+int count = dao.getBoardCount(year, (month+1));
+//System.out.println("count: " + count);
+//하나의 화면에 띄워줄 글 개수 10
+int pageSize = 10;
+
+//현재 보여질 페이지번호 가져오기
+String pageNum = request.getParameter("pageNum");
+
+//현재 보여질 페이지 번호가 없으면 1페이지 처리
+if(pageNum == null) {
+	pageNum = "1";
+}
+//System.out.println("pageNum: " + pageNum);
+
+//현재 보여질 페이지 번호 "1"을 기본정수 1로 변환
+int currentPage = Integer.parseInt(pageNum);
+//System.out.println("currentPage: " + currentPage);
+
+//각 페이지마다 맨 위에 보여질 시작 글번호 구하기
+//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
+int startRow = (currentPage - 1) * pageSize;
+//System.out.println("startRow: " + startRow);
+
+// System.out.println("schedule.jsp id: " + dao.getTitle(dao.getSdate().get(3)).getId() );
+
+// System.out.println("startYear: " + dao.getSdate().get(3).substring(0, 4));
+// System.out.println("startMonth: " + dao.getSdate().get(3).substring(5, 7));
+// System.out.println("startDate: " + dao.getSdate().get(3).substring(8, 10));
+// System.out.println("endYear: " + dao.getSdate().get(3).substring(13, 17));
+// System.out.println("endMonth: " + dao.getSdate().get(3).substring(18, 20));
+// System.out.println("endDate: " + dao.getSdate().get(3).substring(21, 23));
+
+//시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+int j=0,
+	sYear = 0,
+	sMonth = 0,
+	sDate = 0,
+	eYear = 0,
+	eMonth = 0,
+	eDate = 0;
+String chkId = null;
+List<String> scheduleDate = dao.getSdate();
 
 %>
 
@@ -78,28 +132,35 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <title>OO대학교 학사관리 시스템 - 일정</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
+		<script src="../js/scripts.js"></script>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        	$(function() {
+        		var $job = '<%=job%>';
+				var $td = $('.calTd');
+				var $link = $('.calink');
+				var $id = '<%=id%>';
+				var $chkId = '<%=chkId%>';
+				
+				
+				if($id == 'null' || $job == '학생') {
+					$td.removeAttr('onclick');
+					$('.calink').removeAttr('href');
+					$('.calspan').css("cursor", "default");
+				}  
+				
+			});
+        </script>
+        <style type="text/css">
+        	a {
+        	text-decoration: none;
+        	}
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <jsp:include page="/inc/member.jsp" />
-                </li>
-            </ul>
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -117,7 +178,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                         </ol>
                         <div class="row">
 						<!-- Pie Chart -->
-                        <div class="col-xl-6 col-lg-5">
+                        <div class="col-xl-6">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -130,7 +191,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										<table width="100%" border="0" cellspacing="1" cellpadding="1">
 											<tr>
 										       <td align ="right">
-										             <input type="button" onclick="javascript:location.href='<c:url value='/index.jsp' />'" value="오늘"/>
+										             <input type="button" onclick="javascript:location.href='<c:url value='schedule.jsp' />'" value="오늘"/>
 										       </td>
 											</tr>
 										</table>
@@ -148,11 +209,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										
 										       <tr>
 										             <td align="center" >
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year-1%>&amp;month=<%=month%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year-1%>&amp;month=<%=month+1%>" target="_self">
 										                           <b>&lt;&lt;</b><!-- 이전해 -->
 										                    </a>
 										                    <%if(month > 0 ){ %>
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year%>&amp;month=<%=month-1%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year%>&amp;month=<%=month-1%>" target="_self">
 										                           <b>&lt;</b><!-- 이전달 -->
 										                    </a>
 										                    <%} else {%>
@@ -163,13 +224,13 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										                    <%=month+1%>월
 										                    &nbsp;&nbsp;
 										                    <%if(month < 11 ){ %> 
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year%>&amp;month=<%=month+1%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year%>&amp;month=<%=month+1%>" target="_self">
 										                           <!-- 다음달 --><b>&gt;</b>
 										                    </a>
 										                    <%}else{%>
 										                           <b>&gt;</b>
 										                    <%} %>
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year+1%>&amp;month=<%=month%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year+1%>&amp;month=<%=month%>" target="_self">
 										                           <!-- 다음해 --><b>&gt;&gt;</b>
 										                    </a>
 										             </td>
@@ -182,25 +243,25 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										<table border="0" cellspacing="1" cellpadding="1" bgcolor="#FFFFFF">
 										<THEAD>
 										<TR bgcolor="#CECECE">
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center"><font color="red">일</font></DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center">월</DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center">화</DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center">수</DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center">목</DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center">금</DIV>
 									       </TD>
-									       <TD width=4%>
+									       <TD width="2%">
 										       <DIV align="center"><font color="#529dbc">토</font></DIV>
 									       </TD>
 										</TR>
@@ -228,7 +289,9 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										       if(iUseDate == intToday ) {
 										             backColor = "#c9c9c9";
 										       }
-										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' nowrap>");
+										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' class='calTd' onclick=\"location.href='" 
+	       												+ request.getContextPath() + "/schedule/newSchedule.jsp?year=" + year + "&month=" + (month+1) 
+	       												+ "&date=" + index + "'\" >");
 %>
 										
 										       <font color='<%=color%>'>
@@ -236,7 +299,41 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										       </font>
 <%
 										       out.println("<BR>");
-										       out.println(iUseDate);
+										       out.println("<font size=2>" + iUseDate + "</font>");
+										       out.println("<BR>");
+											   //시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+							    		       
+											   j=0;
+											   
+							    		       for(String s : scheduleDate) {
+							    		       	s = scheduleDate.get(j);
+							    		       	sYear = Integer.parseInt( s.substring(0, 4) );
+							    		       	sMonth = Integer.parseInt( s.substring(5, 7) );
+							    		       	sDate = Integer.parseInt( s.substring(8, 10));
+							    		       	eYear = Integer.parseInt( s.substring(13, 17) );
+							    		       	eMonth = Integer.parseInt( s.substring(18, 20) );
+							    		       	eDate = Integer.parseInt( s.substring(21, 23) );
+							    		       	
+							    		       	dto = dao.getTitle(s);
+							    		       	chkId = dao.idCheck(dto.getNo());
+// 							    		       	System.out.println("title: " + dto.getTitle());
+// 							    		       	System.out.println("chkId: " + dto.getId());
+							    		       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
+							    		       		/* if(dao.getTitle(s).length() >= 8) {
+							    		      				title = title.substring(0, 8);
+							    		      				title += "...";
+							    		       		} */
+%>							    		       		
+													<span style="color: #0d6efd; font-size: 0.8px;" class="calspan"><b>
+														<a href="../schedule/modSchedule.jsp?year=<%=year%>&month=<%=(month + 1)%>&date=<%=date%>&no=<%=dto.getNo()%>" class="calink"> 
+															<%=dto.getTitle()%></b>
+														</a>
+													</span><br> 
+<%
+								    		    } 
+								    		       	
+								    		       	j++;
+								    	}
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");
@@ -266,8 +363,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                                 </div>
                             </div>
                     </div>
-                    <div class="col-xl-6 col-lg-5">
-                        <div class="card mb-4">
+                    <div class="col-xl-6">
+                        <div class="card shadow mb-4">
                             <!-- Card Header - Dropdown -->
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h4 class="m-0 font-weight-bold text-primary">일정 관리</h4>
@@ -277,53 +374,116 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     <table id="datatablesSimple">
 	                                    <thead>
-		                   	           		<tr bgcolor="lightgrey" align="center">
+		                   	           		<tr bgcolor="lightgrey" align="center" width="100%">
+		                   	           			<td width=10%>분류</td>
 		                   	           			<td width=15%>날짜</td>
 		                   	           			<td width=20%>일정</td>
 		                   	           		</tr>
 	                                    </thead>
-	                                    <tbody>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=15%>2023-09-01 ~ 2023-09-07</td>
-		                   	           			<td width=15%>2학기 수강신청</td>
+	                                    <tbody id="scheduleList">
+	                                    <%
+	                                    List<ScheduleDTO> list = dao.getScheduleList(startRow, pageSize, year, (month+1));
+	                                    for(int i=0; i<list.size(); i++) {
+	                                    	dto = list.get(i);
+	                                    %>
+	                                    	<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td><%=dto.getSclass() %></td>
+		                   	           			<td><%=dto.getSdate() %></td>
+		                   	           			<td><%=dto.getTitle() %></td>
 		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>2023-09-07 ~ 2023-09-18</td>
-		                   	           			<td width=15%>2학기 이수구분 변경</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>2023-09-08 ~ 2023-09-21</td>
-		                   	           			<td width=15%>2학기 수강신청 취소</td>
-		                   	           		</tr>
-		                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-		                   	           			<td width=5%>2023-09-11 ~ 2023-09-16</td>
-		                   	           			<td width=15%>2학기 대학원 외국어 및 종합시험 실시</td>
-		                   	           		</tr>
+	                                    <%	
+	                                    }
+	                                    %>
 		                   	           	</tbody>
 	                   	           	</table>
 	                   	           	<br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-					</div>
+	                   	           	<div class="datatable-bottom">
+
+										    <div class="datatable-info">
+										    	전체 게시글: <%=count%>개
+										    </div>
+										    <nav>
+												<ul class="pagination">
+<%
+										    	//전체 페이지 수 구하기
+												//전체 페이지 수 = 전체 글 / 한페이지에 보여줄 글 수 + (전체 글 수를 한페이지에 보여줄 글수로 나눈 나머지 값)
+												int pageCount = count / pageSize + (count%pageSize == 0 ? 0:1);
+												//한 화면에 보여줄 페이지 수 설정
+												int pageBlock = 5;
+												
+												//시작페이지 번호 구하기
+												//( 현재 보여질 페이지 번호 / 한 블럭에 보여줄 페이지 수 ) - ( 현재 보여질 페이지 번호 % 한 화면에 보여줄 페이지수 == 0 ? 1:0 )
+												// * 한 블럭에 보여줄 페이지 수 + 1
+												int startPage = ( (currentPage / pageBlock) - (currentPage % pageBlock == 0 ? 1 : 0) ) * pageBlock + 1;
+												
+												//끝페이지 번호 구하기
+												int endPage = startPage + pageBlock - 1;
+												//끝 페이지 번호가 전체 페이지수보다 클 때
+												if(endPage > pageCount) {
+													endPage = pageCount;
+												}
+												/* 
+												System.out.println("startPage: " + startPage);
+												System.out.println("pageBlock: " + pageBlock);
+												System.out.println("pageCount: " + pageCount);
+												System.out.println("endPage: " + endPage);
+												 */
+												//[이전] 시작 페이지 번호가 한 화면에 보여줄 페이지수보다 클 때
+												if(startPage > pageBlock) {
+%>
+													<li class="page-item">
+										    			<a href="schedule.jsp?pageNum=<%=startPage - pageBlock%>&year=<%=year%>&month=<%=month%>" class="page-link">‹</a>
+										    		</li>
+<%
+												}
+												
+												for(int i = startPage; i <= endPage; i++) {
+													if(i == currentPage) {
+%>											
+										    			<li class="page-item active"><a href="schedule.jsp?pageNum=<%=currentPage%>&year=<%=year%>&month=<%=month%>" class="page-link"><%=currentPage %></a></li>
+<%
+													} else {
+%>	
+										    			<li class="page-item"><a href="schedule.jsp?pageNum=<%=i%>&year=<%=year%>&month=<%=month%>" class="page-link"><%=i %></a></li>
+<%	
+													}
+												
+												}
+												//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
+												if(endPage < pageCount) {
+%>													
+													<li class="page-item">
+										    			<a href="schedule.jsp?pageNum=<%=startPage + pageBlock%>&year=<%=year%>&month=<%=month%>" class="page-link">›</a>
+										    		</li>
+<%													
+												}
+												
+%>
+										    	</ul>
+											</nav>
+										</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+						</div>
 					 </div>
-                    </div>
+	              </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+            </div>
+           	<footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
                         </div>
                     </div>
-                </footer>
-            </div>
-        </div>
+                </div>
+            </footer>
+            
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

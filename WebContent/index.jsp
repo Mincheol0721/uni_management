@@ -1,3 +1,6 @@
+<%@page import="schedule.ScheduleDTO"%>
+<%@page import="schedule.ScheduleDAO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
@@ -6,6 +9,8 @@
 <c:set var="path" value="${pageContext.request.contextPath }" />
 
 <%
+
+String job = (String)session.getAttribute("job");
 
 Calendar cal = Calendar.getInstance();
 
@@ -65,6 +70,12 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
 
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 
+
+//DAO객체 생성
+ScheduleDAO dao = new ScheduleDAO();
+ScheduleDTO dto = new ScheduleDTO();
+List<ScheduleDTO> list = dao.getScheduleList();
+
 %>
 
 <c:set var="id" value="${sessionScope.id}" />
@@ -82,6 +93,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <style TYPE="text/css">
             body {
@@ -114,6 +126,11 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
         	$(function() {
 				var $noticeTable = $("#noticeTable");
 				var $path = '<%=request.getContextPath()%>';
+				var $job = '<%=job%>';
+				
+				if($job == '학생' || $job == 'null') {
+					$('.calTd').attr('onclick', 'location.href="'+$path+'/menu/schedule.jsp"');
+				}
         		
         		$.ajax({
         			url : $path + '/board/index.do',
@@ -138,25 +155,7 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- 로고-->
-            <a class="navbar-brand ps-3" href="index.jsp">OO대학교</a>
-            <!-- 사이드바 열기닫기-->
-            <!-- 상단검은색 바-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                	<%-- 검색창인풋 --%>
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- 사이드바-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <%--조회, 수정, 로그아웃--%>
-                    <jsp:include page="/inc/member.jsp" />
-                </li>
-            </ul>
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -188,14 +187,21 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
                    	         		<table border="1"  style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
 	                   	           		<tr bgcolor="lightgrey" align="center">
 	                   	           			<td width=5%>분류</td>
-	                   	           			<td width=15%>제목</td>
-	                   	           			<td width=5%>작성일자</td>
+	                   	           			<td width=10%>날짜</td>
+	                   	           			<td width=15%>일정</td>
 	                   	           		</tr>
-	                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-	                   	           			<td width=5%>수강</td>
-	                   	           			<td width=15%>수강신청관련 공지</td>
-	                   	           			<td width=5%>2023-05-08</td>
-	                   	           		</tr>
+                 	           			<%
+	                                    for(int i=0; i<list.size(); i++) {
+	                                    	dto = list.get(i);
+	                                    %>
+	                                    	<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+		                   	           			<td><%=dto.getSclass() %></td>
+		                   	           			<td><%=dto.getSdate() %></td>
+		                   	           			<td><%=dto.getTitle() %></td>
+		                   	           		</tr>
+	                                    <%	
+	                                    }
+	                                    %>
 	                   	           	</table>
                    	         		<span align="right"><small><a href="${path}/menu/schedule.jsp" style="text-decoration: none; color:black;">더보기...</a></small></span>
                                     </div>
@@ -316,7 +322,8 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 										       if(iUseDate == intToday ) {
 										             backColor = "#c9c9c9";
 										       }
-										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' nowrap>");
+										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' class='calTd' onclick=\"location.href='" 
+	       												+ request.getContextPath() + "/menu/schedule.jsp'\">");
 %>
 										
 										       <font color='<%=color%>'>
@@ -325,6 +332,38 @@ int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 <%
 										       out.println("<BR>");
 										       out.println(iUseDate);
+										       out.println("<BR>");
+										       //시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+										       int i=0;
+										       int sYear = 0,
+										       	   sMonth = 0,
+										       	   sDate = 0,
+										       	   eYear = 0,
+										       	   eMonth = 0,
+										       	   eDate = 0;
+										       List<String> scheduleDate = dao.getSdate();
+										       
+										       for(String s : scheduleDate) {
+										       	s = scheduleDate.get(i);
+										       	sYear = Integer.parseInt( s.substring(0, 4) );
+										       	sMonth = Integer.parseInt( s.substring(5, 7) );
+										       	sDate = Integer.parseInt( s.substring(8, 10));
+										       	eYear = Integer.parseInt( s.substring(13, 17) );
+										       	eMonth = Integer.parseInt( s.substring(18, 20) );
+										       	eDate = Integer.parseInt( s.substring(21, 23) );
+										       	
+										       	dto = dao.getTitle(s);
+										       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
+										       		/* if(dao.getTitle(s).length() >= 5) {
+									       				title = title.substring(0, 5);
+									       				title += "...";
+										       		} */
+											       	out.println("<font size=0.8><b><span style='color: #0d6efd;'>" + dto.getTitle() + "</span></b></font><br>");
+										       	} 
+										       	
+										       	
+										       	i++;
+										       }
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");

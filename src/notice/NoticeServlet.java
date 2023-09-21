@@ -2,6 +2,7 @@ package notice;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -175,6 +176,21 @@ public class NoticeServlet extends HttpServlet {
 				nextPage = request.getContextPath() + "/menu/notice.jsp?pageNum=" + pageNum + "&searchText=" + searchText;
 				RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
 				dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
+				
+			} else if(action.equals("/selclass")) {
+				
+				List<NoticeDTO> list = dao.getNClass();
+				System.out.println("list: " + list.size());
+				
+				for( NoticeDTO dto : list ) {
+					
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("nclass", dto.getNclass());
+					
+					jsonArray.add(jsonObject);
+				}
+				System.out.println("nclass: " + jsonArray.toString());
 				
 			}
 				
