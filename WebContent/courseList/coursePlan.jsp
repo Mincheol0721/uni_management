@@ -63,9 +63,6 @@
                     <div class="sb-sidenav-menu">
                         <jsp:include page="/inc/menu.jsp" />
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -102,7 +99,7 @@
 		                  	           
 		                       		String course = request.getParameter("course");         		
 		
-		                       	    System.out.println("course 파라미터 값: " + course);       		     		
+// 		                       	    System.out.println("course 파라미터 값: " + course);       		     		
 	             	           		
 	              	           		List<CoursePlanBean> list = dao.getPlan(course);
 	             	           	
