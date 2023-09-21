@@ -1,5 +1,5 @@
-<%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.CoursePlanBean"%>
+<%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
 <%@page import="courseList.CourseDAO"%>
@@ -27,83 +27,16 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-
-  	<script> 
- 				
- 		$(function(){
- 			
- 			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
- 			$("#searchText").on("keyup", function(){
- 				
- 				//listCourse.jsp 서버페이지로 요청할 값 얻기
- 				//검색 기준값 얻기
- 				var search = $("select[name=search]").val();
- 				
- 				//입력한 검색어 값 얻기
- 				var searchText = $(this).val();
- 				
- 				//서버페이지(listCourse.jsp)로 AJAX비동기 방식으로 요청해서 응답 받기
- 				$.ajax({
- 					
- 					//SearchServlet.java 서블릿 페이지로 검색 요청!
- 					url : '<%=request.getContextPath()%>/search.do',
- 					type : 'post',
- 					data : {search:search, searchText:searchText},
- 					dataType : 'json',
- 					success : function(data){
- 						
- 						console.log(data);
- 						
- 						//서버로부터 받아온 데이터를 동적으로 표시
- 						var $resultsTable = $('#results');
- 						
- 						//이전에 조회된 <tr>태그 요소들은 <tbody>요소 영역에서 삭제
- 						$resultsTable.empty();
- 						
- 						if(data.length > 0){
- 							
- 							$.each(data, function(index, coursebean){
- 								
- 								$resultsTable.append(
- 										
- 								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
- 									"<td width=5%>" + coursebean.grade + "학점" + "</td>" +
- 									"<td width=5%>" + coursebean.compyear + "학년" + "</td>" + 
-               	           			"<td width=5%>" + coursebean.compsem + "학기" + "</td>" + 
-               	           			"<td width=5%><a href='moreInfo.jsp' id='moreInfo'>" + coursebean.cname + "</td>" + 
-               	           			"<td width=5%>" + coursebean.professor + "</td>"  + 
-               	           			"<td width=5%>" + coursebean.compdiv + "</td>" +         			                	           			
- 								"</tr>"							
- 								);
-								
- 							});
- 							
- 						}else{
- 							
- 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>")
- 						}											
- 					}					 					
- 				});								
- 			}); 			
- 		});
-
- 	</script>
- 	
- 	
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-        	
-        		String search = request.getParameter("search");
-        		String searchText = request.getParameter("searchText");
 
 			%>		
-			
-			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>		
+
 			<jsp:useBean id="coursePlanDAO" class="courseList.CoursePlanDAO"/>	
-					
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
@@ -138,61 +71,61 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">강의리스트</h1>
+                        <h1 class="mt-4">강의 계획서</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">courseList</li>
-                        </ol>
-                        <form action="courseList.jsp" method="post">
-                        	<select name="search">
-                        		<option value="grade">학점</option>
-                        		<option value="compyear">이수학년</option>
-                        		<option value="compsem">이수학기</option>                       		
-                        		<option value="cname">과목명</option>
-                        		<option value="professor">담당교수</option> 
-                        		<option value="compdiv">이수구분</option>            		                      		                      		                   		
-                        	</select>
-                        	<input type="text" name="searchText" id="searchText"/>                    
-                        </form>
+                            <li class="breadcrumb-item active">coursePlan</li>
+                        </ol>                      
                         <div class="row">
                         	<p class="mb-0">    		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="lec"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%></td> 
-	                   	           			<td width=5%>학점</td>
-	                   	           			<td width=5%>이수학년</td>
-	                   	           			<td width=5%>이수학기</td>
 	                   	           			<td width=5%>과목명</td>
-	                   	           			<td width=5%>담당교수</td>	                   	           			
-	                   	           			<td width=5%>이수구분</td>
-	                   	           			                   	           			               	           			
+	                   	           			<td width=5%>학과</td>	                   	           			                   	           				                   	           	
+	                   	           			<td width=5%>학점</td>
+	                   	           			<td width=5%>시간</td>                   	           			                   	           		
+	                   	           			<td width=5%>이수구분</td>	                   	           			
+	                   	           			<td width=5%>대상학년</td>
+	                   	           			<td width=5%>학기</td>
+	                   	           			<td width=5%>연락이메일</td>
+	                   	           			<td width=5%>교과목 개요</td>
+	                   	           			<td width=5%>교육목표</td>
+	                   	           			<td width=5%>주 교재</td>             	           			     	           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead>
                    	           		
                   	           		<%-- 과목 리스트 --%>
-                  	           		<tbody id="results">
+                  	           		<tbody>
                   	           <%	
-                  	           		List<CourseBean> list = courseDAO.getList(); 
-        	           			
-                  	           		for (int i = 0; i < list.size(); i++) {
-                  	           			
-                  	                CourseBean bean = list.get(i);
-                  	            
-              	           			
-                  	           	%>
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><a href='coursePlan.jsp?course=<%=bean.getCname()%>' id='coursePlan'>강의 계획서</a></td>
-                  	           			<td><%= bean.getGrade() %>학점</td>
-                  	           			<td><%= bean.getCompyear() %>학년</td>
-                  	           			<td><%= bean.getCompsem() %>학기</td>                 	           			
-										<td><a href='moreInfo.jsp?cname=<%= bean.getCname()%>' id='moreInfo'><%= bean.getCname() %></a></td>
-							            <td><%= bean.getProfessor() %></td>
-							            <td><%= bean.getCompdiv() %></td>   							            
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                  	           		}
+	
+		                       		CoursePlanDAO dao = new CoursePlanDAO();
+		                  	           
+		                       		String course = request.getParameter("course");         		
+		
+		                       	    System.out.println("course 파라미터 값: " + course);       		     		
+	             	           		
+	              	           		List<CoursePlanBean> list = dao.getPlan(course);
+	             	           	
+	              	           		for(CoursePlanBean bean : list){ 
+              	          		
+	              	           	%> 
+	             	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">              	           			
+             	           		  		<td><%=bean.getCourse()%></td>
+                   	           			<td><%=bean.getDept()%></td>
+                   	           			<td><%=bean.getGrade()%></td>
+                   	           			<td><%=bean.getTime()%></td>
+                   	           			<td><%=bean.getCompdiv()%></td>	                   	           			
+                   	           			<td><%=bean.getCompyear()%></td>
+                   	           			<td><%=bean.getCompsem()%></td>
+                   	           			<td><%=bean.getEmail()%></td>
+                   	           			<td><%=bean.getContent()%></td>
+                   	           			<td><%=bean.getPurpose()%></td>
+                   	           			<td><%=bean.getBooks()%></td> 
+	    	           				</tr>
+	             	           	
+	             	           	<%
+             	           	
+              	           		}  
                   	           		
                   	            %>		
                   	           		</tbody>

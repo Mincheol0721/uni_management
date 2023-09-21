@@ -1,3 +1,5 @@
+<%@page import="courseList.CoursePlanBean"%>
+<%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
 <%@page import="courseList.CourseBean"%>
@@ -29,7 +31,7 @@
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-        	
+  	
 			%>		
 			
 			<jsp:useBean id="moreInfoDAO" class="courseList.MoreInfoDAO"/>			
@@ -70,8 +72,8 @@
                 <main>           
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">세부 강의 페이지</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">moreInfo</li>
+                        <ol class="breadcrumb mb-4">                     	   
+                            <li class="breadcrumb-item active">moreInfo</li>                        
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
