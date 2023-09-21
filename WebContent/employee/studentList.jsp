@@ -412,7 +412,7 @@
                    	           			<td width=5%>비밀번호</td>
                    	           			<td width=5%>교수</td>
                    	           			<td width=5%>학부</td>
-                   	           			<td width=5%>전공</td>
+                   	           			<td width=5%>학과</td>
                    	           		</tr>
                    	       			<%
                    	       			StudentDAO dao = new StudentDAO();
