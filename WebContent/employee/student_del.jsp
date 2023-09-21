@@ -42,7 +42,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">학생삭제</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">professor_del</li>
+                            <li class="breadcrumb-item active">student_del</li>
                         </ol>
                         <div class="row">
 
