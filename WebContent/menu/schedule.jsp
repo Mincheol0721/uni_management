@@ -13,14 +13,12 @@ request.setCharacterEncoding("UTF-8");
 
 Calendar cal = Calendar.getInstance();
 
- 
-
 String strYear = request.getParameter("year"); 
 
 String strMonth = request.getParameter("month");
 
 String job = (String)session.getAttribute("job");
-
+String id = (String)session.getAttribute("id");
 
 int year = cal.get(Calendar.YEAR);
 
@@ -28,6 +26,9 @@ int month = cal.get(Calendar.MONTH);
 
 int date = cal.get(Calendar.DATE);
 
+// System.out.println("year: " + year);
+// System.out.println("month: " + month);
+// System.out.println("date: " + date);
  
 
 if(strYear != null)
@@ -66,14 +67,39 @@ int newLine = 0;
 
 Calendar todayCal = Calendar.getInstance();
 
-SimpleDateFormat sdf = new SimpleDateFormat("yyyMMdd");
+SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 
 //DAO객체 생성
 ScheduleDAO dao = new ScheduleDAO();
 ScheduleDTO dto = new ScheduleDTO();
-List<ScheduleDTO> list = dao.getScheduleList();
+
+//전체 글 개수
+int count = dao.getBoardCount(year, (month+1));
+//System.out.println("count: " + count);
+//하나의 화면에 띄워줄 글 개수 10
+int pageSize = 10;
+
+//현재 보여질 페이지번호 가져오기
+String pageNum = request.getParameter("pageNum");
+
+//현재 보여질 페이지 번호가 없으면 1페이지 처리
+if(pageNum == null) {
+	pageNum = "1";
+}
+//System.out.println("pageNum: " + pageNum);
+
+//현재 보여질 페이지 번호 "1"을 기본정수 1로 변환
+int currentPage = Integer.parseInt(pageNum);
+//System.out.println("currentPage: " + currentPage);
+
+//각 페이지마다 맨 위에 보여질 시작 글번호 구하기
+//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
+int startRow = (currentPage - 1) * pageSize;
+//System.out.println("startRow: " + startRow);
+
+// System.out.println("schedule.jsp id: " + dao.getTitle(dao.getSdate().get(3)).getId() );
 
 // System.out.println("startYear: " + dao.getSdate().get(3).substring(0, 4));
 // System.out.println("startMonth: " + dao.getSdate().get(3).substring(5, 7));
@@ -81,6 +107,18 @@ List<ScheduleDTO> list = dao.getScheduleList();
 // System.out.println("endYear: " + dao.getSdate().get(3).substring(13, 17));
 // System.out.println("endMonth: " + dao.getSdate().get(3).substring(18, 20));
 // System.out.println("endDate: " + dao.getSdate().get(3).substring(21, 23));
+
+//시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+int j=0,
+	sYear = 0,
+	sMonth = 0,
+	sDate = 0,
+	eYear = 0,
+	eMonth = 0,
+	eDate = 0;
+String chkId = null;
+List<String> scheduleDate = dao.getSdate();
+
 %>
 
 <!DOCTYPE html>
@@ -94,23 +132,35 @@ List<ScheduleDTO> list = dao.getScheduleList();
         <title>OO대학교 학사관리 시스템 - 일정</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
+		<script src="../js/scripts.js"></script>
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
         	$(function() {
-				var $job = '<%=job%>';
-				var $td = $('#calTd');
+        		var $job = '<%=job%>';
+				var $td = $('.calTd');
+				var $link = $('.calink');
+				var $id = '<%=id%>';
+				var $chkId = '<%=chkId%>';
 				
 				
-				if($job != '교직원') {
-					$('#calTd').removeAttr('onclick');
-				}
+				if($id == 'null' || $job == '학생') {
+					$td.removeAttr('onclick');
+					$('.calink').removeAttr('href');
+					$('.calspan').css("cursor", "default");
+				}  
+				
 			});
         </script>
+        <style type="text/css">
+        	a {
+        	text-decoration: none;
+        	}
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="../inc/logo.jsp" />
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -141,7 +191,7 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										<table width="100%" border="0" cellspacing="1" cellpadding="1">
 											<tr>
 										       <td align ="right">
-										             <input type="button" onclick="javascript:location.href='<c:url value='/index.jsp' />'" value="오늘"/>
+										             <input type="button" onclick="javascript:location.href='<c:url value='schedule.jsp' />'" value="오늘"/>
 										       </td>
 											</tr>
 										</table>
@@ -159,11 +209,11 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										
 										       <tr>
 										             <td align="center" >
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year-1%>&amp;month=<%=month%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year-1%>&amp;month=<%=month+1%>" target="_self">
 										                           <b>&lt;&lt;</b><!-- 이전해 -->
 										                    </a>
 										                    <%if(month > 0 ){ %>
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year%>&amp;month=<%=month-1%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year%>&amp;month=<%=month-1%>" target="_self">
 										                           <b>&lt;</b><!-- 이전달 -->
 										                    </a>
 										                    <%} else {%>
@@ -174,13 +224,13 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										                    <%=month+1%>월
 										                    &nbsp;&nbsp;
 										                    <%if(month < 11 ){ %> 
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year%>&amp;month=<%=month+1%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year%>&amp;month=<%=month+1%>" target="_self">
 										                           <!-- 다음달 --><b>&gt;</b>
 										                    </a>
 										                    <%}else{%>
 										                           <b>&gt;</b>
 										                    <%} %>
-										                    <a href="<c:url value='/schedule.jsp' />?year=<%=year+1%>&amp;month=<%=month%>" target="_self">
+										                    <a href="<c:url value='/menu/schedule.jsp' />?year=<%=year+1%>&amp;month=<%=month%>" target="_self">
 										                           <!-- 다음해 --><b>&gt;&gt;</b>
 										                    </a>
 										             </td>
@@ -239,9 +289,9 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       if(iUseDate == intToday ) {
 										             backColor = "#c9c9c9";
 										       }
-										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' id='calTd' onclick=\"location.href='" 
+										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' class='calTd' onclick=\"location.href='" 
 	       												+ request.getContextPath() + "/schedule/newSchedule.jsp?year=" + year + "&month=" + (month+1) 
-	       												+ "&date=" + index + "'\" nowrap>");
+	       												+ "&date=" + index + "'\" >");
 %>
 										
 										       <font color='<%=color%>'>
@@ -251,37 +301,39 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       out.println("<BR>");
 										       out.println("<font size=2>" + iUseDate + "</font>");
 										       out.println("<BR>");
-										       //시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
-										       int i=0;
-										       int sYear = 0,
-										       	   sMonth = 0,
-										       	   sDate = 0,
-										       	   eYear = 0,
-										       	   eMonth = 0,
-										       	   eDate = 0;
-										       List<String> scheduleDate = dao.getSdate();
-										       
-										       for(String s : scheduleDate) {
-										       	s = scheduleDate.get(i);
-										       	sYear = Integer.parseInt( s.substring(0, 4) );
-										       	sMonth = Integer.parseInt( s.substring(5, 7) );
-										       	sDate = Integer.parseInt( s.substring(8, 10));
-										       	eYear = Integer.parseInt( s.substring(13, 17) );
-										       	eMonth = Integer.parseInt( s.substring(18, 20) );
-										       	eDate = Integer.parseInt( s.substring(21, 23) );
-										       	
-										       	String title = dao.getTitle(s);
-										       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
-										       		if(dao.getTitle(s).length() >= 8) {
-									       				title = title.substring(0, 8);
-									       				title += "...";
-										       		}
-											       	out.println("<font size=0.8><b><span style='color: #0d6efd;'>" + title + "</span></b></font><br>");
-										       	} 
-										       	
-										       	
-										       	i++;
-										       }
+											   //시작 연월일, 종료 연월일을 for문에서 입력받아 list에 저장
+							    		       
+											   j=0;
+											   
+							    		       for(String s : scheduleDate) {
+							    		       	s = scheduleDate.get(j);
+							    		       	sYear = Integer.parseInt( s.substring(0, 4) );
+							    		       	sMonth = Integer.parseInt( s.substring(5, 7) );
+							    		       	sDate = Integer.parseInt( s.substring(8, 10));
+							    		       	eYear = Integer.parseInt( s.substring(13, 17) );
+							    		       	eMonth = Integer.parseInt( s.substring(18, 20) );
+							    		       	eDate = Integer.parseInt( s.substring(21, 23) );
+							    		       	
+							    		       	dto = dao.getTitle(s);
+							    		       	chkId = dao.idCheck(dto.getNo());
+// 							    		       	System.out.println("title: " + dto.getTitle());
+// 							    		       	System.out.println("chkId: " + dto.getId());
+							    		       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
+							    		       		/* if(dao.getTitle(s).length() >= 8) {
+							    		      				title = title.substring(0, 8);
+							    		      				title += "...";
+							    		       		} */
+%>							    		       		
+													<span style="color: #0d6efd; font-size: 0.8px;" class="calspan"><b>
+														<a href="../schedule/modSchedule.jsp?year=<%=year%>&month=<%=(month + 1)%>&date=<%=date%>&no=<%=dto.getNo()%>" class="calink"> 
+															<%=dto.getTitle()%></b>
+														</a>
+													</span><br> 
+<%
+								    		    } 
+								    		       	
+								    		       	j++;
+								    	}
 										       out.println("<BR>");
 										       //기능 제거 
 										       out.println("</TD>");
@@ -322,7 +374,7 @@ List<ScheduleDTO> list = dao.getScheduleList();
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     <table id="datatablesSimple">
 	                                    <thead>
-		                   	           		<tr bgcolor="lightgrey" align="center">
+		                   	           		<tr bgcolor="lightgrey" align="center" width="100%">
 		                   	           			<td width=10%>분류</td>
 		                   	           			<td width=15%>날짜</td>
 		                   	           			<td width=20%>일정</td>
@@ -330,6 +382,7 @@ List<ScheduleDTO> list = dao.getScheduleList();
 	                                    </thead>
 	                                    <tbody id="scheduleList">
 	                                    <%
+	                                    List<ScheduleDTO> list = dao.getScheduleList(startRow, pageSize, year, (month+1));
 	                                    for(int i=0; i<list.size(); i++) {
 	                                    	dto = list.get(i);
 	                                    %>
@@ -344,6 +397,71 @@ List<ScheduleDTO> list = dao.getScheduleList();
 		                   	           	</tbody>
 	                   	           	</table>
 	                   	           	<br>
+	                   	           	<div class="datatable-bottom">
+
+										    <div class="datatable-info">
+										    	전체 게시글: <%=count%>개
+										    </div>
+										    <nav>
+												<ul class="pagination">
+<%
+										    	//전체 페이지 수 구하기
+												//전체 페이지 수 = 전체 글 / 한페이지에 보여줄 글 수 + (전체 글 수를 한페이지에 보여줄 글수로 나눈 나머지 값)
+												int pageCount = count / pageSize + (count%pageSize == 0 ? 0:1);
+												//한 화면에 보여줄 페이지 수 설정
+												int pageBlock = 5;
+												
+												//시작페이지 번호 구하기
+												//( 현재 보여질 페이지 번호 / 한 블럭에 보여줄 페이지 수 ) - ( 현재 보여질 페이지 번호 % 한 화면에 보여줄 페이지수 == 0 ? 1:0 )
+												// * 한 블럭에 보여줄 페이지 수 + 1
+												int startPage = ( (currentPage / pageBlock) - (currentPage % pageBlock == 0 ? 1 : 0) ) * pageBlock + 1;
+												
+												//끝페이지 번호 구하기
+												int endPage = startPage + pageBlock - 1;
+												//끝 페이지 번호가 전체 페이지수보다 클 때
+												if(endPage > pageCount) {
+													endPage = pageCount;
+												}
+												/* 
+												System.out.println("startPage: " + startPage);
+												System.out.println("pageBlock: " + pageBlock);
+												System.out.println("pageCount: " + pageCount);
+												System.out.println("endPage: " + endPage);
+												 */
+												//[이전] 시작 페이지 번호가 한 화면에 보여줄 페이지수보다 클 때
+												if(startPage > pageBlock) {
+%>
+													<li class="page-item">
+										    			<a href="schedule.jsp?pageNum=<%=startPage - pageBlock%>&year=<%=year%>&month=<%=month%>" class="page-link">‹</a>
+										    		</li>
+<%
+												}
+												
+												for(int i = startPage; i <= endPage; i++) {
+													if(i == currentPage) {
+%>											
+										    			<li class="page-item active"><a href="schedule.jsp?pageNum=<%=currentPage%>&year=<%=year%>&month=<%=month%>" class="page-link"><%=currentPage %></a></li>
+<%
+													} else {
+%>	
+										    			<li class="page-item"><a href="schedule.jsp?pageNum=<%=i%>&year=<%=year%>&month=<%=month%>" class="page-link"><%=i %></a></li>
+<%	
+													}
+												
+												}
+												//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
+												if(endPage < pageCount) {
+%>													
+													<li class="page-item">
+										    			<a href="schedule.jsp?pageNum=<%=startPage + pageBlock%>&year=<%=year%>&month=<%=month%>" class="page-link">›</a>
+										    		</li>
+<%													
+												}
+												
+%>
+										    	</ul>
+											</nav>
+										</div>
 	                                    </div>
 	                                </div>
 	                            </div>

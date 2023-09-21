@@ -15,8 +15,6 @@
 	
 	QnaDAO dao = new QnaDAO(); 
 	
-	dao.updateReadCount(no);
-	
 	QnaDTO dto = new QnaDTO();
 	dto = dao.getBoard(no);
 	
@@ -101,7 +99,7 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="../inc/logo.jsp" />
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">

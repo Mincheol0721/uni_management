@@ -93,8 +93,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-       
         <style TYPE="text/css">
             body {
             scrollbar-face-color: #F6F6F6;
@@ -128,8 +128,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
 				var $path = '<%=request.getContextPath()%>';
 				var $job = '<%=job%>';
 				
-				if($job != '교직원') {
-					$('#calTd').removeAttr('onclick');
+				if($job == '학생' || $job == 'null') {
+					$('.calTd').attr('onclick', 'location.href="'+$path+'/menu/schedule.jsp"');
 				}
         		
         		$.ajax({
@@ -150,14 +150,12 @@ List<ScheduleDTO> list = dao.getScheduleList();
 					}
         		}); //ajax
         		
-        	
 			});
         </script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <jsp:include page="/inc/logo.jsp" />
-            
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -221,10 +219,10 @@ List<ScheduleDTO> list = dao.getScheduleList();
                                 <!-- 달력부분 내용 -->
                                 <div class="card-body">
                                 	<form name="calendarFrm" id="calendarFrm" action="" method="post">
-										<DIV id="content" style="width: 99%">
+										<DIV id="content" style="width:99%;">
 										<table width="100%" border="0" cellspacing="1" cellpadding="1">
 											<tr>
-										       <td align ="right"> 
+										       <td align ="right">
 										             <input type="button" onclick="javascript:location.href='<c:url value='/index.jsp' />'" value="오늘"/>
 										       </td>
 											</tr>
@@ -324,8 +322,8 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       if(iUseDate == intToday ) {
 										             backColor = "#c9c9c9";
 										       }
-										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' id='calTd' onclick=\"location.href='" 
-										       												+ request.getContextPath() + "/schedule/newSchedule.jsp?date=" + index + "'\" nowrap>");
+										       out.println("<TD valign='top' align='left' height='92px' bgcolor='"+backColor+"' class='calTd' onclick=\"location.href='" 
+	       												+ request.getContextPath() + "/menu/schedule.jsp'\">");
 %>
 										
 										       <font color='<%=color%>'>
@@ -354,13 +352,13 @@ List<ScheduleDTO> list = dao.getScheduleList();
 										       	eMonth = Integer.parseInt( s.substring(18, 20) );
 										       	eDate = Integer.parseInt( s.substring(21, 23) );
 										       	
-										       	String title = dao.getTitle(s);
+										       	dto = dao.getTitle(s);
 										       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
-										       		if(dao.getTitle(s).length() >= 5) {
+										       		/* if(dao.getTitle(s).length() >= 5) {
 									       				title = title.substring(0, 5);
 									       				title += "...";
-										       		}
-											       	out.println("<font size=0.8><b><span style='color: #0d6efd;'>" + title + "</span></b></font><br>");
+										       		} */
+											       	out.println("<font size=0.8><b><span style='color: #0d6efd;'>" + dto.getTitle() + "</span></b></font><br>");
 										       	} 
 										       	
 										       	
@@ -402,25 +400,6 @@ List<ScheduleDTO> list = dao.getScheduleList();
                             </p>
                         </div>
                     </div>
-                    
-                    
-                    
-                    <%--bx슬라이더 쓰는 부분--%>
-                   <h1>시설전경</h1>
-                   <div class="bxslider">
-					  <div><img src="assets/img/uni.jpg" width="100%"/></div>
-					  <div><img src="assets/img/lib.jpg" width="100%" /></div>
-					  <div><img src="assets/img/school.jpg" width="100%" /></div>
-					</div>
-					                   
-                   
-                   
-                   
-         		
-                    
-                    
- 
-                    
                     <%--공지사항 --%>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">공지사항</h1>
@@ -466,33 +445,5 @@ List<ScheduleDTO> list = dao.getScheduleList();
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-    	
-    	
-    	
-	    <%-- bx슬라이더 부분 --%>	
-	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-	    <script type="text/javascript">
-	    $(function(){
-	    	var slider = $('.bxslider').bxSlider({
-	    		  mode: 'fade'
-	    		});
-	
-	    		$('#slider-next').click(function(){
-	    		  slider.goToNextSlide();
-	    		  return false;
-	    		});
-	
-	    		$('#slider-count').click(function(){
-	    		  var count = slider.getSlideCount();
-	    		  alert('Slide count: ' + count);
-	    		  return false;
-	    		});
-	      });
-    
-    </script>
-    	
-    	
     </body>
 </html>

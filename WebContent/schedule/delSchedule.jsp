@@ -26,7 +26,8 @@
 	
 	dto = new MemberDTO();
 	
-	EmployeeDAO dao = new EmployeeDAO();
+	EmployeeDAO edao = new EmployeeDAO();
+	ProfessorDAO pdao = new ProfessorDAO();
 %>
 
 <!DOCTYPE html>
@@ -84,9 +85,9 @@
                 <main>
 					<input type="hidden" value="<%=no%>" name="no">
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">공지사항 삭제</h1>
+                        <h1 class="mt-4">학사일정 삭제</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">update-info</li>
+                            <li class="breadcrumb-item active"></li>
                         </ol>
                         <div class="col-xl-12 col-lg-7">
                             <div class="card shadow mb-4">
@@ -97,7 +98,7 @@
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                                     	<div class="container-fluid">
 										<div class="row">
-										<form action="delNoticePro.jsp?no=<%=no %>" method="post">
+										<form action="delSchedulePro.jsp?no=<%=no %>" method="post">
 											<div class="col-md-12">
 												<div class="row">
 <%

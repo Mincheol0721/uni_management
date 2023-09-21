@@ -14,7 +14,7 @@
 	String endDate = request.getParameter("endDate");
 	String sdate = startDate + " ~ " + endDate;
 	String sclass= request.getParameter("sclass");
-	System.out.println("sclass: " + sclass);
+// 	System.out.println("sclass: " + sclass);
 	
 	
  	new ScheduleDAO().insertBoard(dto, sdate); 
