@@ -30,8 +30,7 @@ public class ScheduleDAO {
 			//"java:comp/env" 주소는 현재 웹 애플리케이션의 루트 디렉터리 라고 생각 하면됩니다.
 			//즉! 현재 웹애플리케이션이 사용할수 있는 모든 자원은 "java:comp/env"아래에 위치합니다.(<Context></Context/>이위치를 말합니다.)
 			Context ctx = (Context)initCtx.lookup("java:comp/env");
-			//3. "java:comp/env 경로 아래에 위치한  "jdbc/studyplannerdb" Recource태그의  DataSource
-      커넥션풀을 얻는다
+			//3. "java:comp/env 경로 아래에 위치한  "jdbc/studyplannerdb" Recource태그의  DataSource커넥션풀을 얻는다
 			ds = (DataSource)ctx.lookup("jdbc/studyplannerdb");		 
 			//4. 마지막으로 커넥션풀(DataSouce)객체 메모리 에 저장된 Connection객체를 반환받아 사용
 			con = ds.getConnection();
