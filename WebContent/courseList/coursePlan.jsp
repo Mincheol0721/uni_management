@@ -2,6 +2,7 @@
 <%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
+<%@page import="courseList.CourseDAO"%>
 <%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -21,22 +22,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 세부 강의 리스트</title>
+        <title>OO대학교 학사관리 시스템 - 전체강의</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-  	
+
 			%>		
-			
-			<jsp:useBean id="moreInfoDAO" class="courseList.MoreInfoDAO"/>			
-					
+
+			<jsp:useBean id="coursePlanDAO" class="courseList.CoursePlanDAO"/>	
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
@@ -68,60 +68,68 @@
                     </div>
                 </nav>
             </div>
-           
             <div id="layoutSidenav_content">
-                <main>           
+                <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 페이지</h1>
-                        <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">moreInfo</li>                        
-                        </ol>
+                        <h1 class="mt-4">강의 계획서</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">coursePlan</li>
+                        </ol>                      
                         <div class="row">
                         	<p class="mb-0">    		
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="lec"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</td>
-	                   	           			<th width=5%>차시</td>                   	           			
-	                   	           			<th width=5%>강의주제</td>
-	                   	           			<th width=5%>강의방식</td>
-	                   	           			<th width=5%>강의기간</td>
-	                   	           			<th width=5%>과제</td>	
-	                   	           			<th width=5%></td>	                   	           			           			                     	           			               	           			
+	                   	           			<td width=5%>과목명</td>
+	                   	           			<td width=5%>학과</td>	                   	           			                   	           				                   	           	
+	                   	           			<td width=5%>학점</td>
+	                   	           			<td width=5%>시간</td>                   	           			                   	           		
+	                   	           			<td width=5%>이수구분</td>	                   	           			
+	                   	           			<td width=5%>대상학년</td>
+	                   	           			<td width=5%>학기</td>
+	                   	           			<td width=5%>연락이메일</td>
+	                   	           			<td width=5%>교과목 개요</td>
+	                   	           			<td width=5%>교육목표</td>
+	                   	           			<td width=5%>주 교재</td>             	           			     	           			                     	           			               	           			
 	                   	           		</tr>
-                   	           		</thead> 
-  		
+                   	           		</thead>
+                   	           		
+                  	           		<%-- 과목 리스트 --%>
                   	           		<tbody>
                   	           <%	
-                  	           
-	                        		MoreInfoDAO dao = new MoreInfoDAO();
-	                   	           
-	                        		String cname = request.getParameter("cname");         		
 	
-	                        	    System.out.println("cname 파라미터 값: " + cname);       		     		
+		                       		CoursePlanDAO dao = new CoursePlanDAO();
+		                  	           
+		                       		String course = request.getParameter("course");         		
+		
+		                       	    System.out.println("course 파라미터 값: " + course);       		     		
+	             	           		
+	              	           		List<CoursePlanBean> list = dao.getPlan(course);
+	             	           	
+	              	           		for(CoursePlanBean bean : list){ 
+              	          		
+	              	           	%> 
+	             	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">              	           			
+             	           		  		<td><%=bean.getCourse()%></td>
+                   	           			<td><%=bean.getDept()%></td>
+                   	           			<td><%=bean.getGrade()%></td>
+                   	           			<td><%=bean.getTime()%></td>
+                   	           			<td><%=bean.getCompdiv()%></td>	                   	           			
+                   	           			<td><%=bean.getCompyear()%></td>
+                   	           			<td><%=bean.getCompsem()%></td>
+                   	           			<td><%=bean.getEmail()%></td>
+                   	           			<td><%=bean.getContent()%></td>
+                   	           			<td><%=bean.getPurpose()%></td>
+                   	           			<td><%=bean.getBooks()%></td> 
+	    	           				</tr>
+	             	           	
+	             	           	<%
+             	           	
+              	           		}  
                   	           		
-                   	           		List<MoreInfoBean> list = dao.getmoreList(cname);
-                  	           	
-                   	           		for(MoreInfoBean bean : list){ 
-                   	          		
-                   	           	%> 
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           			
-                  	           			<td><%= bean.getWeek() %>주차</td>
-							            <td><%= bean.getSession() %>차시</td>
-							            <td><%= bean.getTopic() %></td>
-							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getTime() %></td>
-							            <td><%= bean.getHomework() %></td>	
-							            <td><a href="#">과제제출</a></td>	
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                   	           		}  
-                  	           		
-                   	            %>		 
+                  	            %>		
                   	           		</tbody>
-     	           										           										           		                 	           		
+     	           										           		                 	           		
                    	           </table>
                             </p>
                         </div>

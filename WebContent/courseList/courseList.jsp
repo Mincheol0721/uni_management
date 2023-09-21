@@ -1,3 +1,5 @@
+<%@page import="courseList.CoursePlanDAO"%>
+<%@page import="courseList.CoursePlanBean"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
 <%@page import="courseList.CourseDAO"%>
@@ -25,7 +27,7 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   	<script> 
  				
  		$(function(){
@@ -100,6 +102,7 @@
 			%>		
 			
 			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>		
+			<jsp:useBean id="coursePlanDAO" class="courseList.CoursePlanDAO"/>	
 					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -152,39 +155,43 @@
                         </form>
                         <div class="row">
                         	<p class="mb-0">    		
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="lec"> 
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%>학점</td>
-	                   	           			<td width=5%>이수학년</td>
-	                   	           			<td width=5%>이수학기</td>
-	                   	           			<td width=5%>과목명</td>
-	                   	           			<td width=5%>담당교수</td>	                   	           			
-	                   	           			<td width=5%>이수구분</td>                     	           			               	           			
+	                   	           			<td width=5%></td> 
+	                   	           			<th width=5%>학점</th>
+	                   	           			<th width=5%>이수학년</th>
+	                   	           			<th width=5%>이수학기</th>
+	                   	           			<th width=5%>과목명</th>
+	                   	           			<th width=5%>담당교수</th>	                   	           			
+	                   	           			<th width=5%>이수구분</th>          	           			                   	           			               	           			
 	                   	           		</tr>
                    	           		</thead>
                    	           		
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
                   	           <%	
-                  	           		List list = courseDAO.getList(); 
-                  	           	
-                  	           		for(int i=0; i < list.size(); i++){
+                  	           		List<CourseBean> list = courseDAO.getList(); 
+        	           			
+                  	           		for (int i = 0; i < list.size(); i++) {
                   	           			
-                  	           			CourseBean bean = (CourseBean)list.get(i);
+                  	                CourseBean bean = list.get(i);
+                  	            
+              	           			
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+                  	           			<td><a href='coursePlan.jsp?course=<%=bean.getCname()%>' id='coursePlan'>강의 계획서</a></td>
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			
-										<td><a href='moreInfo.jsp?cname=<%= bean.getCname() %>' id='moreInfo'><%= bean.getCname() %></a></td>
+										<td><a href='moreInfo.jsp?cname=<%= bean.getCname()%>' id='moreInfo'><%= bean.getCname() %></a></td>
 							            <td><%= bean.getProfessor() %></td>
 							            <td><%= bean.getCompdiv() %></td>   							            
          	           				</tr>
                   	           	
                   	           	<%
                   	           	
-                  	           		} 
+                  	           		}
                   	           		
                   	            %>		
                   	           		</tbody>
