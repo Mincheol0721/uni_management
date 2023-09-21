@@ -25,6 +25,7 @@
         <title>OO대학교 학사관리 시스템 - 수강신청</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
+        <script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 		<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 		
@@ -55,7 +56,7 @@
 	%>
 		
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="../inc/logo.jsp" />
+            <jsp:include page="/inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
