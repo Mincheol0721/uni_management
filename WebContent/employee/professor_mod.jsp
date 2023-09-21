@@ -59,11 +59,7 @@
 					String dept = request.getParameter("dept");
 					
 					
-					ProfessorDAO dao = new ProfessorDAO();
 					
-					List listf = dao.listFaculty();
-					
-					List listd = dao.listDept();
 					
 					
 					%>
@@ -110,6 +106,11 @@
 							<th>소속 학부</th>
 							<td><select  id="faculty" name="faculty">
 							<%
+							ProfessorDAO dao = new ProfessorDAO();
+							
+							List listf = dao.listFaculty();
+							
+							List listd = dao.listDept();
 							
 							for(int i=0; i<listf.size(); i++ ){
 								MemberDTO dto = (MemberDTO)listf.get(i);
@@ -129,14 +130,14 @@
 								</select>
 						</tr>
 						<tr>
-							<th>소속 전공</th>
+							<th>소속 학과</th>
 							<td><select  id="dept" name="dept">
 							<%
 							for(int i=0; i<listd.size(); i++ ){
 								MemberDTO dto = (MemberDTO)listd.get(i);
 								
 						    %>
-								<option id="option" value="<%= dto.getDept()%>"<%if(dto.getDept().equals(dept)){%>selected<%}%>>
+								<option id="option2" value="<%= dto.getDept()%>"<%if(dto.getDept().equals(dept)){%>selected<%}%>>
 								<%= dto.getDept()%>
 								</option>
 							<%	
@@ -180,17 +181,74 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         <script type="text/javascript"> 
-//         document.getElementById("myForm").addEventListener("submit", function(event) {
-           
-        	
-//         	 event.preventDefault(); // 폼 제출을 막음
-//         	var name = document.getElementById("name").value;
-        	
-//             if (name.trim() == "") {
-//                 alert("이름을 입력하세요.");
-               
-//             }
-//         });
+       
+        
+        var $fsel = $("select[name=faculty]");//학부
+		var $dselect = $("#dept");//학과
+		
+			
+		
+		$.ajax({
+			url : '<%=request.getContextPath()%>/register/faculty.do',
+			type : 'POST',
+			dataType : 'json',
+			success : function(data){
+				
+				if(data != null) {
+	        		$fsel.empty();
+				}
+				
+				$.each(data, function(i, dto) {
+					$fsel.append("<option value='" + dto.fname + "'>" + dto.fname + "</option>"); 
+				});
+			}
+		}); //학부 ajax
+		
+			
+		$("#faculty").on("change", function() {
+			
+			$.ajax({
+				url : '<%=request.getContextPath()%>/register/dept.do',
+				type : 'POST',
+				data : {foption : $(this).val(), fname : $fsel.val()},
+				dataType : 'json',
+				success : function(data){
+					
+					if(data != null) {
+						$dselect.empty();
+					}
+					
+					$.each(data, function(index, dto) {
+						$dselect.append("<option value='" + dto.dname + "'>" + dto.dname + "</option>"); 
+					
+						console.log("dname: " + dto.dname);
+					});
+					
+				}
+			});
+        
+        
+    //    ---------------------------------------------------
+        //선택된 학부 값 가져오기
+        var facultyValue = $("#faculty option:selected").val();
+        console.log(facultyValue);
+        
+        //ajax로 ProfessorDAO에 학부값(facultyValue)을 넘기기
+        $.ajax({
+        	type : "post",
+        	url : "member/ProfrssorDAO.java",
+        	async : true,
+        	dataType : "text",
+        	data : facultyValue,
+        	success : function(data){
+        		//학부가 선택됬을때,onchage이벤트를 걸어 dept에 뿌려주기
+        		$("#faculty").on("change",function(){
+        			alert(data)
+//         			$("#option2").append("<option value='" + data + "'>" + data + "</option>"); 
+        		});//onchage이벤트
+        		
+        	}//success닫기
+        });//ajax
    		</script> 
     </body>
 </html>

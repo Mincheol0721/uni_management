@@ -37,8 +37,8 @@
         				   해당 bean파일에서 불러온 DB가 가진 모든 해당속성을 가져와 중복의 여지가 있음
         				   한마디로 대참사가 벌어질 수 있음
         		*/
-        		var $fsel = $("select[name=faculty]");
-        		var $dselect = $("#dept");
+        		var $fsel = $("select[name=faculty]");//학부
+        		var $dselect = $("#dept");//학과
         		
         			
         		

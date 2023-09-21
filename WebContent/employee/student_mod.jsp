@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 교수정보게시판</title>
+        <title>OO대학교 학사관리 시스템 - 학생정보게시판</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -135,8 +135,14 @@
 								</select>
 						</tr>
 						<tr>
-							<th>소속 전공</th>
+							<th>소속 학과</th>
 							<td><select  id="dept" name="dept">
+							<%-- 
+							
+							
+							학부가 바뀌면 전공도 자동으로 들어가게하기
+							외래키 fname열에 해당하는 dname을 가져와서 뿌려주자
+							 --%>
 							<%
 							for(int i=0; i<listd.size(); i++ ){
 								MemberDTO dto = (MemberDTO)listd.get(i);
