@@ -346,7 +346,7 @@ public class ProfessorDAO {
 		return pwd;
 	}
 	
-	//Faculty조회
+	//Faculty(학부명)조회
 	public List listFaculty() {
 		
 		ArrayList list = new ArrayList();
@@ -379,16 +379,20 @@ public class ProfessorDAO {
 		
 		return list;
 	}
-	//Dept조회
+	//Dept(학과명)조회   
 	public List listDept() {
 			
 			ArrayList list = new ArrayList();
 			try {
 				con = getConnection();
 				
+//				String sql = "select dname from dept where fname=?";
 				String sql = "select dname from dept";
 				
 				pstmt = con.prepareStatement(sql);
+				
+				
+//				pstmt.setString(listf.get( ));
 				
 				
 				
