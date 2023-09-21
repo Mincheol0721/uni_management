@@ -8,7 +8,7 @@
 <%!
 	String job;
 	String id;
-	
+	String course;
 	MemberDTO dto;
 %>
 
@@ -17,6 +17,7 @@
 	
 	job = (String)session.getAttribute("job");
 	id = (String)session.getAttribute("id");
+	course = request.getParameter("course");
 	
 	dto = new MemberDTO();
 	
@@ -91,8 +92,8 @@
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
 	                    <a class="nav-link menu" href="${path}/student/cHistory.jsp">수강 강좌</a>
- 						<a class="nav-link menu" href="${path}/student/homework.jsp">과제</a> 
-						<a class="nav-link menu" href="${path}/student/info.jsp"></a>
+ 						<a class="nav-link menu" href="${path}/homework/homeworkBoard.jsp?course=<%=course%>">과제 제출 게시판</a> 
+						<a class="nav-link menu" href="${path}/homework/homework.jsp?course=<%=course%>">과제 확인 게시판</a>
 						<a class="nav-link menu" href="${path}/lectureBoard/lectureNotice.jsp"></a>
 	                </nav>
 	            </div>

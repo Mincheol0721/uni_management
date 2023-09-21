@@ -1,3 +1,7 @@
+<%@page import="homework.HomeWorkDAO"%>
+<%@page import="homework.HomeWorkDTO"%>
+<%@page import="homework.HomeWorkBoardDTO"%>
+<%@page import="homework.HomeWorkBoardDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="lectureBoard.LectureVO"%>
 <%@page import="java.util.List"%>
@@ -6,10 +10,14 @@
 
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
 
-<% request.setCharacterEncoding("UTF-8"); %>
+<%
+	request.setCharacterEncoding("UTF-8");
+%>
 <%
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
+
+	String course = request.getParameter("course");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,49 +27,53 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 강의평가</title>
+        <title>OO대학교 학사관리 시스템 - 과제</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <%
     	//DB작업할 DAO생성
-    	LectureDAO lectureDAO = new LectureDAO();
-    
-    	//전체글 개수
-    	int count = lectureDAO.getBoardCount();
-    	 //out.println(count);
-    	 
-    	 //하나의 화면 마다 보여줄 글개수 = 5
-    	 int pageSize = 5;
-    	 
-    	 //---------------------------
-    	 //현재 보여질(선택한) 페이지번호 가져오기.
-    	 String pageNum = request.getParameter("pageNum");
-    	 //현재보여질(선택한) 페이지번호가 없으면 1페이지 처리
-    	 if(pageNum == null) {
-    		 pageNum = "1";
-    	 }
-    	 /* 현재 보여질(선택한) 페이지 번호*/
-    	 //현재보여질(선택한) 페이지번호 "1"을 -> 기본점수 1로 변경
-    	 int currentPage = Integer.parseInt(pageNum);
-    	 //------------------------------------------------
-    	 
-    	 /* 각페이지 마다 맨위에 첫번째로 보여질 시작 글번호 구하기*/
-    	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 15
-    	 int startRow = (currentPage-1)*pageSize;
-    	 
-    	 //게시판 글객체(LectureVO)를 저장하기 위한 용도
-    	 List<LectureVO> list = null;
-    	 
-    	 //만약 게시판에 글이 있다면..
-    	 if(count > 0) {
-    		 //글목록 가져오기
-    		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
-    		 list = lectureDAO.getBoardList(startRow,pageSize);
-    	 }
-    	 //날짜 포맷
-    	 SimpleDateFormat sdf = new SimpleDateFormat("yyy.MM.dd");
+            String contextPath = request.getContextPath();	
+    		HomeWorkDAO homeWorkDAO = new HomeWorkDAO();
+            	
+    			
+    				
+            	//전체글 개수
+            	int count = homeWorkDAO.getBoardCount();
+            	 //out.println(count);
+            	 
+            	 //하나의 화면 마다 보여줄 글개수 = 5
+            	 int pageSize = 5;
+            	 
+            	 //---------------------------
+            	 //현재 보여질(선택한) 페이지번호 가져오기.
+            	 String pageNum = request.getParameter("pageNum");
+            	 //현재보여질(선택한) 페이지번호가 없으면 1페이지 처리
+            	 if(pageNum == null) {
+            		 pageNum = "1";
+            	 }
+            	 /* 현재 보여질(선택한) 페이지 번호*/
+            	 //현재보여질(선택한) 페이지번호 "1"을 -> 기본점수 1로 변경
+            	 int currentPage = Integer.parseInt(pageNum);
+            	 //------------------------------------------------
+            	 
+            	 /* 각페이지 마다 맨위에 첫번째로 보여질 시작 글번호 구하기*/
+            	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 15
+            	 int startRow = (currentPage-1)*pageSize;
+            	 
+            	 //게시판 글객체(HomeWorkDTO)를 저장하기 위한 용도
+            	 List<HomeWorkDTO> list = null;
+            	 
+            	 //만약 게시판에 글이 있다면..
+            	 if(count > 0) {
+            		 //글목록 가져오기
+            		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
+            		 list = homeWorkDAO.getBoardList(startRow, pageSize,course);
+            		
+            		 
+            		 
+            	 }
     %>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -99,21 +111,19 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">강의평가게시판</h1>
+                        <h1 class="mt-4">과제 확인 게시판</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">info</li>
+                            <li class="breadcrumb-item active">homework</li>
                         </ol>
-                        
+                       
 	                       <%-- 검색창 --%>
 	                       
 	                       <table class="pull-right">
 							<tr>
 								<td>
 									<select class="form-control" name="searchField">
-									<option value="title">글제목</option>
-									<option value="name">학생명</option>
-									<option value="professorName">교수명</option>
-									<option value="lectureName">강의명</option>
+									<option value="tasktype">과제유형</option>
+									<option value="tasktitle">과제제목</option>
 									</select></td>
 								<td>
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
@@ -128,32 +138,30 @@
                         	<p class="mb-0">
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
                    	           		<tr bgcolor="lightgrey" align="center" id="menu_re">
-                   	           			<td width=5% hidden="">글번호</td>
+                   	           			
                    	           			<td width=5%>학생명</td>
-                   	           			<td width=5%>글제목</td>
-                   	           			<td width=5%>강의명</td>
-                   	           			<td width=5%>교수명</td>
-                   	           			<td width=5%>평가</td>
-                   	           			<td width=5%>작성날짜</td>
+                   	           			<td width=5%>과제명</td>
+                   	           			<td width=5%>제목</td>
+                   	           			<td width=5%>제출 일자</td>
+                   	           			<td width=5%>다운로드</td>
                    	           		</tr>
                    	           		<span id="searchAddZone">
                    	           		</span>
                    	           		
-                   	          <% 
-                   	          	//만약 게시판글개수가 존재하고(게시판에 글이 있다면)
-                   	          	if(count > 0) {
-                   	          		for(int i=0; i <list.size(); i++) {
-                   	          			LectureVO lec = list.get(i);
-                   	          	%>
+                   	          <%
+              	           		         //만약 게시판글개수가 존재하고(게시판에 글이 있다면)
+             	           		               if(count > 0) {
+              	           		       for(int i=0; i <list.size(); i++) {
+              	           		     HomeWorkDTO home = list.get(i);
+              	          		%>
                    	          		
                    	          		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" id="searchZone">
-                   	           			<td width=5% hidden=""><%=lec.getNum()%></td>
-                   	           			<td width=5%><%=lec.getName()%></td>
-                   	           			<td width=5%><a href="lectureModify.jsp?num=<%=lec.getNum()%>" style="text-decoration: none"><%=lec.getTitle()%></a></td>
-                   	           			<td width=5%><%=lec.getLectureName()%></td>
-                   	           			<td width=5%><%=lec.getProfessorName()%></td>
-                   	           			<td width=5%><%=lec.getRate()%></td>
-                   	           			<td width=5%><%=sdf.format(lec.getDate())%></td>
+                   	           			
+                   	           			<td width="5%"><%=home.getStudentName()%></td>
+                   	           			<td width=5%><%=home.getTaskTitle()%></td>
+                   	           			<td width=5%><a href="homeWorkModify.jsp?num=<%=home.getNum()%>" style="text-decoration: none"><%=home.getTaskTitle()%></a></td>
+                   	           			<td width=5%><%=home.getDate()%></td>
+                   	           			<td width=5% ><a href="<%=contextPath%>/homework/fileDownAction.jsp?directory=upload&fileRealName=<%=home.getFileRealName()%>"   class="btn btn-primary me-md-2" id="down">다운로드</a></td>
                    	           		</tr>
                    	           		
                    	          	<%	
@@ -195,15 +203,15 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&course=<%=course%>">[이전]</a><%
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=i%>&course=<%=course%>" id="a">[<%=i%>]</a><%
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&course=<%=course%>" id="b">[다음]</a><%
                         		}
                         	}
                         %>
@@ -231,37 +239,7 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
        
-        <script type="text/javascript">
-        	$("#searchBtn").on('click',function(){
-        		
-        		var searchField = $("select").find("option:selected").val();
-        		var searchText = $("#searchText").val();
-        		if (searchText == "") {
-					alert("검색어를 입력하지 않으셨습니다.");
-					location.href();
-				}
-        		
-        		
-        		jQuery.ajaxSettings.traditional = true;
-    			$.ajax({
-    				
-    				url : "searchLectureBBS.jsp", //요청할 서버페이지 경로 
-    				type : "post", //전송요청방식 GET 또는 POST중에 하나
-    				data : {"searchField":searchField,"searchText":searchText},
-    				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
-    				
-    					$("tr").filter('#searchZone').remove();
-    					$("tr").filter('#menu_re').remove();
-    					$("#a").remove();
-    					$("#b").remove();
-   					$("#searchAddZone").html(data);
-    				},
-    				error : function(data){
-    		           alert("망");
-    		        }
-    			});					
-        	});	
-        </script>
+        
         
     </body>
 </html>

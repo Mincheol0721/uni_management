@@ -2,6 +2,7 @@ package notice;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -43,6 +44,9 @@ public class NoticeServlet extends HttpServlet {
 	    response.setCharacterEncoding("UTF-8");
 	    PrintWriter out = response.getWriter();
 	    
+	    //요청한 값 얻기
+	    
+	    
 	    NoticeDAO dao = new NoticeDAO();
 	    
 	    String nextPage = "";
@@ -51,29 +55,24 @@ public class NoticeServlet extends HttpServlet {
 		String action = request.getPathInfo();
 		System.out.println("2단계 요청 주소: " + action);
 		
+		
         JSONArray jsonArray = new JSONArray(); // [ ]
         
         
         try {
-			if(action.equals("/notice.do")) {
-
-				//요청한 값 얻기
+			if(action == null) {
 				int startRow = Integer.parseInt( request.getParameter("startRow") );
 				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
+			    
 //				System.out.println("startRow: " + startRow);
 //				System.out.println("pageSize: " + pageSize);
+//			    System.out.println("keyField: " + keyField);
+//			    System.out.println("searchText: " + searchText);
 				
 				List<NoticeDTO> list = dao.getBoardList(startRow, pageSize);
-				
+					
 				for( NoticeDTO dto : list ) {
-					/*
-					System.out.println("title: " + dto.getTitle());
-					System.out.println("content: " + dto.getContent());
-					System.out.println("writeDate: " + dto.getWriteDate());
-					System.out.println("nclass: " + dto.getNclass());
-					System.out.println("id: " + dto.getId());
-					System.out.println("readCount: " + dto.getReadCount());
-					*/
+					
 					JSONObject jsonObject = new JSONObject();
 					
 					jsonObject.put("no", dto.getNo());
@@ -87,7 +86,7 @@ public class NoticeServlet extends HttpServlet {
 					jsonArray.add(jsonObject);
 					
 				} //for
-					
+				
 			} else if(action.equals("/index.do")) {
 			    List<NoticeDTO> list = dao.getBoardList();
 				
@@ -113,9 +112,87 @@ public class NoticeServlet extends HttpServlet {
 					jsonArray.add(jsonObject);
 					
 				} //for
+				
+			} else if(action.equals("/search.do")) {
+				int startRow = Integer.parseInt( request.getParameter("startRow") );
+				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
+				String keyField = request.getParameter("keyField");
+			    String searchText = request.getParameter("searchText");
+			    
+//				System.out.println("startRow: " + startRow);
+//				System.out.println("pageSize: " + pageSize);
+//			    System.out.println("keyField: " + keyField);
+//			    System.out.println("searchText: " + searchText);
+				
+				List<NoticeDTO> list = dao.getBoardList(keyField, searchText, startRow, pageSize);
 					
-			} 
-			
+				for( NoticeDTO dto : list ) {
+					
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("no", dto.getNo());
+					jsonObject.put("title", dto.getTitle());
+					jsonObject.put("content", dto.getContent());
+					jsonObject.put("writeDate", dto.getWriteDate().toString());
+					jsonObject.put("nclass", dto.getNclass());
+					jsonObject.put("id", dto.getId());
+					jsonObject.put("readCount", dto.getReadCount());
+					
+					jsonArray.add(jsonObject);
+					
+				} //for
+				
+			} else if(action.equals("/paging.do")) {
+				int startRow = Integer.parseInt( request.getParameter("startRow") );
+				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
+				String keyField = request.getParameter("keyField");
+			    String searchText = request.getParameter("searchText");
+			    int pageNum = Integer.parseInt( request.getParameter("pageNum") );
+//			    System.out.println("pageNum: " + pageNum);
+			    
+//				System.out.println("startRow: " + startRow);
+//				System.out.println("pageSize: " + pageSize);
+//			    System.out.println("keyField: " + keyField);
+//			    System.out.println("searchText: " + searchText);
+				
+				List<NoticeDTO> list = dao.getBoardList(keyField, searchText, startRow, pageSize);
+					
+				for( NoticeDTO dto : list ) {
+					
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("no", dto.getNo());
+					jsonObject.put("title", dto.getTitle());
+					jsonObject.put("content", dto.getContent());
+					jsonObject.put("writeDate", dto.getWriteDate().toString());
+					jsonObject.put("nclass", dto.getNclass());
+					jsonObject.put("id", dto.getId());
+					jsonObject.put("readCount", dto.getReadCount());
+					
+					jsonArray.add(jsonObject);
+					
+				} //for
+				
+				nextPage = request.getContextPath() + "/menu/notice.jsp?pageNum=" + pageNum + "&searchText=" + searchText;
+				RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
+				dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
+				
+			} else if(action.equals("/selclass")) {
+				
+				List<NoticeDTO> list = dao.getNClass();
+				System.out.println("list: " + list.size());
+				
+				for( NoticeDTO dto : list ) {
+					
+					JSONObject jsonObject = new JSONObject();
+					
+					jsonObject.put("nclass", dto.getNclass());
+					
+					jsonArray.add(jsonObject);
+				}
+				System.out.println("nclass: " + jsonArray.toString());
+				
+			}
 				
 			// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
 			//RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
@@ -125,6 +202,9 @@ public class NoticeServlet extends HttpServlet {
 			out.print(jsonArray.toString()); 
 //				System.out.println("jsonArray: " + jsonArray.toString());
 				
+			// 다음 페이지로 포워드하기 위한 디스패처 객체 생성
+//			RequestDispatcher dispatch = request.getRequestDispatcher(nextPage); 
+//			dispatch.forward(request, response); // 다음 페이지로 요청과 응답 객체를 포워드
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

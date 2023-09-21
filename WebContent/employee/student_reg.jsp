@@ -27,35 +27,12 @@
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <jsp:include page="/inc/member.jsp" />
-                </li>
-            </ul>
+            <jsp:include page="../inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+                    <jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -66,47 +43,47 @@
                             <li class="breadcrumb-item active">student_reg</li>
                         </ol>
                         <div class="row">
-				<form action="student_reg_proc.jsp" method="post">
+				<form action="student_reg_proc.jsp" method="post" onsubmit="return valid();">
 
 					<table>
 						<tr>
 							<th>아이디</th>
-							<td ><input type="text" name="id"></td>
+							<td ><input type="text" name="id" id="id"></td>
 							
 						</tr>
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name"></td>
+							<td><input type="text" name="name" id="name"></td>
 							
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel"></td>
+							<td><input type="text" name="tel" id="tel"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn"></td>
+							<td><input type="text" name="ssn" id="ssn"></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email"></td>
+							<td><input type="text" name="email" id="email"></td>
 							
 						</tr>
 						<tr>
 							<th>주소</th>
-							<td><input type="text" name="addr"></td>
+							<td><input type="text" name="addr" id="addr"></td>
 							
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd"></td>
+							<td><input type="text" name="pwd" id="pwd"></td>
 							
 						</tr>
 						<tr>
 							<th>교수</th>
-							<td><input type="text" name="pwd"></td>
+							<td><input type="text" name="professor" id="professor"></td>
 							
 						</tr>
 						<%
@@ -183,7 +160,69 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         <script>
-        
+        function valid(){
+    		
+    		var id = document.getElementById("id"); 
+    		
+    		if(id.value ==""){
+    			alert("아이디를 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+			var name = document.getElementById("name"); 
+    		
+    		if(name.value ==""){
+    			alert("이름을 입력해주세요");
+    			
+    			return false;
+    		}
+    			
+			var tel = document.getElementById("tel"); 
+    		
+    		if(tel.value ==""){
+    			alert("전화번호를 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+    		
+			var ssn = document.getElementById("ssn"); 
+    		
+    		if(ssn.value ==""){
+    			alert("주민등록번호를 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+			var email = document.getElementById("email"); 
+    		
+    		if(email.value ==""){
+    			alert("이메일을 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+			var pwd = document.getElementById("pwd"); 
+    		
+    		if(pwd.value ==""){
+    			alert("비밀번호를 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+			var professor = document.getElementById("professor"); 
+    		
+    		if(professor.value ==""){
+    			alert("교수를 입력해주세요");
+    			
+    			return false;
+    		}
+    		
+    		return true;
+    		
+    		
+    	}
         </script>
     </body>
 </html>

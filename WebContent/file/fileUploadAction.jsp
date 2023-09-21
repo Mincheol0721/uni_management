@@ -58,12 +58,17 @@
 		String title = multipartRequest.getParameter("title");
 		//글의 본문
 		String content = multipartRequest.getParameter("content");
-		//과제 제출 여부
-		String submitHomework = multipartRequest.getParameter("submitHomeWork");
-		
+		//학생명
+		String studentName = multipartRequest.getParameter("studentName");
+		//과목명
+		String course = multipartRequest.getParameter("course");
+		//과제명
+		String taskTitle = multipartRequest.getParameter("taskTitle");
+		//비밀번호
+		String passwd = multipartRequest.getParameter("passwd");
 		
 		//6.업로드하기위해 선택한 파일의 원본이름과, 실제업로드한 파일 이름을 DB에 File테이블에   INSERT
-		new FileDAO().upload(title, content, submitHomework, fileName, fileRealName);
+		new FileDAO().upload(taskTitle, course, studentName, passwd, title, content, fileName, fileRealName);
 		   
 		
 		out.write("업로드하기위해 선택한 파일의 원본이름 : " +  fileName  + "<br>");

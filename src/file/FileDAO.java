@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.naming.Context;
@@ -51,29 +52,35 @@ public class FileDAO {
 			}
 	
 	//서버 upload폴더 경로에 업로드된 실제파일명 과 원본파일명을 DB의 file테이브르에 INSERT시키는 메소드
-	public int upload(String title, String content, String submitHomework, String fileName, String fileRealName) {
-						// 제목                      본문    				과제제출여부			원본파일명,        실제업로드된 파일명
+	public int upload( String TaskTitle,String course,String studentName, String passwd, String title, String content, String fileName, String fileRealName) {
+						//    과목                 과제제목                 	학생이름                     비밀번호                글제목                         본문    			원본파일명,        실제업로드된 파일명
 		
 		
 		
-		String sql = "INSERT INTO homeWork VALUES(?,?,?,?,?)"; //마지막 0은 파일다운로드 횟수이기떄문에 다운로드한적이 없으므로 0
+		String sql = "INSERT INTO homeWork(taskTitle,course,studentName,passwd,title,content,fileName,fileRealName,date,homeworkOk) VALUES(?,?,?,?,?,?,?,?,current_timestamp(),1)"; //마지막 0은 파일다운로드 횟수이기떄문에 다운로드한적이 없으므로 0
 		
 		try {
 				con = getConnection();
 			
 				//PreparedStatement실행객체 얻어 저장
 				pstmt = con.prepareStatement(sql);
-				//? 두개 설정
-				pstmt.setString(1, title); //서버에 업로드요청시 선택한 원본파일명
-				pstmt.setString(2, content);// 서버 하드웨어의 upload폴더 경로에 실제 업로드된 파일명
-				pstmt.setString(3, submitHomework);
-				pstmt.setString(4, fileName);
-				pstmt.setString(5, fileRealName);
+				//? 설정
+				pstmt.setString(1, TaskTitle); //서버에 업로드요청시 선택한 과제제목
+				pstmt.setString(2, course);
+				pstmt.setString(3, studentName);// 학생이름
+				pstmt.setString(4, passwd);
+				pstmt.setString(5, title);
+				pstmt.setString(6, content);
+				pstmt.setString(7, fileName);
+				pstmt.setString(8, fileRealName);
+				
 				
 				return pstmt.executeUpdate(); //insert에 성공하면 1을 반환해서 또 반환  실패하면 0을 반환 후 또 반환 
 				
 		} catch (Exception e) {
 			System.out.println("FileDAO클래스의 upload메소드 sql문 오류" + e);
+		}finally {
+			freeResource();
 		}
 		
 		return -1; //insert에 실패하면 -1을 반환

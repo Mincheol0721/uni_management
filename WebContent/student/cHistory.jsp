@@ -40,15 +40,14 @@
 <body class="sb-nav-fixed">
 
 	<%
-		// CourseDAO 객체 생성
-		CourseDAO courseDAO = new CourseDAO();
-		// courseVO를 담을 배열 생성
-		List<CourseVO> list = null;
-		// CourseDAO의 getBoardList메소드를 통해 테이블목록을 가져와서 list배열에 저장	
-		list = courseDAO.getBoardList();
-
-		//
-		String id = (String) session.getAttribute("id");
+	String id = (String)session.getAttribute("id");
+	
+	//cHistoryDAO 객체 생성
+	CHistoryDAO cHistoryDAO = new CHistoryDAO();
+	// cHistoryVO를 담을 배열 생성
+	List<CourseVO> list2 = null;
+	// cHistoryDAO의 getBoardList메소드를 통해 테이블목록을 가져와서 List배열에 저장
+	list2 = cHistoryDAO.getBoardList(id); // 강의내역과 강의목록을 테이블을 join해서 배열에 담아 저장함
 
 		
 	%>
@@ -125,7 +124,7 @@
 						</tr>
 						<!-- Db에서 값을 가져올곳 -->
 						<%
-							for (CourseVO course : list) {
+							for (CourseVO course : list2) {
 						%>
 
 						<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">

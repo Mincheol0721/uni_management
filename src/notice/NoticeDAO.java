@@ -56,6 +56,41 @@ public class NoticeDAO {
 		}
 	}
 	
+	public List<NoticeDTO> getNClass(){
+		List<NoticeDTO> list = new ArrayList<NoticeDTO>();
+		
+		try {
+			con = getConnection();
+			String sql = "select clsname as nclass from boardclass";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+//			System.out.println("sql문: " + sql);
+			
+			while(rs.next()) {
+				NoticeDTO dto = new NoticeDTO();
+				
+				dto.setNclass( rs.getString("nclass") );
+				
+				list.add(dto);
+			}
+//			System.out.println("dto.getNclass: " + list.get(0).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(1).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(2).getNclass());
+//			System.out.println("dto.getNclass: " + list.get(3).getNclass());
+//			System.out.println("list.get(): " + list.get(0));
+//			System.out.println("list.get(): " + list.get(1));
+//			System.out.println("list.get(): " + list.get(2));
+//			System.out.println("list.get(): " + list.get(3));
+			
+		} catch (Exception e) {
+			System.out.println("NoticeDAO내부 getNClass메소드에서 쿼리문 실행 오류: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return list;
+	}
 
 	//bnotice테이블에 저장된 레코드의 개수를 반환하는 메소드
 	public int getBoardCount() {
@@ -123,6 +158,62 @@ public class NoticeDAO {
 		
 		return list; //글제목 클릭 시 전달한 글번호에 해당되는 글의 정보를 NoticeDTO객체에 담아서 NoticeDTO객체 자체를 반환
 	}
+	
+	//모든 글의 레코드정보를 조회, 반환하는 메소드
+		public List<NoticeDTO> getBoardList(String keyField, String searchText, int startRow, int pageSize) { //content.jsp에서 호출한 메소드
+			
+			List<NoticeDTO> list = new ArrayList<NoticeDTO>();
+			
+			try {
+				//1. 커넥션풀(DataSource)에서 DB와 미리 연결 맺은 접속정보를 갖고있는 커넥션 객체 빌려오기
+				//DB와의 연결
+				con = getConnection();
+				
+				//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
+				sql = "select * from bnotice ";
+				
+				if(searchText != null || searchText.length() != 0) {
+					
+					System.out.println("getBoardList if문 탑승");
+					sql += " where " + keyField + " like '%" + searchText + "%'";
+					
+				}
+				
+				sql += " order by no desc limit ?, ?";
+				
+				System.out.println("sql문: " + sql);
+				
+				//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, pageSize);
+				//3. rs에 sql문 실행 후 결과 담기
+				rs = pstmt.executeQuery();
+
+				while(rs.next()) {
+					
+					NoticeDTO dto = new NoticeDTO();
+					
+					dto.setNo( rs.getInt("no") );
+					dto.setTitle( rs.getString("title") );
+					dto.setContent( rs.getString("content") );
+					dto.setNclass( rs.getString("nclass") );
+					dto.setReadCount( rs.getInt("readCount") );
+					dto.setWriteDate( rs.getDate("writeDate") );
+					dto.setId( rs.getString("id") );
+					
+					list.add(dto);
+					
+				}
+				
+			} catch (Exception e) {
+				System.out.println("NoticeDAO내부의 getBoard메소드 내부에서 쿼리문 실행 오류: " + e);
+			} finally {
+				freeResource();
+			}
+			
+			return list; //글제목 클릭 시 전달한 글번호에 해당되는 글의 정보를 NoticeDTO객체에 담아서 NoticeDTO객체 자체를 반환
+		}
 
 	//startRow, pageSize를 매개변수로 받아 글 정보를 ArrayList에 담은 후 리턴하는 메소드
 	public List<NoticeDTO> getBoardList(int startRow, int pageSize) { 
