@@ -43,6 +43,9 @@
 	    
 	    </script> 
     
+    	<style>     	   	  	
+		  a {text-decoration-line: none;}			
+    	</style>  	
     </head>
     <body class="sb-nav-fixed">    
         	<%
@@ -76,24 +79,26 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
            
             <div id="layoutSidenav_content">
                 <main>           
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 페이지</h1>
+                        <h1 class="mt-4">세부 강의 페이지</h1>                        
                         <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">moreInfo_professor</li>                       
-                        </ol>
+                            <li class="breadcrumb-item active">moreInfo_professor</li>                                                                  
+                        </ol>                                          
                         <div class="row">
-                        	<p class="mb-0">    		
+                        	<p class="mb-0">                        	
+	                        <div align="right">
+	                        
+	                        <%-- 교수님이 세부정보를 직접 추가하는 페이지로 이동하는 링크 --%>
+	                        <div align="left">
+	                        	<h5><a href="addMoreInfo.jsp?cname=<%= request.getParameter("cname") %>">세부정보 추가</a></h5>
+                   		    </div>                		
+	                        </div>                      	           		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">

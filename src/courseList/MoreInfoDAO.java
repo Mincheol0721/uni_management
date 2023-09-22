@@ -267,4 +267,39 @@ public class MoreInfoDAO {
 			
 	}//delMoreInfo end
 	
+	//해당 과목에 대한 세부 정보를 studyplannerdb 데이터베이스의 moreInfo에 추가시키는 기능의 메소드
+	public int insertMI(MoreInfoBean moreInfoBean) {
+		
+		try {
+			
+			//DB연결 
+			con = ds.getConnection();
+			
+			//insert sql문 만들기
+			String sql = "insert into moreInfo (cname, week, session, topic, way, time, homework)"
+					   + "values (?, ?, ?, ?, ?, ?, ?);";
+
+			//insert문 실행할 pstmt 실행 객체 얻기
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, moreInfoBean.getCname());
+			pstmt.setInt(2, moreInfoBean.getWeek()); 
+			pstmt.setInt(3, moreInfoBean.getSession()); 
+			pstmt.setString(4, moreInfoBean.getTopic()); 		
+			pstmt.setString(5, moreInfoBean.getWay()); 						
+			pstmt.setString(6, moreInfoBean.getTime()); 			
+			pstmt.setString(7, moreInfoBean.getHomework()); 	
+
+			//insert문 실행
+			return pstmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 freeResource();	
+		}
+		return 0;
+		
+	}//insertMI end
+
 }
