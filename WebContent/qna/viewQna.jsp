@@ -59,9 +59,7 @@
         		if($id != $checkedId) {
         			$('#modQna').remove();
         			$('#delQna').remove();
-        			if($job == '교수' || $job == '교직원') {
-        				$('#answer').html('<input type="button" class="writeBtn" value="답변달기" onclick="answer();">');
-        			}
+       				$('#answer').html('<input type="button" class="writeBtn" value="답변달기" onclick="answer();">');
         		}
         		
 			});
