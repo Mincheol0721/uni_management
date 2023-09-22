@@ -9,6 +9,37 @@
 
 <% request.setCharacterEncoding("UTF-8"); %>
 
+<%!
+	
+
+	//[1].페이징 기능 처리를 위한 변수들 선언
+	int totalRecord = 0;//게시판(board테이블)에 저장된 전체 글의 갯수저장  [2]가서 구함.----------
+	int numPerPage = 5;//한 페이지당 보여질 글의 갯수를 저장 
+	int pagePerBlock = 3; //한 블럭 당 묶여질 페이지 번호의 갯수
+	/*
+		pagePerBlock변수 설명
+			게시판 하단 부분을 보면   이전 3개  ◀   1   2  3  4  5      ▶ 다음 3개   화면이 있는데...
+			이전 3개  ◀ 영역 또는    ▶ 다음 3개 영역을 클릭 했을대   게시판에 글갯수가 많을경우   한페이지 번호단위로 이동해서 화면을 보여주는 것은 매우 갑갑할 것입니다.
+			그럴때에는 여러페이지 번호를  하나로 묶어서 하나의 블럭단위로 이동해서 화면을 보여주는 메뉴도 있을수 있다.
+			몇개의 페이지번호를 하나로 묶어서  이전 3개  ◀ 영역 또는    ▶ 다음 3개 영역을 클릭했을때   조금더 빠르게 그다음 블럭에 위치한 페이지번호의 화면을 보여주고 싶을때
+			몇개의 페이지 번호를 하나의 블럭으로 만들것인가?에대한  한블럭당 묶여지는 페이지 갯수를 저장하는 변수 
+	*/
+	int totalPage = 0; //board테이블에 저장된 전체 글의 갯수에 따라 보여지는 - 전체 페이지 갯수 [4]가서 구함. -------------
+	
+	int totalBlock = 0; //전체페이지 번호갯수에 대한  - 전체 블럭갯수  [9] 가서 구함.----------------------------
+	
+	//[7] 가서 구함. ------------
+    int nowPage = 0; //현재 보여지는 화면의  페이지 번호( 1  2  3 페이지번호 중  1페이지번호를 클릭했을때의 1페이지번호값을 구해서 저장) 
+    
+    //[8] 가서 구함. -------------
+    int nowBlock = 0; //현재 보여지는 페이지번호가 속한 블럭위치값 저장 
+    
+    //[10] 가서 구함. --------------------
+    int beginPerPage = 0; //각 페이지 번호 마다  가장 위쪽에 보여지는 글의 시작글번호 구해서 저장할 변수 
+    //----------------------------------------------------------------------[1] 끝
+
+%>	
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -422,10 +453,37 @@
                    	       			
                    	    			MemberDTO Mem = null;
                    	    			
-                   	    			
+                   	    			//페이징 처리 
+                   	       			//2교수정보에 저장된 전체갯수
+                   	       			totalRecord = studMem.size();
                    	       			
-                   	       			for(int i=0; i < studMem.size(); i++){
-                   	       			Mem = (MemberDTO)studMem.get(i);
+                   	       			//4전체 페이지번호 갯수구하기 = 전체글의 갯수 / 한페이지당 보여질 글의 갯수
+                   	       			totalPage =  (int)Math.ceil(  (double)totalRecord / numPerPage ); 
+                   	       			
+                   	       			//9전체 총 블럭위치값 갯수 구하기 = 전체페이지번호 갯수/ 한블럭당 묶여질 페이지번호갯수(3)
+                   	       		    totalBlock =  (int)Math.ceil( (double)totalPage / pagePerBlock );
+                   	       			
+                   	       			//7현재 클릭한 페이지번호 구하기
+                   	       			if(request.getParameter("nowPage") != null){
+                   	       				
+                   	       				nowPage = Integer.parseInt(request.getParameter("nowPage"));
+                   	       			}
+                   	       			//8현재클릭한 페이지가 속해있는 블록위치값구하기 >를 누르면 바뀌는 위치
+                   	       			if(request.getParameter("nowBlock") != null){
+                   	       				
+                   	       				nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
+                   	       			}
+                   	       			
+		                   	       	//[10] 각 페이지 번호 마다  가장 위에 보여지는 첫번째 시작글번호 구하기
+		                   	       	//첫번째 시작 글번호  = 현재 보여지는 페이지번호 * 한페이지당 보여질 글의 갯수
+		                   	       	beginPerPage = nowPage * numPerPage;
+		                   	     for(int cnt = beginPerPage; cnt<(beginPerPage+numPerPage); cnt++){
+                	       				
+		                   	       		//만약 cnt변수에 저장된 데이터가 총글의 갯수와 같아지면.. 필요없는 반복을 하지 않기 위해 for문 빠져나가기 
+		                   	     			if(cnt == totalRecord){
+		                   	     				break;
+		                   	     			}
+                   	       			Mem = (MemberDTO)studMem.get(cnt);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                    	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>"></td>
@@ -443,11 +501,13 @@
                    	           			
                    	           		</tr>
                    	           		<%
-                   	           		}
+                   	           		}//for 닫기
                    	       			%>
                    	 
                    	       			
                    	           </table>
+                   	              <%--[3] 게시판에 저장된 전체 글수 출력 --%>			<%--[5] 전체 페이지번호 수 출력 --%>			   <%--[6] 현재페이지 번호 출력 --%>
+                   	          		전체글수:<%=totalRecord %>&nbsp;&nbsp;&nbsp;전체페이지수:<%=totalPage %>&nbsp;&nbsp;&nbsp;현재페이지:<%=nowPage+1 %></h3>
                    	          		
                    	           		
                    	           		
@@ -455,7 +515,60 @@
                    	           	 <input style="float: right" type="button" id="student_mod" name="student_mod" value="수정">
                    	           	 <input style="float: right" type="button" id="student_reg" name="student_reg" value="등록">
                    	         </form>
-                   	          		
+                   	         
+                   	         <%--페이징처리 하는부분 --%>
+                   	         <div id="page_control" align="center">
+                   	          	<%
+									//[15] 게시판에 글이 하나라도 존재하고, 현재 블럭의 위치가 적어도 0보다 크다면?(이전으로 이동할 블럭위치가 있다는 의미)
+									//     <<<이전 <a>태그가 화면에 보이게 설정
+									if(totalBlock > 0){
+										if(nowBlock > 0){
+								%>			
+										<%--이전 을 누르면 이전블럭위치 값과 ,  이전블럭위치의 시작페이지번호를 notice.jsp로 요청시 전달합니다. --%>
+										<a href="studentList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>">   
+											이전<%=pagePerBlock%>개<<< 
+										</a>							
+								<%			
+										}
+									}
+								%>
+                   	           	<%
+                   	           	for(int cnt =0; cnt<pagePerBlock; cnt++){
+                   	           	    //현재 보여질 페이지번호가  전체페이지갯수와 같아지면 3번반복하지 않고 for반복문 빠져나감
+                   	           		if((nowBlock * pagePerBlock) + cnt == totalPage){
+                   	           			break;
+                   	           		}
+                   	           	%>
+                   	           	
+                   	           	<a href= "studentList.jsp?nowPage=<%=(nowBlock * pagePerBlock) + cnt %>&nowBlock=<%=nowBlock%>">
+                   	           			<%--(0 nowBlock이 처음에 0임   *     3) +1  + 0  --%>
+                   	           			<%=(nowBlock * pagePerBlock) + 1 + cnt %>
+                   	           			
+                   	           		
+                   	           	</a>
+                   	           	
+                   	           	 <%
+                   	           	 	//
+                   	           		if( ((nowBlock * pagePerBlock) + 1 + cnt ) ==totalRecord){
+                   	           			break;
+                   	           		}
+                   	          
+                   	           	}//for 반복문
+                   	           	
+                   	       		//[13] 이동할 블럭이 있으면?  >>>다음 3개  <-<a>링크 화면에 표시
+            					//조건식 : 전체블럭 위치 갯수가  현재블럭위치 값보다 더크면?(>>다음 이동할 블럭이 있다면?)
+            					if(totalBlock > nowBlock + 1){
+            					%>		
+                          		<%--[14] >>>다음3개 링크를 클릭했을때 그다음블럭위치번호와, 그다음블럭의 시작페이지번호를 notice.jsp로 요청해서 전달  --%>
+								<a href="studentList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>">	
+									>>>다음<%=pagePerBlock%>개
+								</a>	
+									
+							<%		
+								}
+							%>
+                          			
+                        	</div>  	
                    	           		
                           			
                         </div>
