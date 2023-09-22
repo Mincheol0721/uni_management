@@ -70,6 +70,7 @@
                	           			"<td width=5%>" + boardbean.compyear + "학년" + "</td>" + 
                	           			"<td width=5%>" + boardbean.compsem + "학기" +"</td>" + 
                	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
+               	           			"<td width=5%>" + boardbean.ctime +"</td>" + 
                	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
                	           			"<td width=5%><a href='modCourse.jsp' id='modCourse'>과목 수정</td>" + 
                	           			"<td width=5%><a href='delCourse.jsp' id='delCourse'>과목 삭제</td>" +
