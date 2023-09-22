@@ -17,7 +17,8 @@
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
 
-	String course = request.getParameter("course");
+	String cname = request.getParameter("cname");
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +70,7 @@
             	 if(count > 0) {
             		 //글목록 가져오기
             		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
-            		 list = homeWorkDAO.getBoardList(startRow, pageSize,course);
+            		 list = homeWorkDAO.getBoardList(startRow, pageSize,cname);
             		
             		 
             		 
@@ -203,15 +204,15 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&course=<%=course%>">[이전]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="homework.jsp?pageNum=<%=i%>&course=<%=course%>" id="a">[<%=i%>]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&course=<%=course%>" id="b">[다음]</a><%
+                        			%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%
                         		}
                         	}
                         %>

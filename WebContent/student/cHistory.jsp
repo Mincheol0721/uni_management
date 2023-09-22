@@ -129,7 +129,7 @@
 
 						<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
 							<td width="5%" name="Ccode" hidden="hidden"><%=course.getCcode()%></td>
-							<td width=5% name="Cname" id="Cname"><a href="cPlan.jsp?course=<%=course.getCname()%>"><%=course.getCname()%></a></td>
+							<td width=5% name="Cname" id="Cname"><a href="cPlan.jsp?cname=<%=course.getCname()%>"><%=course.getCname()%></a></td>
 							<!-- 과목명 -->
 							<td width=5%><%=course.getCompdiv()%></td>
 							<!-- 전필 전선 교필 교선 -->

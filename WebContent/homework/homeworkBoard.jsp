@@ -8,14 +8,14 @@
 <%@page import="lectureBoard.LectureDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
 
-	String course = request.getParameter("course");
+	String cname = request.getParameter("cname");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,9 +33,11 @@
     <%
     	//DB작업할 DAO생성
     	HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
+    	
+    	HomeWorkDAO homeDAO = new HomeWorkDAO();
     
     	//전체글 개수
-    	int count = homeBoardDAO.getBoardCount();
+    	int count = homeBoardDAO.getBoardCount(cname);
     	 //out.println(count);
     	 
     	 //하나의 화면 마다 보여줄 글개수 = 5
@@ -59,12 +61,13 @@
     	 
     	 //게시판 글객체(HomeWorkDTO)를 저장하기 위한 용도
     	 List<HomeWorkBoardDTO> list = null;
+    	 List<HomeWorkDTO> list2 = null;
     	 
     	 //만약 게시판에 글이 있다면..
     	 if(count > 0) {
     		 //글목록 가져오기
     		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
-    		 list = homeBoardDAO.getBoardList(startRow, pageSize, course);
+    		 list = homeBoardDAO.getBoardList(startRow, pageSize, cname);
     		 
     		 
     	 }
@@ -121,6 +124,7 @@
 									<option value="tasktitle">과제제목</option>
 									</select></td>
 								<td>
+									<input type="text" name="cname" value="<%=cname%>" id="cname" hidden="">
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
 									<td><button type="button" class="btn btn-primary" id="searchBtn">검색</button></td>
 							</tr>
@@ -149,16 +153,18 @@
                    	          	if(count > 0) {
                    	          		for(int i=0; i <list.size(); i++) {
                    	          			HomeWorkBoardDTO home = list.get(i);
+                   	          			
                    	          	%>
                    	          		
                    	          		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" id="searchZone">
                    	           			<td width=5% hidden=""><%=home.getNum()%></td>
-                   	           			<td width="5%" hidden=""><%=home.getCourse()%></td>
+                   	           			<td width="5%" hidden=""><%=home.getCname()%></td>
                    	           			<td width=5%><%=home.getTasktype()%></td>
-                   	           			<td width=5%><a href="homeWorkBoardModify.jsp?num=<%=home.getNum()%>&course=<%=home.getCourse()%>&tasktitle=<%=home.getTasktitle()%>" style="text-decoration: none"><%=home.getTasktitle()%></a></td>
+                   	           			<td width=5%><a href="homeWorkBoardModify.jsp?num=<%=home.getNum()%>&cname=<%=home.getCname()%>&tasktitle=<%=home.getTasktitle()%>" style="text-decoration: none"><%=home.getTasktitle()%></a></td>
                    	           			<td width=5%><%=home.getTaskmethod()%></td>
                    	           			<td width=5%><%=home.getPeriod()%></td>
-                   	           			<td width=5%>미제출(더미)</td>
+       									<td width=5%>미제출</td>
+                   	  
                    	           			<td width=5% hidden=""><%=home.getNumpeople()%></td>
                    	           			
                    	           		</tr>
@@ -202,15 +208,15 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage-pageBlock%>&course=<%=course%>">[이전]</a><%
+                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=i%>&course=<%=course%>" id="a">[<%=i%>]</a><%
+                        			%><a href="homeworkBoard.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage+pageBlock%>&course=<%=course%>" id="b">[다음]</a><%
+                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%
                         		}
                         	}
                         %>
@@ -243,6 +249,8 @@
         		
         		var searchField = $("select").find("option:selected").val();
         		var searchText = $("#searchText").val();
+        		var cname = $("#cname").val();
+        		
         		if (searchText == "") {
 					alert("검색어를 입력하지 않으셨습니다.");
 					location.href();
@@ -252,10 +260,10 @@
         		jQuery.ajaxSettings.traditional = true;
     			$.ajax({
     				
-    				url : "searchLectureBBS.jsp", //요청할 서버페이지 경로 
+    				url : "searchHomeworkBBS.jsp", //요청할 서버페이지 경로 
     				type : "post", //전송요청방식 GET 또는 POST중에 하나
-    				data : {"searchField":searchField,"searchText":searchText},
-    				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
+    				data : {"searchField":searchField,"searchText":searchText,"cname":cname},
+    				success : function(data){//searchHomeworkBBS.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
     				
     					$("tr").filter('#searchZone').remove();
     					$("tr").filter('#menu_re').remove();

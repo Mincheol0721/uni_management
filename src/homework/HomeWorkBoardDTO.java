@@ -4,7 +4,7 @@ public class HomeWorkBoardDTO {
 	
 	private String name; // 이름
 	private int num; //글 번호
-	private String course; // 과목
+	private String cname; // 과목
 	private String tasktype; // 과제유형
 	private String tasktitle; // 과제제목
 	private String taskmethod; // 제출방법
@@ -20,10 +20,10 @@ public class HomeWorkBoardDTO {
 	}
 
 	// 모든매개변수를 받을 생성자
-	public HomeWorkBoardDTO(String course, String tasktype, String tasktitle, String taskmethod, String period,
+	public HomeWorkBoardDTO(String cname, String tasktype, String tasktitle, String taskmethod, String period,
 			int numpeople) {
 		super();
-		this.course = course;
+		this.cname = cname;
 		this.tasktype = tasktype;
 		this.tasktitle = tasktitle;
 		this.taskmethod = taskmethod;
@@ -35,8 +35,8 @@ public class HomeWorkBoardDTO {
 	
 	
 	
-	public String getCourse() {
-		return course;
+	public String getCname() {
+		return cname;
 	}
 
 	public String getHomeworkOk() {
@@ -63,8 +63,8 @@ public class HomeWorkBoardDTO {
 		this.num = num;
 	}
 
-	public void setCourse(String course) {
-		this.course = course;
+	public void setCName(String cname) {
+		this.cname = cname;
 	}
 
 	public String getTasktype() {

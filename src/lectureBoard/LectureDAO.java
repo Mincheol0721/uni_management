@@ -299,5 +299,34 @@ public void insertBoard(LectureVO lecVO) {
 		}
 		return boardlist;
 	}
+	
+	// 검색한 글의 총 갯수 가져오는 메소드
+	public int getSearchCount(String searchField, String searchText) {
+		int count = 0;
+	try {
+		//DB연결
+		con = getConnection();
+		
+		// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
+		String sql = "select count(*) from lectureBoard where " + searchField.trim();
+		
+		sql += " like '%" + searchText.trim() + "%';";
+		
+		pstmt = con.prepareStatement(sql);
+		
+		rs = pstmt.executeQuery();
+		
+		if(rs.next()) { //만약 조회해서 글개수가 있으면
+			count = rs.getInt(1);
+		}
+		
+	} catch (Exception e) {
+		System.out.println("LectureDAO클래스의 getBoardCount메소드의 sql문 오류" + e);
+	}finally {
+		//자원해제
+		freeResource();
+	}
+	return count;
+}
 
 }//class의 끝

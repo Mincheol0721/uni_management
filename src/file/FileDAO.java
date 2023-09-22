@@ -52,12 +52,12 @@ public class FileDAO {
 			}
 	
 	//서버 upload폴더 경로에 업로드된 실제파일명 과 원본파일명을 DB의 file테이브르에 INSERT시키는 메소드
-	public int upload( String TaskTitle,String course,String studentName, String passwd, String title, String content, String fileName, String fileRealName) {
+	public int upload( String TaskTitle,String cname,String studentName, String title, String content, String fileName, String fileRealName) {
 						//    과목                 과제제목                 	학생이름                     비밀번호                글제목                         본문    			원본파일명,        실제업로드된 파일명
 		
 		
 		
-		String sql = "INSERT INTO homeWork(taskTitle,course,studentName,passwd,title,content,fileName,fileRealName,date,homeworkOk) VALUES(?,?,?,?,?,?,?,?,current_timestamp(),1)"; //마지막 0은 파일다운로드 횟수이기떄문에 다운로드한적이 없으므로 0
+		String sql = "INSERT INTO homeWork(taskTitle,cname,studentName,title,content,fileName,fileRealName,date,homeworkOk) VALUES(?,?,?,?,?,?,?,current_timestamp(),1)"; 
 		
 		try {
 				con = getConnection();
@@ -66,13 +66,13 @@ public class FileDAO {
 				pstmt = con.prepareStatement(sql);
 				//? 설정
 				pstmt.setString(1, TaskTitle); //서버에 업로드요청시 선택한 과제제목
-				pstmt.setString(2, course);
+				pstmt.setString(2, cname);
 				pstmt.setString(3, studentName);// 학생이름
-				pstmt.setString(4, passwd);
-				pstmt.setString(5, title);
-				pstmt.setString(6, content);
-				pstmt.setString(7, fileName);
-				pstmt.setString(8, fileRealName);
+			
+				pstmt.setString(4, title);
+				pstmt.setString(5, content);
+				pstmt.setString(6, fileName);
+				pstmt.setString(7, fileRealName);
 				
 				
 				return pstmt.executeUpdate(); //insert에 성공하면 1을 반환해서 또 반환  실패하면 0을 반환 후 또 반환 

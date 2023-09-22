@@ -5,13 +5,14 @@ import java.sql.Timestamp;
 public class HomeWorkDTO {
 	private int num;
 	private String studentName;
-	private String course;
+	private String cname;
 	private String taskTitle;
 	private String title;
 	private String content;
 	private String passwd;
 	private String fileName;
 	private String fileRealName;
+	private int homeWorkOK;
 	private Timestamp date;
 	
 	
@@ -24,12 +25,12 @@ public class HomeWorkDTO {
 	
 	
 		//모든 매개변수를 받을 생성자
-		public HomeWorkDTO(int num,String studentName, String course, String taskTitle, String title, String content, String passwd,
+		public HomeWorkDTO(int num,String studentName, String cname, String taskTitle, String title, String content, String passwd,
 			String fileName, String fileRealName, Timestamp date) {
 		super();
 		this.num = num;
 		this.studentName = studentName;
-		this.course = course;
+		this.cname = cname;
 		this.taskTitle = taskTitle;
 		this.title = title;
 		this.content = content;
@@ -43,11 +44,11 @@ public class HomeWorkDTO {
 
 
 
-		public HomeWorkDTO(String studentName, String course, String taskTitle, String title, String content,
+		public HomeWorkDTO(String studentName, String cname, String taskTitle, String title, String content,
 			String passwd, String fileName, String fileRealName) {
 		super();
 		this.studentName = studentName;
-		this.course = course;
+		this.cname = cname;
 		this.taskTitle = taskTitle;
 		this.title = title;
 		this.content = content;
@@ -65,12 +66,12 @@ public class HomeWorkDTO {
 		this.studentName = studentName;
 	}
 
-	public String getCourse() {
-		return course;
+	public String getCname() {
+		return cname;
 	}
 
-	public void setCourse(String course) {
-		this.course = course;
+	public void setCname(String cname) {
+		this.cname = cname;
 	}
 
 	
@@ -135,6 +136,20 @@ public class HomeWorkDTO {
 
 	public void setDate(Timestamp date) {
 		this.date = date;
+	}
+
+	
+
+
+	public int getHomeWorkOK() {
+		return homeWorkOK;
+	}
+
+
+
+
+	public void setHomeWorkOK(int homeWorkOK) {
+		this.homeWorkOK = homeWorkOK;
 	}
 
 

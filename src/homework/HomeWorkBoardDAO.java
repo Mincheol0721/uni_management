@@ -51,18 +51,18 @@ public class HomeWorkBoardDAO {
 		
 		}
 	
-	public int getBoardCount() {
+	public int getBoardCount(String cname) {
 		int count = 0;
 	try {
 		//DB연결
 		con = getConnection();
 		
 		// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
-		String sql = "select count(*) from homeworkBoard";
+		String sql = "select count(*) from homeworkBoard where cname = ?";
 		pstmt = con.prepareStatement(sql);
-		
+			pstmt.setString(1, cname);
 		rs = pstmt.executeQuery();
-		
+			
 		if(rs.next()) { //만약 조회해서 글개수가 있으면
 			count = rs.getInt(1);
 		}
@@ -76,7 +76,7 @@ public class HomeWorkBoardDAO {
 	return count;
 }
 
-public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String course) {
+public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String cname) {
 	
 	List<HomeWorkBoardDTO> homeworkList = new ArrayList<HomeWorkBoardDTO>();
 	
@@ -87,9 +87,9 @@ public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String co
 		//sql문 작성
 		// 정렬 re_ref 내림차순 re_seq 오름차순
 		// limit 각페이지 마다 맨위에 첫번째로 보여질 시작글번호, 한페이지당 보여줄 글개수
-		String sql = "select * from homeworkBoard where course = ? limit ?,?";
+		String sql = "select * from homeworkBoard where cname = ? limit ?,?";
 		pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, course);
+			pstmt.setString(1, cname);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, pageSize);
 			
@@ -103,7 +103,7 @@ public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String co
 				HomeWorkBoardDTO homeWorkDTO = new HomeWorkBoardDTO();
 				//rs => homeWorkDTO 객체에 저장	
 				homeWorkDTO.setNum((rs.getInt("num")));
-				homeWorkDTO.setCourse((rs.getString("course")));
+				homeWorkDTO.setCName((rs.getString("cname")));
 				homeWorkDTO.setTasktype((rs.getString("tasktype")));
 				homeWorkDTO.setTasktitle((rs.getString("tasktitle")));
 				homeWorkDTO.setTaskmethod((rs.getString("taskmethod")));
@@ -139,7 +139,7 @@ public HomeWorkBoardDTO gethomeWorkModify(String num) {
 			//rs.next이용해서 homework객체에 조회해온 값 넣어주기
 			 rs.next(); 
 				int number = rs.getInt("num");
-				String course = rs.getString("course");
+				String cname = rs.getString("cname");
 				String tasktitle = rs.getString("tasktitle");
 				String taskmethod = rs.getString("taskmethod");
 				String period = rs.getString("period");
@@ -148,7 +148,7 @@ public HomeWorkBoardDTO gethomeWorkModify(String num) {
 				
 				homeV = new HomeWorkBoardDTO();
 				homeV.setNum(number);
-				homeV.setCourse(course);
+				homeV.setCName(cname);
 				homeV.setTasktitle(tasktitle);
 				homeV.setTaskmethod(taskmethod);
 				homeV.setPeriod(period);
@@ -167,7 +167,7 @@ public HomeWorkBoardDTO gethomeWorkModify(String num) {
 
 
 //검색버튼을 눌렀을때 조회해올 메소드
-public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText) {
+public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText, String cnam) {
 	
 	List<HomeWorkBoardDTO> boardlist = new ArrayList<HomeWorkBoardDTO>();
 	
@@ -177,7 +177,7 @@ public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText) 
 		
 		//sql문 작성
 		
-		String sql = "select * from homeworkBoard where " + searchField.trim();
+		String sql = "select * from homeworkBoard where cname = ? && " + searchField.trim();
 			
 		
 			sql += " like '%" + searchText.trim() + "%';";
@@ -185,24 +185,25 @@ public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText) 
 			
 			
 			pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, cnam);
 			rs =pstmt.executeQuery();
 		
 		while(rs.next()) {
 			int num = rs.getInt("num");
-			String course = rs.getString("course");
+			String cname = rs.getString("cname");
 			String tasktype = rs.getString("tasktype");
 			String tasktitle = rs.getString("tasktitle");
 			String taskmethod = rs.getString("taskmethod");
 			String period = rs.getString("period");
 			int numpeople = rs.getInt("numpeople");
-			HomeWorkBoardDTO homeDTO = new HomeWorkBoardDTO(course, tasktype, tasktitle, taskmethod, period, numpeople);
+			HomeWorkBoardDTO homeDTO = new HomeWorkBoardDTO(cname, tasktype, tasktitle, taskmethod, period, numpeople);
 			boardlist.add(homeDTO);
 		}
 		
 				
 			
 	} catch (Exception e) {
-		System.out.println("HomeWorkDAO의 searchBoard메소드의 sql문 오류" + e);
+		System.out.println("HomeWorkBoardDAO의 searchBoard메소드의 sql문 오류" + e);
 	}finally {
 		freeResource();
 	}
@@ -227,10 +228,39 @@ public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText) 
 				homeWorkDTO.setName(rs.getString("name"));
 				
 		} catch (Exception e) {
-			System.out.println("HomeWorkDAO의 클래스 내부의 getStudentName메소드의 sql문 오류" + e);
+			System.out.println("HomeWorkBoardDAO의 클래스 내부의 getStudentName메소드의 sql문 오류" + e);
 		}finally {
 			freeResource();
 		}
 		return homeWorkDTO;
+	}
+	
+	// 검색한 글의 총 갯수 가져오는 메소드
+		public int getSearchCount(String searchField, String searchText, String cname) {
+			int count = 0;
+		try {
+			//DB연결
+			con = getConnection();
+			
+			// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
+			String sql = "select count(*) from homeworkBoard where cname = ? && " + searchField.trim();
+			
+			sql += " like '%" + searchText.trim() + "%';";
+			
+			pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, cname);
+			rs = pstmt.executeQuery();
+				
+			if(rs.next()) { //만약 조회해서 글개수가 있으면
+				count = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("HomeWorkBoardDAO클래스의 getBoardCount메소드의 sql문 오류" + e);
+		}finally {
+			//자원해제
+			freeResource();
+		}
+		return count;
 	}
 }

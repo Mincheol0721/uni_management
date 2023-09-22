@@ -75,7 +75,7 @@ public void freeResource() {
 		return count;
 	}
 	
-	public List<HomeWorkDTO> getBoardList(int startRow, int pageSize, String course) {
+	public List<HomeWorkDTO> getBoardList(int startRow, int pageSize, String cname) {
 		
 		List<HomeWorkDTO> lectureList = new ArrayList<HomeWorkDTO>();
 		
@@ -86,9 +86,9 @@ public void freeResource() {
 			//sql문 작성
 			// 정렬 re_ref 내림차순 re_seq 오름차순
 			// limit 각페이지 마다 맨위에 첫번째로 보여질 시작글번호, 한페이지당 보여줄 글개수
-			String sql = "select * from homework where course = ? limit ?,?";
+			String sql = "select * from homework where cname = ? limit ?,?";
 			pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, course);
+				pstmt.setString(1, cname);
 				pstmt.setInt(2, startRow);
 				pstmt.setInt(3, pageSize);
 				
@@ -105,11 +105,11 @@ public void freeResource() {
 					homeWorkDTO.setNum(rs.getInt("num"));
 					homeWorkDTO.setStudentName(rs.getString("studentName"));
 					homeWorkDTO.setDate(rs.getTimestamp("date"));
-					homeWorkDTO.setCourse(rs.getString("course"));
+					homeWorkDTO.setCname(rs.getString("cname"));
 					homeWorkDTO.setTaskTitle(rs.getString("tasktitle"));
 					homeWorkDTO.setTitle(rs.getString("title"));
 					homeWorkDTO.setContent(rs.getString("content"));
-					homeWorkDTO.setPasswd(rs.getString("passwd"));
+					
 					homeWorkDTO.setFileName(rs.getString("fileName"));
 					homeWorkDTO.setFileRealName(rs.getString("fileRealName"));
 					
@@ -142,22 +142,22 @@ public void freeResource() {
 				//rs.next이용해서 LectureVo객체에 조회해온 값 넣어주기
 				 rs.next(); 
 					String studentName = rs.getString("studentName");
-					String course = rs.getString("course");
+					String cname = rs.getString("cname");
 					String taskTitle = rs.getString("taskTitle");
 					String title = rs.getString("title");
 					String content = rs.getString("content");
-					String passwd = rs.getString("passwd");
+				
 					String fileName = rs.getString("fileName");
 					String fileRealName = rs.getString("fileRealName");
 					
 					
 					HomeV = new HomeWorkDTO();
 					HomeV.setStudentName(studentName);
-					HomeV.setCourse(course);
+					HomeV.setCname(cname);
 					HomeV.setTaskTitle(taskTitle);
 					HomeV.setTitle(title);
 					HomeV.setContent(content);
-					HomeV.setPasswd(passwd);
+				
 					HomeV.setFileName(fileName);
 					HomeV.setFileRealName(fileRealName);
 					
@@ -197,7 +197,7 @@ public void freeResource() {
 			
 			while(rs.next()) {
 				String studentName = rs.getString("studentName");
-				String course = rs.getString("course");
+				String cname = rs.getString("cname");
 				String taskTitle = rs.getString("taskTitle");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
@@ -205,7 +205,7 @@ public void freeResource() {
 				String fileName = rs.getString("fileName");
 				String fileRealName = rs.getString("fileRealName");
 				
-				HomeWorkDTO HomeVO = new HomeWorkDTO(studentName, course, taskTitle, title, content, passwd, fileName, fileRealName);
+				HomeWorkDTO HomeVO = new HomeWorkDTO(studentName, cname, taskTitle, title, content, passwd, fileName, fileRealName);
 				boardlist.add(HomeVO);
 			}
 			

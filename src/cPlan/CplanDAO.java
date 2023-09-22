@@ -53,7 +53,7 @@ public class CplanDAO {
 
 		}
 		
-		public CplanDTO selectBoard(String cour) {
+		public CplanDTO selectBoard(String cnam) {
 			
 			CplanDTO cPlanDTO = null;
 			try {
@@ -61,16 +61,16 @@ public class CplanDAO {
 				con = getConnection();
 				
 				//sql문 작성
-				String sql = "select * from cplan where course =?";
+				String sql = "select * from cplan where cname =?";
 				
 					pstmt = con.prepareStatement(sql);
 					
-					pstmt.setString(1, cour);
+					pstmt.setString(1, cnam);
 					
 					rs = pstmt.executeQuery();
 				
 					if (rs.next()) {
-						String course = rs.getString("course");
+						String cname = rs.getString("cname");
 						String dept = rs.getString("dept");
 						int grade = rs.getInt("grade");
 						String time = rs.getString("time");
@@ -82,7 +82,7 @@ public class CplanDAO {
 						String purpose = rs.getString("purpose");
 						String books = rs.getString("books");
 						
-						 cPlanDTO = new CplanDTO(course, dept, grade, time, compdiv, compyear, compsem, email, content, purpose, books);
+						 cPlanDTO = new CplanDTO(cname, dept, grade, time, compdiv, compyear, compsem, email, content, purpose, books);
 					}
 					
 			} catch (Exception e) {

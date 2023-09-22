@@ -8,8 +8,8 @@
 <%!
 	String job;
 	String id;
-	String course;
 	MemberDTO dto;
+	String cname;
 %>
 
 <% 
@@ -17,8 +17,8 @@
 	
 	job = (String)session.getAttribute("job");
 	id = (String)session.getAttribute("id");
-	course = request.getParameter("course");
 	
+	cname = request.getParameter("cname");
 	dto = new MemberDTO();
 	
 	if(id != null) {
@@ -92,9 +92,10 @@
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
 	                    <a class="nav-link menu" href="${path}/student/cHistory.jsp">수강 강좌</a>
- 						<a class="nav-link menu" href="${path}/homework/homeworkBoard.jsp?course=<%=course%>">과제 제출 게시판</a> 
-						<a class="nav-link menu" href="${path}/homework/homework.jsp?course=<%=course%>">과제 확인 게시판</a>
-						<a class="nav-link menu" href="${path}/lectureBoard/lectureNotice.jsp"></a>
+	                    <a class="nav-link menu" href="${path}/moreInfo/moreInfo.jsp?cname=<%=cname%>">세부강의 페이지</a>
+ 						<a class="nav-link menu" href="${path}/homework/homeworkBoard.jsp?cname=<%=cname%>">과제 제출 게시판</a> 
+						<a class="nav-link menu" href="${path}/homework/homework.jsp?cname=<%=cname%>">과제 확인 게시판</a>
+						
 	                </nav>
 	            </div>
 			</c:when>

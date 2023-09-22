@@ -1,38 +1,26 @@
-<%@page import="homework.HomeWorkBoardDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="courseList.MoreInfoBean"%>
+<%@page import="courseList.MoreInfoDAO"%>
 <%@page import="homework.HomeWorkBoardDTO"%>
+<%@page import="homework.HomeWorkBoardDAO"%>
 <%@page import="homework.HomeWorkDTO"%>
 <%@page import="homework.HomeWorkDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="lectureBoard.LectureVO"%>
 <%@page import="java.util.List"%>
 <%@page import="lectureBoard.LectureDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
-<% 
-//한글처리
-request.setCharacterEncoding("UTF-8"); 
-
-%>
+<% request.setCharacterEncoding("UTF-8"); %>
 <%
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
-	
+
 	String cname = request.getParameter("cname");
 	
-	String tasktitle = request.getParameter("tasktitle");
 	
-	//get방식으로 전송된 글번호값 가져오기
-	String num = request.getParameter("num");
-	//강의평가게시판의 <a>태그를 클릭했을때의 그 클릭한곳의 글번호를 올바르게 가져옴
-	
-	// 데이터베이스에서 조회해서 뿌려줄 역할을 할 DAO객체 생성
-	HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
-	// HomeWorkBoardDTO의 getLectureModify메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
-		HomeWorkBoardDTO homeVO = homeBoardDAO.gethomeWorkModify(num);
-	
-		HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
-		
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,11 +30,19 @@ request.setCharacterEncoding("UTF-8");
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 강의평가</title>
+        <title>OO대학교 학사관리 시스템 - 세부강의</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
+    <%
+    	//DB작업할 DAO생성
+    	MoreInfoDAO moreInfoDAO = new MoreInfoDAO();
+    	
+    	List<MoreInfoBean> list = null;
+    
+    	list = moreInfoDAO.getmoreList(cname);
+   	%>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -80,24 +76,55 @@ request.setCharacterEncoding("UTF-8");
                     </div>
                 </nav>
             </div>
-            <div id="layoutSidenav_content" style="background-color: white">
+            <div id="layoutSidenav_content">
                 <main>
-                    <div class="position-relative">
-              			
-                        <div class="container" align="center">
-                        	<div class="row justify-content-center">
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">세부 강의</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">homework</li>
+                        </ol>
+                       
+	                       
+					
+                        <div class="row">
                         	
-                        	<form action="fileUploadAction.jsp" method="post" enctype="multipart/form-data">
-								<input type="text" name="cname" value="<%=cname%>" hidden="">
-								이름 : <input type="text" value="<%=name.getName()%>" name="studentName" readonly="readonly">
-								과제 제목 :<input type="text" value="<%=tasktitle%>" name="taskTitle" readonly="readonly"><br>
-								제목: <input type="text" name="title"><br>
-								<textarea rows="20" cols="60" name="content"></textarea><br> <!-- 본문 -->
-								첨부파일 :	<input type="file" name="file"> 
-								<input type="submit" value="전송하기">
-								<input type="button" id="cancel" value="취소">
-							</form>
-                    	</div>
+                        	<p class="mb-0">
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
+                   	           		<tr bgcolor="lightgrey" align="center" id="menu_re">
+                   	           			
+                   	           			<td width=5% hidden="">과목명</td>
+                   	           			<td width=5%>주차</td>
+                   	           			<td width=5%>차시</td>
+                   	           			<td width=5%>강의 주제</td>
+                   	           			<td width=5%>강의 방식</td>
+                   	           			<td width=5%>강의 시간</td>
+                   	           		</tr>
+                   	           		
+                   	         <%
+									
+									for(MoreInfoBean moreinfo : list){
+						%>           
+						        	           		
+                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
+                   	           			<td width=5%><%=moreinfo.getWeek()%></td>
+                   	           			<td width=5%><%=moreinfo.getSession()%></td>
+                   	           			<td width=5%><%=moreinfo.getTopic()%></td>
+                   	           			<td width=5%><%=moreinfo.getWay()%></td>
+                   	           			<td width=5%><%=moreinfo.getTime()%></td>
+                   	           		
+									</tr>
+                   	       <%
+                   	        }
+							
+                   	        %> 
+                   	          
+                   	          		
+                   	           	
+                   	           
+                   	           </table>
+                            </p>
+                        </div>                                   
+                        
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -121,12 +148,37 @@ request.setCharacterEncoding("UTF-8");
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-        
+       
         <script type="text/javascript">
-        	$("#cancel").on('click',function(){
-        		history.back();
-        	})
-        
+        	$("#searchBtn").on('click',function(){
+        		
+        		var searchField = $("select").find("option:selected").val();
+        		var searchText = $("#searchText").val();
+        		if (searchText == "") {
+					alert("검색어를 입력하지 않으셨습니다.");
+					location.href();
+				}
+        		
+        		
+        		jQuery.ajaxSettings.traditional = true;
+    			$.ajax({
+    				
+    				url : "searchLectureBBS.jsp", //요청할 서버페이지 경로 
+    				type : "post", //전송요청방식 GET 또는 POST중에 하나
+    				data : {"searchField":searchField,"searchText":searchText},
+    				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
+    				
+    					$("tr").filter('#searchZone').remove();
+    					$("tr").filter('#menu_re').remove();
+    					$("#a").remove();
+    					$("#b").remove();
+   					$("#searchAddZone").html(data);
+    				},
+    				error : function(data){
+    		           alert("망");
+    		        }
+    			});					
+        	});	
         </script>
         
     </body>

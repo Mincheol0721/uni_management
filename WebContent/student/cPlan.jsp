@@ -46,13 +46,13 @@
 		//한글처리	
 		request.setCharacterEncoding("UTF-8");
 		
-		String cour = request.getParameter("course");
+		String cnam = request.getParameter("cname");
 		// CplanDAO 객체 생성
 		CplanDAO cPlDAO = new CplanDAO();
 		
 		
 		
-		CplanDTO plan = cPlDAO.selectBoard(cour);
+		CplanDTO plan = cPlDAO.selectBoard(cnam);
 		
 		
 	%>
@@ -114,14 +114,14 @@
 
 					
 						<%
-							out.print(cour);
+							out.print(cnam);
 						%>
 						
 						<!-- 테이블 -->
 						<table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec">
  							<tr>
  								<th scope="row" bgcolor="lightgrey">과목명</th>
- 									<td><%=plan.getCourse()%></td>
+ 									<td><%=plan.getCname()%></td>
  								<th scope="row" bgcolor="lightgrey">학과</th>
  									<td><%=plan.getDept()%></td>
  							</tr>

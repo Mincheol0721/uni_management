@@ -29,7 +29,7 @@ public class CourseSearchServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		//JSON응답 설정
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=utf-8");
 		
 		PrintWriter out = response.getWriter();
 		
