@@ -21,10 +21,17 @@
 	 
 	QnaDAO dao = new QnaDAO();
 	QnaDTO dto = new QnaDTO();
-	List<QnaDTO> list = null;
+	String keyField = "";
+	String searchText = "";
+	int level = 0;
+	
+	if(request.getParameter("searchText") != null) {
+		keyField = request.getParameter("keyField");
+		searchText = request.getParameter("searchText");
+	}
 	
 	//전체 글 개수
-	int count = dao.getBoardCount();
+	int count = dao.getBoardCount(keyField, searchText);
 // 	System.out.println("count: " + count);
 	//하나의 화면에 띄워줄 글 개수 10
 	int pageSize = 10;
@@ -46,7 +53,8 @@
 	//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
 	int startRow = (currentPage - 1) * pageSize;
 // 	System.out.println("startRow: " + startRow);
-	
+
+	List<QnaDTO> list = dao.getBoardList(keyField, searchText); 
 	
 	//날짜 포맷
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
@@ -74,34 +82,24 @@
 				var $qnaTable = $("#qnaTable");
         		var $startRow = <%=startRow%>;
         		var $pageSize = <%=pageSize%>;
+        		var $searchText = '<%=searchText%>';
         		var $path = '<%=request.getContextPath()%>';
         		var $pageNum = '<%=pageNum%>';
         		
-        		console.log("startRow: " + $startRow);
-        		console.log("pageSize: " + $pageSize);
-				console.log("path: " + $path);
-				console.log("pageNum: " + $pageNum);
+//         		console.log("startRow: " + $startRow);
+//         		console.log("pageSize: " + $pageSize);
+// 				console.log("path: " + $path);
+// 				console.log("pageNum: " + $pageNum);
 				
-				$.ajax({
-           			url : '<%=request.getContextPath()%>/qnas',
-   					type : 'POST',
-   					dataType : 'json',
-   					data : {startRow: $startRow, pageSize:$pageSize},
-   					success : function(data){
-						$qnaTable.empty();
-						
-   						$.each(data, function(index, dto) { 
-   							if(dto != null){
-   			     				
-   								$qnaTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td><a href='" + $path 
-   														+ "/qna/viewQna.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
-   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
-   							} else {
-   								$qnaTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
-   							}
-   						}); 
-   					}
-           		}); //공지사항 띄워주는 ajax
+				if($searchText != null || $searchText.length != 0) {
+					$('#viewAll').css('display', 'inline');
+				} 
+				$('#viewAll').on("click", function() {
+					location.href = '<%=request.getContextPath()%>/menu/qna.jsp';
+					$('#viewAll').css('display', 'none');
+				});
+				
+				
 				
         		//검색 시 검색한 필드 및 텍스트값에 해당하는 게시글만 띄우기 위한 ajax
         		var $keyField = $('select[name=keyField]').val();
@@ -111,7 +109,7 @@
 					$keyField = $('select[name=keyField]').val();
 // 	  				console.log("keyField: " + $keyField);
 				});
-     			
+     			<%-- 
      			$('input[type=submit]').on("click", function() {
      				alert('onclick 함수 호출');
      				$searchText = $('#searchText').val();
@@ -128,8 +126,8 @@
 		   						$.each(data, function(index, dto) { 
 		   							if(dto != null){
 		   			     				
-		   								$qnaTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td><a href='" + $path 
-		   														+ "/qna/viewQna.jsp?no=" + dto.no + "'>" + dto.title + "</a></td> <td>" + dto.writeDate 
+		   								$qnaTable.append("<tr align='center'><td> " + (index + 1 + $startRow) + " </td> <td onclick=\"location.href='" + $path 
+		   														+ "/qna/viewQna.jsp?no=" + dto.no + "'\">" + <%=dao.useDepth(dto.getLevel())%> + dto.title + "</a></td> <td>" + dto.writeDate 
 		   															+ "</td> <td>" + dto.readCount + "</td> </tr>");
 		   							} else {
 		   								$qnaTable.append("<tr align='center'><td colspan='4'> 등록된 글이 없습니다. </td></tr>");
@@ -141,13 +139,13 @@
      				}
 	           		
      			});
-
+				 --%>
      			//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
         		var $id = '<%=id%>';
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
         		
-        		if($job == '학생' || $job == null) {
+        		if($id == null) {
         			$input.hide();
         		} 
         		
@@ -164,6 +162,9 @@
         }
         #searchArea {
         	margin-bottom: 10px;
+        }
+        .title {
+        	padding-left: 30px;
         }
         </style>
     </head>
@@ -188,12 +189,12 @@
                         <div class="card mb-4">
 							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                         		<h4 class="m-0 font-weight-bold text-primary">질의응답</h4>
-								<a id="writeBtn" href="${path}/qna/qna_write.jsp"><input type="button" value="공지작성"></a>	
+								<a id="writeBtn" href="${path}/qna/qna_write.jsp"><input type="button" value="질문하기"></a>	
 							</div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                    <form method="post">
+                                    <form method="post" action="<%=request.getContextPath()%>/qna/searchQna.jsp">
 	                                    <div id="searchArea" align="right">
 	                                    	<select name="keyField">
 	                                    		<option name="title" value="title">제목</option>
@@ -202,6 +203,7 @@
 	                                    	<span>
 			                                    <input type="text" name="searchText" style="width: 300px;" id="searchText">
 			                                    <input type="submit" value="검색">
+			                                    <input type="button" value="전체보기" id="viewAll" style="display: none;">
 			                                </span>
 	                                    </div>
                                     </form>
@@ -215,6 +217,35 @@
 		                   	           		</tr>
 	                                    </thead>
 	                                    <tbody id="qnaTable">
+<%
+	                                    if(list.isEmpty()) {
+%>	                                    	
+	                                    	<tr>
+	                                    		<td colspan="4" align="center">등록된 글이 없습니다.</td>
+	                                    	</tr>
+<%	                                    	
+	                                    } else {
+	                                    	for(int cnt=startRow; cnt<(startRow+pageSize); cnt++) {
+	                                    		if(cnt == count) {
+	                                    			break;
+	                                    		}
+// 	                                    		System.out.println("list.size: " + list.size());
+	                                    		dto = (QnaDTO)list.get(cnt);
+%>	                                    		
+	                                    		<tr>
+	                                    			<td align="center"><%=cnt + 1%></td>
+	                                    			<td align="left" class="title" onclick="location.href='<%=request.getContextPath()%>/qna/viewQna.jsp?no=<%=dto.getNo()%>'" style="text-decoration: none; cursor: pointer;">
+														<span class="title"><%=dao.useDepth(dto.getLevel())%><%=dto.getTitle()%></span>
+	                                    			</td>
+	                                    			<td align="center"><%=dto.getWriteDate() %></td>
+	                                    			<td align="center"><%=dto.getReadCount() %></td>
+	                                    		</tr>
+	                                    		
+<%                                    		
+// 												System.out.println("title: " + dto.getTitle() + " → level: " + dto.getLevel());
+	                                    	}//for
+	                                    }//else
+%>
 	                                    </tbody>
 	                   	           	</table>
 	                   	           	<br>

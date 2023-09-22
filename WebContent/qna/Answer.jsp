@@ -18,6 +18,9 @@
 	QnaDTO dto = new QnaDTO();
 	dto = dao.getBoard(no);
 	
+	int pos = dto.getPos();
+	int level = dto.getLevel();
+	
 	//id, 직업 값 얻어오기
 	String id = (String)session.getAttribute("id");
 	String job = (String)session.getAttribute("job");
@@ -48,6 +51,7 @@
 		<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
         	$(function() {
+	        	$('textarea[name=content]').focus();
         		var $job = '<%=job%>';
         		var $checkedId = '<%=checkedId%>';
 				var $id = '<%=id%>';
@@ -63,6 +67,7 @@
         		}
         		
 			});
+        	
         	
         	function answer() {
 // 				alert('answer함수 호출');
@@ -117,15 +122,13 @@
                         </ol>
                         <div class="card mb-4">
                              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                 <h4 class="m-0 font-weight-bold text-primary">질의응답</h4>
+                                 <h4 class="m-0 font-weight-bold text-primary">질문</h4>
                              </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                    <form action="AnswerPro.jsp?no<%=no %>" method="post">
-                                    	<input type="hidden" value="<%=no%>" name="no">
-                                    	<div class="col-md-12">
-											<div class="row">
+                                  		<div class="col-md-12">
+										<div class="row">
 											<input type="hidden" value="<%=id%>" name="id">
 												<div class="col-md-2">
 													<span class="qna_title">제목</span>
@@ -138,7 +141,8 @@
 													<span class="qna_title">내용</span>
 												</div>
 												<div class="col-md-10">
-													<textarea class="qna" rows="20" readonly><%=dto.getContent()%></textarea>
+													<input type="text" class="qna" value="<%=dto.getContent()%>" readonly>
+<%-- 													<textarea class="qna" rows="20" readonly><%=dto.getContent()%></textarea> --%>
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
@@ -147,33 +151,50 @@
 												<div class="col-md-10">
 													<input type="text" class="qna" value="<%=dto.getWriteDate()%>" readonly>
 												</div>
-												<br><br><hr>
-												<div class="col-md-2">
-													<span class="qna_title">제목</span>
-												</div>
-												<div class="col-md-10">
-													<input type="text" class="qna" name="title" value="<%=title%> → 에 대한 답변글">
-												</div>
-												<br><br><hr>
-												<div class="col-md-2">
-													<span class="qna_title">내용</span>
-												</div>
-												<div class="col-md-10">
-													<textarea class="qna" name="content" rows="20"></textarea>
-												</div>
-												<br><br><br><hr>
+												<br><br><hr width="100%">
 											</div>
-										</div>
-	                   	           		<input type="submit" value="답글작성"  class="writeBtn" id="AnswerPro"> &nbsp;&nbsp;
-	                   	           		<input type="button" value="답글삭제"  class="writeBtn" id="delQna" onclick="confirm('해당 게시글을 삭제하시겠습니까?'); location.href='delQna.jsp?no=<%=no%>'"> &nbsp;&nbsp;
-	                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/qna.jsp'">
-	                   	           	</form>
-	                   	           	<br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                               			</div>	
+                            		</div>
+                        		</div>
+	                        <div class="card mb-4">
+	                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	                                 <h4 class="m-0 font-weight-bold text-primary">답변</h4>
+	                             </div>
+	                                <!-- Card Body -->
+	                                <div class="card-body">
+	                                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+	                                    <form action="AnswerPro.jsp?no<%=no %>" method="post">
+	                                    	<input type="hidden" value="<%=no%>" name="no">
+	                                    	<input type="hidden" value="<%=pos%>" name="pos">
+	                                    	<input type="hidden" value="<%=level%>" name="level">
+	                                    	<div class="col-md-12">
+												<input type="hidden" value="<%=id%>" name="id">
+												<div class = "row">
+													<div class="col-md-2">
+														<span class="qna_title">제목</span>
+													</div>
+													<div class="col-md-10">
+														<input type="text" class="qna" name="title" value="[답변] <%=title%>">
+													</div>
+													<br><br><hr>
+													<div class="col-md-2">
+														<span class="qna_title">내용</span>
+													</div>
+													<div class="col-md-10">
+														<textarea class="qna" name="content" rows="20"></textarea>
+													</div>
+													<br><br><br><hr>
+												</div>
+											</div>
+		                   	           		<input type="submit" value="답글작성"  class="writeBtn" id="AnswerPro"> &nbsp;&nbsp;
+		                   	           		<input type="button" value="답글삭제"  class="writeBtn" id="delQna" onclick="confirm('해당 게시글을 삭제하시겠습니까?'); location.href='delQna.jsp?no=<%=no%>'"> &nbsp;&nbsp;
+		                   	           		<input type="button" value="글목록" class="writeBtn" onclick="location.href='../menu/qna.jsp'">
+		                   	           	</form>
+		                   	           	<br>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

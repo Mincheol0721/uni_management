@@ -72,9 +72,9 @@
             <div id="layoutSidenav_content">
                 <main>           
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 페이지</h1>
+                        <h1 class="mt-4">세부 강의 안내</h1>
                         <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">moreInfo</li>                        
+                            <li class="breadcrumb-item active">moreInfo_student</li>                       
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
@@ -86,8 +86,7 @@
 	                   	           			<th width=5%>강의주제</td>
 	                   	           			<th width=5%>강의방식</td>
 	                   	           			<th width=5%>강의기간</td>
-	                   	           			<th width=5%>과제</td>	
-	                   	           			<th width=5%></td>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%>과제</td>		                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
   		
@@ -111,8 +110,7 @@
 							            <td><%= bean.getTopic() %></td>
 							            <td><%= bean.getWay() %></td>
 							            <td><%= bean.getTime() %></td>
-							            <td><%= bean.getHomework() %></td>	
-							            <td><a href="#">과제제출</a></td>	
+							            <td><%= bean.getHomework() %></td>								            	
          	           				</tr>
                   	           	
                   	           	<%
