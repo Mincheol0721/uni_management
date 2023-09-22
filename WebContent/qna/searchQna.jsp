@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.List"%>
 <%@page import="qna.QnaDTO"%>
 <%@page import="qna.QnaDAO"%>
@@ -13,8 +14,10 @@
    String searchText = request.getParameter("searchText");
 
 
-	byte[] utf8Bytes = searchText.getBytes("UTF-8");
-	String searchText_ = new String(utf8Bytes, "ISO-8859-1");
+   searchText = URLEncoder.encode(searchText , "UTF-8");
+
+byte[] utf8Bytes = searchText.getBytes("UTF-8");
+String searchText_ = new String(utf8Bytes, "ISO-8859-1");
 
    
 //    System.out.println(keyField + " + " + searchText);
