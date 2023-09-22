@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 교수정보게시판</title>
+        <title>OO대학교 학사관리 시스템 - 학생정보게시판</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="../js/scripts.js"></script>
@@ -39,7 +39,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">교수 정보 등록</h1>
+                        <h1 class="mt-4">학생 정보 등록</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">professor_reg</li>
                         </ol>
@@ -93,35 +93,14 @@
 						%>
 						<tr>
 							<th>소속 학부</th>
-							<td><select name="faculty">
-								<%for(int i=0; i<listf.size(); i++ ){
-									MemberDTO dto = (MemberDTO)listf.get(i);
-									
-									
-								    %>
-								    
-										<option id="option" value="<%= dto.getFaculty()%>">
-										<%=dto.getFaculty()%>
-										</option>
-								<% 	
-								}
-								%>
+							<td><select name="faculty" id="faculty">
+							
 							</select></td>
 						</tr>
 						<tr>
-							<th>소속 전공</th>
-							<td><select name="dept">
-									<%
-							for(int i=0; i<listd.size(); i++ ){
-								MemberDTO dto = (MemberDTO)listd.get(i);
-								
-						    %>
-								<option id="option" value="<%= dto.getDept()%>">
-								<%= dto.getDept()%>
-								</option>
-							<%	
-							}
-							%>
+							<th>소속 학과</th>
+							<td><select name="dept" id="dept">
+							
 									
 
 							</select></td>
@@ -212,7 +191,55 @@
         		return true;
         		
         		
-        	}
+        		
+        	}//valid닫는부분
+        	
+        	
+        	var $fsel = $("select[name=faculty]");//학부
+    		var $dselect = $("#dept");//학과
+    		
+    			
+    		
+			$.ajax({
+				url : '<%=request.getContextPath()%>/register/faculty.do',
+				type : 'POST',
+				dataType : 'json',
+				success : function(data){
+					
+					if(data != null) {
+		        		$fsel.empty();
+					}//if 닫기
+					
+					$.each(data, function(i, dto) {
+						$fsel.append("<option value='" + dto.fname + "'>" + dto.fname + "</option>"); 
+					});//each닫기
+				}//success닫기
+			}); //학부 ajax
+			
+				
+			$("#faculty").on("change", function() {
+				
+				$.ajax({
+					url : '<%=request.getContextPath()%>/register/dept.do',
+					type : 'POST',
+					data : {foption : $(this).val(), fname : $fsel.val()},
+					dataType : 'json',
+					success : function(data){
+						
+						if(data != null) {
+							$dselect.empty();
+						}//if닫기
+						
+						$.each(data, function(index, dto) {
+							$dselect.append("<option value='" + dto.dname + "'>" + dto.dname + "</option>"); 
+						
+							console.log("dname: " + dto.dname);
+						});//each닫기
+						
+					}//success닫기
+				});//ajax닫기
+				
+			}); //onchange 이벤트핸들러
         </script>
     </body>
 </html>

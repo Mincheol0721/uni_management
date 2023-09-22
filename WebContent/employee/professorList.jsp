@@ -382,7 +382,7 @@
                    	           			<td width=5%>주소</td>
                    	           			<td width=5%>비밀번호</td>
                    	           			<td width=5%>학부</td>
-                   	           			<td width=5%>전공</td>
+                   	           			<td width=5%>학과</td>
                    	           		</tr>
                    	       			<%
                    	       			ProfessorDAO dao = new ProfessorDAO();
