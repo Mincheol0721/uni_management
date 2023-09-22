@@ -1,3 +1,4 @@
+<%@page import="member.MemberDTO"%>
 <%@page import="javax.sql.DataSource"%>
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="board_course.BoardBean"%>
@@ -11,6 +12,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 
 <c:set var="id" value="${sessionScope.id}" />
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +44,9 @@
 		   (request.getParameterValues("compyear") != null) ||	
 		   (request.getParameterValues("compsem") != null) ||		
 		   (request.getParameterValues("grade") != null) ||	
-		   (request.getParameterValues("professor") != null)){
+		   (request.getParameterValues("ctime") != null) ||
+		   (request.getParameterValues("professor") != null) ||
+		   (request.getParameterValues("id") != null)){
 			
 			String[] cname = request.getParameterValues("cname");
 			System.out.print("과목명 : " + cname.length);	
@@ -59,8 +63,14 @@
 			String[] grade = request.getParameterValues("grade");
 			System.out.print("학점 : " + grade.length);
 			
+			String[] ctime = request.getParameterValues("ctime");
+			System.out.print("강의시간 : " + ctime.length);
+			
 			String[] professor = request.getParameterValues("professor");
- 			System.out.print("담당교수 : " + professor.length);
+ 			System.out.print("담당교수명 : " + professor.length);
+ 			
+ 			String[] id = request.getParameterValues("id");
+ 			System.out.print("담당교수 아이디 : " + id.length);
  			
 			//과목 정보를 저장할 리스트 생성
 			List<BoardBean> arrayList = new ArrayList<BoardBean>();			
@@ -79,7 +89,9 @@
 		 				boardBean.setCompyear(Integer.valueOf(compyear[i]));
 		 				boardBean.setCompsem(Integer.valueOf(compsem[i]));
 		 				boardBean.setGrade(Integer.valueOf(grade[i]));
+		 				boardBean.setCtime(ctime[i]);
 		 				boardBean.setProfessor(professor[i]);
+		 				boardBean.setId(id[i]);
 		 				
 		 		        arrayList.add(boardBean);
 		
@@ -98,21 +110,26 @@
 	 				boardBean.setCompyear(Integer.valueOf(compyear[0]));
 	 				boardBean.setCompsem(Integer.valueOf(compsem[0]));
 	 				boardBean.setGrade(Integer.valueOf(grade[0]));
+	 				boardBean.setCtime(ctime[0]);
 	 				boardBean.setProfessor(professor[0]);
+	 				boardBean.setId(id[0]);
 	 				
 	 		       dao.insertSB(boardBean);
 					
 				}
-
 		}					
-	 			
+	 		
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
- 		%> 
+		String professorName = request.getParameter("professor");
+	
+ 		%>   
    
    
+   		
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <jsp:include page="/inc/logo.jsp" />
         </nav>
@@ -144,6 +161,7 @@
                    	           			<th width=5%>이수학년</th>
                    	           			<th width=5%>이수학기</th>
                    	           			<th width=5%>학점</th>
+                   	           			<th width=5%>강의시간</th>
                    	           			<th width=5%>담당교수</th>
                    	           			<th width=2%>삭제</th> 
                    	           			<th width=2%>등록</th>                  	           		                 	           			
@@ -179,15 +197,17 @@
                    	           					<option value="3">3학점</option>                   	           					
                    	           				</select>
                    	           			</td>
-                   	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="${id}"/></td>
+                   	           			<td width=5%><input type="text" name="ctime"/></td>                    	           			
+                   	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="${professorName}" id="prof"/></td>
+                   	           			<input type="hidden" name="id" value="${id}">
                    	           			<td width=5%><input type="button" value="-" class="btn2"></td>
-                   	           			<td width=5%><input type="button" value="등록" class="btn4"></td>             	           			
+                   	           			<td width=5%><input type="button" value="등록" class="btn4"></td>                  	           			          	           			
                    	           		</tr>
                    	           </table>
                             </p>
                         </div>
                     </div>
-                    </form>
+                    </form>     
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -240,7 +260,9 @@
 	           					'<option value="3">3학점</option>'+                   	           					
 	           				'</select>'+
 	           			'</td>'+
-	           			'<td width="5%" style="text-align:center;"><input type="text" name="professor" value="${id}"/></td>'+
+	           			'<td width=5%><input type="text" name="ctime"/></td> ' + 
+	           			'<td width="5%" style="text-align:center;"><input type="text" name="professor" value="${professorName}" id="prof"/></td>'+
+	           			'<input type="hidden" name="id" value="${id}">' +
 	           			'<td width="5%"><input type="button" value="-" class="btn2"></td>'+
 	           			'<td width="5%"><input type="button" value="등록" class="btn4"></td>'+
 	           		'</tr>';
@@ -254,6 +276,10 @@
 		            $(this).closest("tr").remove();
 		        });
 				
+		        //과목 추가시 본인 아이디는 바꿀 수 없게끔 readOnly처리   
+            	document.getElementById('prof').readOnly = true;              	           			
+            	
+            	
 		        $(document).on("click", ".btn4", function (e) {
 
 		        	//'등록' 버튼 클릭 시 해당 tr의 정보만 DB에 전송!
@@ -263,19 +289,22 @@
 		            var compyear = trElement.find("select[name=compyear]").val();
 		            var compsem = trElement.find("select[name=compsem]").val();
 		            var grade = trElement.find("select[name=grade]").val();
-		            var professor = trElement.find("input[name=professor]").val();		        			        	
+		            var ctime = trElement.find("input[name=ctime]").val();
+		            var professor = trElement.find("input[name=professor]").val();	
+		            var id = "${id}";
 		        	var target = $(e.target);		        	
 		        	
 		        	console.log("e.target.value: " + e.target.value);
 		        	
 		        	console.log("등록버튼을 클릭한 행의 과목 정보 : " + cname + ", " + compdiv + ", " + 
-		        			    compyear + ", " + compsem + ", " + grade + ", " + professor);
+		        			    compyear + ", " + compsem + ", " + grade + ", " + ctime + ", " + 
+		        			    professor + ", " + id);
 		        	
 		        	$.ajax({
 		        		
 		        		url:'<%=request.getContextPath()%>/addCourse.do',
 		        		type: 'post',
-		        		data: {cname:cname, compdiv:compdiv, compyear:compyear, compsem:compsem, grade:grade, professor:professor},
+		        		data: {cname:cname, compdiv:compdiv, compyear:compyear, compsem:compsem, grade:grade, ctime:ctime, professor:professor, id:id},
 		        		dataType:'text',
 		        		success: function(data){
 		        			

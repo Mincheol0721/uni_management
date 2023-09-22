@@ -103,14 +103,14 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</th>
-	                   	           			<th width=5%>차시</th>                   	           			
+	                   	           			<th width=3%>주차</th>
+	                   	           			<th width=3%>차시</th>                   	           			
 	                   	           			<th width=5%>강의주제</th>
 	                   	           			<th width=5%>강의방식</th>
 	                   	           			<th width=5%>강의기간</th>
 	                   	           			<th width=5%>과제</th>	
-	                   	           			<th width=5%>수정하기</th>
-	                   	           			<th width=5%>삭제하기</th>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=3%>수정하기</th>
+	                   	           			<th width=3%>삭제하기</th>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
   		

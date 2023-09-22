@@ -157,9 +157,9 @@
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
 	                   	           			<td width=5%></td> 
-	                   	           			<th width=5%>학점</th>
-	                   	           			<th width=5%>이수학년</th>
-	                   	           			<th width=5%>이수학기</th>
+	                   	           			<th width=4%>학점</th>
+	                   	           			<th width=4%>이수학년</th>
+	                   	           			<th width=4%>이수학기</th>
 	                   	           			<th width=5%>과목명</th>
 	                   	           			<th width=5%>담당교수</th>	                   	           			
 	                   	           			<th width=5%>이수구분</th>          	           			                   	           			               	           			

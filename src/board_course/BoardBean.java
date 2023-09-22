@@ -1,5 +1,7 @@
 package board_course;
 
+import java.sql.Time;
+
 //개설 과목
 
 //VO역할을 하는 클래스
@@ -12,26 +14,32 @@ public class BoardBean {
 	private int compyear; //이수 학년
 	private int compsem; //이수 학기
 	private int grade; //학점
-	private String professor; //담당 교수
+	private String professor; //담당 교수 이름
 	private String id; //등록한 과목에 대한 교수 아이디
+	private String ctime; //강의시간(요일, 교시)
 	
 
 	
 	public BoardBean() {
-		// TODO Auto-generated constructor stub
+	
 	}
 	
-	
-	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String id) {
-		
+
+	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor,
+			String id, String ctime) {
 		this.ccode = ccode;
 		this.cname = cname;
 		this.compdiv = compdiv;
 		this.compyear = compyear;
 		this.compsem = compsem;
 		this.grade = grade;
+		this.professor = professor;
 		this.id = id;
+		this.ctime = ctime;
 	}
+
+
+
 
 
 	//getter, setter 메소드
@@ -77,16 +85,21 @@ public class BoardBean {
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
-
-
 	public String getId() {
 		return id;
 	}
-
-
 	public void setId(String id) {
 		this.id = id;
 	}
+	public String getCtime() {
+		return ctime;
+	}
+	public void setCtime(String ctime) {
+		this.ctime = ctime;
+	}
+
+
+
 
 
 

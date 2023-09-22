@@ -72,6 +72,7 @@
                    	           			<th width=5%>이수학년</th>
                    	           			<th width=5%>이수학기</th>
                    	           			<th width=5%>학점</th>
+                   	           			<th width=5%>강의시간</th>                  	           			
                    	           			<th width=5%>담당교수</th>
                    	           			<th width=2%></th>                  	           		                 	           			
                    	           		</tr>
@@ -105,7 +106,9 @@
 									            <option value="3" <%if(bean.getGrade() == 3) { %>selected<% }%>>3학점</option>                   	           					
 									        </select>
 									    </td>
-                   	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="${id}"/></td>
+									    <td width=5%><input type="text" name="ctime" value="<%=bean.getCtime()%>"/></td> 
+									    <input type="hidden" name="id" value="${id}"/>									    
+                   	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="<%=bean.getProfessor()%>" id="prof"/></td>
                    	           			<td width=5%><input type="submit" value="수정" class="btn4"></td>             	           			
                    	           		</tr>
                    	           </table>
@@ -114,6 +117,9 @@
                     </div>
                     </form>
                 </main>
+                <script> 
+                	document.getElementById('prof').readOnly = true;  //과목 수정시 본인 이름은 바꿀 수 없게끔 readOnly처리                	           			
+                </script> 
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
