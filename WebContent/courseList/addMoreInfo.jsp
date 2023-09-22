@@ -26,26 +26,21 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
-    </head>
+    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">      
+    </head>    
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");
+    			
+        		MoreInfoBean bean = new MoreInfoBean();
+        		
+        		String cname = request.getParameter("cname");
         	
-		        MoreInfoDAO dao = new MoreInfoDAO();
-				
-				String week = request.getParameter("week");
-				String cname = request.getParameter("cname");
-				
-				MoreInfoBean bean = dao.getMoreInfo(Integer.parseInt(week));
-				
-				System.out.println("수정할 주차 : " + week);
-				System.out.println("수정할 과목명 : " + cname);
-			%>		
+			%>	
 			
-						
-					
+			<jsp:useBean id="moreInfoDAO" class="courseList.MoreInfoDAO"/>		
+								
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
@@ -69,23 +64,18 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
            
             <div id="layoutSidenav_content">
-                <main> 
-                	<form action="modMoreInfoPro.jsp?cname=<%=cname %>" method="POST"> 
-                	<input type="hidden" id="week" name="week" value="<%=week%>"/>          
+                <main>   
+                	<form action="addMoreInfoPro.jsp">              	
+                	<input type="hidden" name="cname" value="<%=cname%>">             	     
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 수정</h1>
+                        <h1 class="mt-4">세부 강의 추가</h1>
                         <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">modMoreInfo</li>                        
+                            <li class="breadcrumb-item active">addMoreInfo</li>                        
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
@@ -98,17 +88,17 @@
 	                   	           			<th width=5%>강의방식</td>
 	                   	           			<th width=5%>강의기간</td>
 	                   	           			<th width=5%>과제</td>	
-	                   	           			<th width=5%>강의수정</td>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%></td>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead>  		
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           									         	           				
-								        <td width="5%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
-								        <td width="5%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
-								        <td width="5%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
-								        <td width="5%"><input type="text" name="way" value="<%=bean.getWay()%>"/></td>
-								        <td width="5%"><input type="text" name="time" value="<%=bean.getTime()%>"/></td>
-								        <td width="5%"><input type="text" name="homework" value="<%=bean.getHomework()%>"/></td>
-								        <td width="5%"><input type="submit" value="수정"></td>
+                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">          	           									         	           				
+								        <td width="5%"><input type="text" name="week"/></td>
+								        <td width="5%"><input type="text" name="ses"/></td>
+								        <td width="5%"><input type="text" name="topic"/></td>
+								        <td width="5%"><input type="text" name="way"/></td>
+								        <td width="5%"><input type="text" name="time"/></td>
+								        <td width="5%"><input type="text" name="homework"/></td>
+								        <td width="5%"><input type="submit" value="추가" class="btn1"></td>
 								    </tr>  	           										           										           		                 	           		
                    	           </table>
                             </p>
@@ -130,6 +120,7 @@
                 </footer>
             </div>
         </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

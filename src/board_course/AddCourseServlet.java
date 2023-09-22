@@ -26,7 +26,9 @@ public class AddCourseServlet extends HttpServlet{
 		String compyear = request.getParameter("compyear");	
 		String compsem = request.getParameter("compsem");
 		String grade = request.getParameter("grade");
+		String ctime = request.getParameter("ctime");
 		String professor = request.getParameter("professor");
+		String id = request.getParameter("id");
 		
 		BoardBean bean = new BoardBean();
 		
@@ -35,7 +37,9 @@ public class AddCourseServlet extends HttpServlet{
 		bean.setCompsem(Integer.parseInt(compsem));
 		bean.setCompyear(Integer.parseInt(compyear));
 		bean.setGrade(Integer.parseInt(grade));
+		bean.setCtime(ctime);
 		bean.setProfessor(professor);
+		bean.setId(id);
 		
 		int result = new BoardDAO().insertSB(bean); 
 		if (result == 1) {

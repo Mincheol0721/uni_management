@@ -33,7 +33,7 @@
 <script>
 
 	alert("선택한 강의가 수정되었습니다.");
-	location.href = "moreInfo.jsp?cname=" + encodeURIComponent("<%=bean.getCname()%>");
+	location.href = "moreInfo_professor.jsp?cname=" + encodeURIComponent("<%=bean.getCname()%>");
 
 	
 </script>

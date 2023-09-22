@@ -11,12 +11,13 @@ public class MoreInfoBean {
 	private String way;
 	private String time;
 	private String homework;
+	private String id;
 	
 	public MoreInfoBean() {
 		
 	}
 
-	public MoreInfoBean(String cname, int week, int session, String topic, String way, String time, String homework) {
+	public MoreInfoBean(String cname, int week, int session, String topic, String way, String time, String homework, String id) {
 		super();
 		this.cname = cname;
 		this.week = week;
@@ -25,6 +26,7 @@ public class MoreInfoBean {
 		this.way = way;
 		this.time = time;
 		this.homework = homework;
+		this.id = id;
 	}
 
 	//getter, setter 메소드들
@@ -82,6 +84,14 @@ public class MoreInfoBean {
 
 	public void setHomework(String homework) {
 		this.homework = homework;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	

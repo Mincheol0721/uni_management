@@ -57,6 +57,7 @@ public class SearchServlet extends HttpServlet {
 			jsonObject.put("compyear", bean.getCompyear());
 			jsonObject.put("compsem", bean.getCompsem());			
 			jsonObject.put("grade", bean.getGrade());
+			jsonObject.put("ctime", bean.getCtime());
 			jsonObject.put("professor", bean.getProfessor());
 			
 			jsonArray.add(jsonObject);			
