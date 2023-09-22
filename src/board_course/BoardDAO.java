@@ -147,6 +147,7 @@ public class BoardDAO {
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
 				bean.setProfessor(rs.getString("professor"));
+				bean.setId(rs.getString("id"));
 				
 				list.add(bean);
 				

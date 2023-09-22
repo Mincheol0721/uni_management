@@ -170,12 +170,18 @@
                    	           		
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
+                  	           		
+                  	           		
+                  	           		
                   	           <%	
+                  	       			String loggedInProfessor = (String)session.getAttribute("id");
+                  	           		
                   	           		List list = boardDAO.getList(); 
                   	           	
                   	           		for(int i=0; i < list.size(); i++){
                   	           			
                   	           			BoardBean bean = (BoardBean)list.get(i);
+                  	           			              	               
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                   	           			<td><%= bean.getCcode() %></td>
@@ -185,15 +191,20 @@
 							            <td><%= bean.getCompsem() %>학기</td>
 							            <td><%= bean.getGrade() %>학점</td>
 							            <td><%= bean.getProfessor() %></td>
-							            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
-							            <td><a href="javascript:delC(<%=bean.getCcode()%>)">과목 삭제</a></td>	
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                  	           		} 
-                  	           		
-                  	            %>		
+									<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
+							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
+							     	//System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							     %>
+						            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
+						            <td><a href="javascript:delC('<%=bean.getCcode()%>')">과목 삭제</a></td>	
+         	           			<% }else{
+         	           				//System.out.println(loggedInProfessor + " : " + bean.getId());
+         	           			%>	
+		       	           			<td>-</td>
+							        <td>-</td>	
+							    <% } %>
+         	           				</tr>                 	           		
+                  	           	<% } %>		
                   	           		</tbody>
      	           										           		                 	           		
                    	           </table>

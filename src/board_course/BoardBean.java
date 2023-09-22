@@ -13,6 +13,7 @@ public class BoardBean {
 	private int compsem; //이수 학기
 	private int grade; //학점
 	private String professor; //담당 교수
+	private String id; //등록한 과목에 대한 교수 아이디
 	
 
 	
@@ -75,6 +76,19 @@ public class BoardBean {
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
+
+
+	public String getId() {
+		return id;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+
 	
 
 	
