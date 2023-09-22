@@ -22,7 +22,7 @@ public class BoardBean {
 	}
 	
 	
-	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade) {
+	public BoardBean(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String id) {
 		
 		this.ccode = ccode;
 		this.cname = cname;
@@ -30,6 +30,7 @@ public class BoardBean {
 		this.compyear = compyear;
 		this.compsem = compsem;
 		this.grade = grade;
+		this.id = id;
 	}
 
 

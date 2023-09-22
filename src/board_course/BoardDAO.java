@@ -72,7 +72,7 @@ public class BoardDAO {
 			//DB연결
 			con = ds.getConnection();
 			if (searchText.equals("") || searchText.equals(null)) {
-				sql = "select * from course";
+				sql = "select * from course order by ccode ASC";
 			}else {
 				sql = "select * from course where " + search + " like '%"+searchText+"%'";
 			}
@@ -126,7 +126,7 @@ public class BoardDAO {
 			con = ds.getConnection();
 			
 			//sql문
-			sql = "select * from course";
+			sql = "select * from course order by ccode ASC";
 			
 			//DB에 쿼리문 문자열 전송
 			pstmt = con.prepareStatement(sql);

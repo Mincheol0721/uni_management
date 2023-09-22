@@ -1,3 +1,4 @@
+<%@page import="board_course.BoardBean"%>
 <%@page import="courseList.CoursePlanBean"%>
 <%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.MoreInfoBean"%>
@@ -115,7 +116,8 @@
   		
                   	           		<tbody>
                   	           <%	
-                  	           
+                  	         		String loggedInProfessor = (String)session.getAttribute("id");
+                  	           		
 	                        		MoreInfoDAO dao = new MoreInfoDAO();
 	                   	           
 	                        		String cname = request.getParameter("cname");         		
@@ -125,7 +127,8 @@
                    	           		List<MoreInfoBean> list = dao.getmoreList(cname);
                   	           	
                    	           		for(MoreInfoBean bean : list){ 
-                   	          		
+         	           	
+                   	           			
                    	           	%> 
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           			
                   	           			<td><%= bean.getWeek() %>주차</td>
@@ -134,15 +137,20 @@
 							            <td><%= bean.getWay() %></td>
 							            <td><%= bean.getTime() %></td>
 							            <td><%= bean.getHomework() %></td>	
+							    	<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
+							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
+							     	System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							     %>         
 							            <td><a href="modMoreInfo.jsp?cname=<%= bean.getCname() %>&week=<%= bean.getWeek()%>">수정</a></td>	
 										<td><a href="javascript:delC('<%= bean.getCname()%>','<%=bean.getWeek()%>')">삭제</a></td>   	           				
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                   	           		}  
-                  	           		
-                   	            %>		 
+                  	          	<% }else{
+         	           				System.out.println(loggedInProfessor + " : " + bean.getId());
+         	           			%>	
+		       	           			<td>-</td>
+							        <td>-</td>	
+							    <% } %>
+         	           				</tr>                 	           		
+                  	           	<% } %>		
                   	           		</tbody>
      	           										           										           		                 	           		
                    	           </table>
