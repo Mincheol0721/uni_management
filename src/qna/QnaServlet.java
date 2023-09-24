@@ -86,17 +86,17 @@ public class QnaServlet extends HttpServlet {
 				} //for
 				
 			} else if(action.equals("/search.do")) {
-				int startRow = Integer.parseInt( request.getParameter("startRow") );
-				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
+//				int startRow = Integer.parseInt( request.getParameter("startRow") );
+//				int pageSize = Integer.parseInt( request.getParameter("pageSize") );
 				String keyField = request.getParameter("keyField");
 			    String searchText = request.getParameter("searchText");
 			    
-				System.out.println("startRow: " + startRow);
-				System.out.println("pageSize: " + pageSize);
-			    System.out.println("keyField: " + keyField);
-			    System.out.println("searchText: " + searchText);
+//				System.out.println("startRow: " + startRow);
+//				System.out.println("pageSize: " + pageSize);
+//			    System.out.println("keyField: " + keyField);
+//			    System.out.println("searchText: " + searchText);
 				
-				List<QnaDTO> list = dao.getBoardList(keyField, searchText, startRow, pageSize);
+				List<QnaDTO> list = dao.getBoardList(keyField, searchText);
 					
 				for( QnaDTO dto : list ) {
 					

@@ -72,7 +72,7 @@ public class BoardDAO {
 			//DB연결
 			con = ds.getConnection();
 			if (searchText.equals("") || searchText.equals(null)) {
-				sql = "select * from course";
+				sql = "select * from course order by ccode ASC";
 			}else {
 				sql = "select * from course where " + search + " like '%"+searchText+"%'";
 			}
@@ -94,6 +94,7 @@ public class BoardDAO {
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
 				bean.setProfessor(rs.getString("professor"));
+				bean.setCtime(rs.getString("ctime"));
 				
 				list.add(bean);				
 				
@@ -126,7 +127,7 @@ public class BoardDAO {
 			con = ds.getConnection();
 			
 			//sql문
-			sql = "select * from course";
+			sql = "select * from course order by ccode ASC";
 			
 			//DB에 쿼리문 문자열 전송
 			pstmt = con.prepareStatement(sql);
@@ -146,7 +147,9 @@ public class BoardDAO {
 				bean.setCompyear(rs.getInt("compyear"));
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
+				bean.setCtime(rs.getString("ctime"));
 				bean.setProfessor(rs.getString("professor"));
+				bean.setId(rs.getString("id"));
 				
 				list.add(bean);
 				
@@ -175,10 +178,8 @@ public class BoardDAO {
 			con = ds.getConnection();
 			
 			//insert sql문 만들기
-			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, professor)"
-					   + "values (?, ?, ?, ?, ?, ?);";
-			
-			//System.out.println("insertSB sql문 : " + sql);
+			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, ctime, professor, id)"
+					   + "values (?, ?, ?, ?, ?, ?, ?, ?);";
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -188,7 +189,9 @@ public class BoardDAO {
 			pstmt.setInt(3, boardBean.getCompyear()); 		//이수 학년
 			pstmt.setInt(4, boardBean.getCompsem()); 		//이수 학기
 			pstmt.setInt(5, boardBean.getGrade()); 			//학점
-			pstmt.setString(6, boardBean.getProfessor()); 	//담당 교수
+			pstmt.setString(6, boardBean.getCtime());		//강의시간
+			pstmt.setString(7, boardBean.getProfessor()); 	//담당 교수 이름
+			pstmt.setString(8, boardBean.getId());			//담당 교수 아이디
 
 			//insert문 실행
 			return pstmt.executeUpdate();			
@@ -211,12 +214,12 @@ public class BoardDAO {
 	        System.out.println("DB 연결 성공");
 	        
 	        // insert SQL 문 만들기
-	        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO course (cname, compdiv, compyear, compsem, grade, professor) VALUES ");
+	        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO course (cname, compdiv, compyear, compsem, grade, ctime, professor, id) VALUES ");
 	        for (int i = 0; i < arrayList.size(); i++) {
 	            if (i > 0) {
 	                sqlBuilder.append(", ");
 	            }
-	            sqlBuilder.append("(?, ?, ?, ?, ?, ?)");
+	            sqlBuilder.append("(?, ?, ?, ?, ?, ?, ?, ?)");
 	        }
 	        	     	        
 	        // insert 문 실행할 pstmt 실행 객체 얻기
@@ -229,12 +232,15 @@ public class BoardDAO {
 	        for (int i = 0; i < arrayList.size(); i++) {
 	        	
 	            BoardBean boardBean = arrayList.get(i);
-	            pstmt.setString(i * 6 + 1, boardBean.getCname());       //과목명
-	            pstmt.setString(i * 6 + 2, boardBean.getCompdiv());     //이수 구분
-	            pstmt.setInt(i * 6 + 3, boardBean.getCompyear());       //이수 학년
-	            pstmt.setInt(i * 6 + 4, boardBean.getCompsem());        //이수 학기
-	            pstmt.setInt(i * 6 + 5, boardBean.getGrade());          //학점
-	            pstmt.setString(i * 6 + 6, boardBean.getProfessor());   //담당 교수
+	            
+	            pstmt.setString(i * 8 + 1, boardBean.getCname());       //과목명
+	            pstmt.setString(i * 8 + 2, boardBean.getCompdiv());     //이수 구분
+	            pstmt.setInt(i * 8 + 3, boardBean.getCompyear());       //이수 학년
+	            pstmt.setInt(i * 8 + 4, boardBean.getCompsem());        //이수 학기
+	            pstmt.setInt(i * 8 + 5, boardBean.getGrade());          //학점
+	            pstmt.setString(i * 8 + 6, boardBean.getCtime()); 		//강의시간
+	            pstmt.setString(i * 8 + 7, boardBean.getProfessor());   //담당 교수 이름
+	            pstmt.setString(i * 8 + 8, boardBean.getId());   		//담당 교수 아이디
 	            
 	        }	        
 	        // insert 문 실행
@@ -304,7 +310,10 @@ public class BoardDAO {
 				bean.setCompyear(rs.getInt("compyear"));
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
+				bean.setCtime(rs.getString("ctime"));
 				bean.setProfessor(rs.getString("professor"));
+				bean.setId(rs.getString("id"));
+				
 				
 			}	
 			
@@ -330,7 +339,7 @@ public class BoardDAO {
 			
 			//DB연결
 			con = ds.getConnection();
-			String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=? where ccode=?";
+			String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=?, ctime=? where ccode=?";
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, bean.getCname());
@@ -338,7 +347,8 @@ public class BoardDAO {
 			pstmt.setInt(3, bean.getCompyear());
 			pstmt.setInt(4, bean.getCompsem());
 			pstmt.setInt(5, bean.getGrade());
-			pstmt.setInt(6, bean.getCcode());		
+			pstmt.setString(6, bean.getCtime());	
+			pstmt.setInt(7, bean.getCcode());		
 			
 			pstmt.executeUpdate();
 			

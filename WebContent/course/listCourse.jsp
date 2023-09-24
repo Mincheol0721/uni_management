@@ -70,6 +70,7 @@
                	           			"<td width=5%>" + boardbean.compyear + "학년" + "</td>" + 
                	           			"<td width=5%>" + boardbean.compsem + "학기" +"</td>" + 
                	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
+               	           			"<td width=5%>" + boardbean.ctime +"</td>" + 
                	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
                	           			"<td width=5%><a href='modCourse.jsp' id='modCourse'>과목 수정</td>" + 
                	           			"<td width=5%><a href='delCourse.jsp' id='delCourse'>과목 삭제</td>" +
@@ -99,6 +100,10 @@
  		}	 		
  	 	
  	</script>
+ 	
+ 		<style>     	   	  	
+		  a {text-decoration-line: none;}			
+    	</style>
  	
  	
     </head>
@@ -143,6 +148,28 @@
                         	</select>
                         	<input type="text" name="searchText" id="searchText"/>
                         	
+                        	<%
+							    String loggedInProfessor = (String) session.getAttribute("id");
+							
+							    List list = boardDAO.getList();
+							
+							    String professorName = "";
+							
+							    for (int i = 0; i < list.size(); i++) {
+							    	
+							        BoardBean bean = (BoardBean) list.get(i);
+							        
+							        if (loggedInProfessor.equals(bean.getId())) {
+							        	
+							        	// professorName 값을 세션에 저장
+							            professorName = bean.getProfessor();							            
+							            session.setAttribute("professorName", professorName);
+							            
+							            break; // 교수명을 찾았으므로 반복문 종료
+							        }
+							    }
+							%>
+
                         	<%-- 교수님이 과목을 직접 추가하는 페이지로 이동하는 링크 --%>
                         	<a href="addCourse.jsp">과목 추가</a>
                         </form>
@@ -158,6 +185,7 @@
 	                   	           			<th width=5%>이수학년</th>
 	                   	           			<th width=5%>이수학기</th>
 	                   	           			<th width=5%>학점</th>
+	                   	           			<th width=5%>강의시간</th>
 	                   	           			<th width=5%>담당교수</th>   
 	                   	           			<th width=5%>수정</th> 
 	                   	           			<th width=5%>삭제</th>                	           			
@@ -166,12 +194,12 @@
                    	           		
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
-                  	           <%	
-                  	           		List list = boardDAO.getList(); 
                   	           	
+                  	           	<%
                   	           		for(int i=0; i < list.size(); i++){
                   	           			
                   	           			BoardBean bean = (BoardBean)list.get(i);
+                  	           			              	               
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                   	           			<td><%= bean.getCcode() %></td>
@@ -180,16 +208,22 @@
 							            <td><%= bean.getCompyear() %>학년</td>
 							            <td><%= bean.getCompsem() %>학기</td>
 							            <td><%= bean.getGrade() %>학점</td>
-							            <td><%= bean.getProfessor() %></td>
-							            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
-							            <td><a href="javascript:delC(<%=bean.getCcode()%>)">과목 삭제</a></td>	
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                  	           		} 
-                  	           		
-                  	            %>		
+							            <td><%= bean.getCtime() %></td>
+							            <td><%= bean.getProfessor() %></td>							            
+									<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
+							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
+							     	//System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							     %>
+						            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
+						            <td><a href="javascript:delC('<%=bean.getCcode()%>')">과목 삭제</a></td>	
+         	           			<% }else{
+         	           				//System.out.println(loggedInProfessor + " : " + bean.getId());
+         	           			%>	
+		       	           			<td>-</td>
+							        <td>-</td>	
+							    <% } %>
+         	           				</tr>                 	           		
+                  	           	<% } %>		
                   	           		</tbody>
      	           										           		                 	           		
                    	           </table>

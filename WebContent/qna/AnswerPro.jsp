@@ -10,13 +10,21 @@
 <jsp:setProperty name="dto" property="*" />
 
 <%
-	int no = Integer.parseInt( request.getParameter("no") );
+	int pno = Integer.parseInt( request.getParameter("no") );
+	int pos = Integer.parseInt( request.getParameter("pos") );
+	int level = Integer.parseInt( request.getParameter("level") );
 	
-	System.out.println("answerpro: " + no);
+	System.out.println("answer pno: " + pno);
+	System.out.println("answer pos: " + pos);
+	System.out.println("answer lvl: " + level);
 	
-	new QnaDAO().insertBoard(dto);  
+	QnaDAO dao = new QnaDAO();
 
-	response.sendRedirect(request.getContextPath() + "/qna/viewQna.jsp?no="+no);
+	dao.replyUppos(pos);
+	
+	dao.insertAnswer(dto, pno); 
+
+	response.sendRedirect(request.getContextPath() + "/menu/qna.jsp");
 
 
 %>

@@ -20,16 +20,18 @@
 			request.getParameter("compdiv"),
 			Integer.parseInt(request.getParameter("compyear")),
 			Integer.parseInt(request.getParameter("compsem")),
-			Integer.parseInt(request.getParameter("grade"))
+			Integer.parseInt(request.getParameter("grade")),
+			request.getParameter("ctime"),
+			request.getParameter("id"),
+			request.getParameter("professor")
 			);
 	
 	   System.out.println("");	
        System.out.println("받아오는 코드값 : " + request.getParameter("ccode"));
-//     System.out.println(request.getParameter("cname"));
-//     System.out.println(request.getParameter("compdiv"));
-//     System.out.println(request.getParameter("compyear"));
-//     System.out.println(request.getParameter("compsem"));
-//     System.out.println(request.getParameter("grade"));
+       System.out.println(request.getParameter("ctime"));	
+       System.out.println(request.getParameter("id"));
+       System.out.println(request.getParameter("professor"));
+       
     
 	//DB작업
 	dao.modifyCourse(bean);	
