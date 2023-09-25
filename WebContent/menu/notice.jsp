@@ -79,11 +79,6 @@
         		var $path = '<%=request.getContextPath()%>';
         		var $pageNum = '<%=pageNum%>';
         		
-//         		console.log("startRow: " + $startRow);
-//         		console.log("pageSize: " + $pageSize);
-// 				console.log("path: " + $path);
-// 				console.log("pageNum: " + $pageNum);
-				
 				$.ajax({
            			url : '<%=request.getContextPath()%>/board',
    					type : 'POST',
@@ -118,11 +113,6 @@
      			$('#searchText').on("keyup", function() {
      				$searchText = $('#searchText').val();
      				
-//       				console.log("keyfield: " + $keyField);
-//       				console.log("searchText: " + $searchText);
-//       				console.log("startRow: " + $startRow);
-//       				console.log("pageSize: " + $pageSize);
-      				
      				$.ajax({
 	           			url : '<%=request.getContextPath()%>/board/search.do',
 	   					type : 'POST',
@@ -172,30 +162,13 @@
 					});
 	           		
      			});
-     			/* 
-     			$('.active').on('change', function() {
-     				if($(this).val() == $('.pagination>li>a').val()) {
-						$(this).style.cssText = 'background-color: #0d6efd; color: white;'
-     				}
-					
-				});
-     			 */
      			
-     			/* 
-    			$(".pagination").on("click", function() {
-					
-    				alert("클릭함수 작동");
-    				
-    				
-				});
-				 */
-    			
         		//교직원 및 교수만 공지작성 가능하게 input태그 숨김처리
         		var $id = '<%=id%>';
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
         		
-        		if($job == '학생' || $job == null) {
+        		if($job == '학생' || $id == 'null') {
         			$input.hide();
         		} 
         		
