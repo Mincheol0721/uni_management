@@ -268,7 +268,7 @@ public void freeResource() {
 					rs = pstmt.executeQuery();
 					
 					if(rs.next()) {
-					check = "제출";
+					check = "제출완료";
 					}else {
 						check = "미제출";
 					}
