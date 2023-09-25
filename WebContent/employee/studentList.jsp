@@ -540,7 +540,7 @@
                    	           		}
                    	           	%>
                    	           	
-                   	           	<a href= "studentList.jsp?nowPage=<%=(nowBlock * pagePerBlock) + cnt %>&nowBlock=<%=nowBlock%>">
+                   	           	<a href= "studentList.jsp?nowPage=<%=(nowBlock * pagePerBlock) + cnt %>&nowBlock=<%=nowBlock%>" style="text-decoration: none;">
                    	           			<%--(0 nowBlock이 처음에 0임   *     3) +1  + 0  --%>
                    	           			<%=(nowBlock * pagePerBlock) + 1 + cnt %>
                    	           			
