@@ -400,6 +400,18 @@ List<ScheduleDTO> list = dao.getScheduleList();
                             </p>
                         </div>
                     </div>
+                    
+                    
+                    
+                     <%--bx슬라이더 쓰는 부분--%>
+                   <h1>시설전경</h1>
+                   <div class="bxslider">
+					  <div><img src="assets/img/uni.jpg" width="100%"/></div>
+					  <div><img src="assets/img/lib.jpg" width="100%" /></div>
+					  <div><img src="assets/img/school.jpg" width="100%" /></div>
+					</div>
+					
+					
                     <%--공지사항 --%>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">공지사항</h1>
@@ -445,5 +457,30 @@ List<ScheduleDTO> list = dao.getScheduleList();
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+       
+       
+        <%-- bx슬라이더 부분 --%>	
+	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+	    <script type="text/javascript">
+	    $(function(){
+	    	var slider = $('.bxslider').bxSlider({
+	    		  mode: 'fade'
+	    		});
+	
+	    		$('#slider-next').click(function(){
+	    		  slider.goToNextSlide();
+	    		  return false;
+	    		});
+	
+	    		$('#slider-count').click(function(){
+	    		  var count = slider.getSlideCount();
+	    		  alert('Slide count: ' + count);
+	    		  return false;
+	    		});
+	      });
+	    
+	    </script>
     </body>
 </html>
