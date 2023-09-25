@@ -435,23 +435,20 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 	    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 	    <script type="text/javascript">
 
-	    $(function(){
-	    	var slider = $('.bxslider').bxSlider({
-	    		  mode: 'fade'
-	    		});
-	
-	    		$('#slider-next').click(function(){
-	    		  slider.goToNextSlide();
-	    		  return false;
-	    		});
-	
-	    		$('#slider-count').click(function(){
-	    		  var count = slider.getSlideCount();
-	    		  alert('Slide count: ' + count);
-	    		  return false;
-	    		});
-	      });
-	    
+		    var slider = $('.bxslider').bxSlider({
+	    	  mode: 'fade'
+	    	});
+
+	    	$('#slider-next').click(function(){
+	    	  slider.goToNextSlide();
+	    	  return false;
+	    	});
+
+	    	$('#slider-count').click(function(){
+	    	  var count = slider.getSlideCount();
+	    	  alert('Slide count: ' + count);
+	    	  return false;
+	    	});
 
 	    </script>
         <%-- bxSlider --%>
