@@ -53,8 +53,7 @@
                         	
                         	<form class="form-inline w-75" action="homWorkModifyPro.jsp" method="post">
 	                        <div class="input-group flex-nowrap mt-3 mb-3" hidden="">
-							  <span class="input-group-text" id="addon-wrapping">비밀번호</span>
-							  <input type="text" class="form-control" aria-describedby="addon-wrapping" name="password" value="<%=homeVO.getPasswd()%>" disabled="disabled">
+							  
 							</div>
 						
 							<div class="input-group flex-nowrap mt-3 mb-3">

@@ -68,7 +68,7 @@
 		String passwd = multipartRequest.getParameter("passwd");
 		
 		//6.업로드하기위해 선택한 파일의 원본이름과, 실제업로드한 파일 이름을 DB에 File테이블에   INSERT
-		new FileDAO().upload(taskTitle, course, studentName, passwd, title, content, fileName, fileRealName);
+		new FileDAO().upload(taskTitle, course, studentName,title, content, fileName, fileRealName);
 		   
 		
 		out.write("업로드하기위해 선택한 파일의 원본이름 : " +  fileName  + "<br>");

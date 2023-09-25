@@ -123,10 +123,12 @@
 							<tr>
 								<td>
 									<select class="form-control" name="searchField">
-									<option value="tasktype">과제유형</option>
-									<option value="tasktitle">과제제목</option>
+									<option value="studentName">학생명</option>
+									<option value="tasktitle">과제명</option>
+									<option value="title">제목</option>
 									</select></td>
 								<td>
+									<input type="text" name="cname" value="<%=cname%>" id="cname" hidden="">
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
 									<td><button type="button" class="btn btn-primary" id="searchBtn">검색</button></td>
 							</tr>
@@ -239,7 +241,40 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-       
+       	
+       	<script type="text/javascript">
+        	$("#searchBtn").on('click',function(){
+        		
+        		var searchField = $("select").find("option:selected").val();
+        		var searchText = $("#searchText").val();
+        		var cname = $("#cname").val();
+        		
+        		if (searchText == "") {
+					alert("검색어를 입력하지 않으셨습니다.");
+					location.href();
+				}
+//         		alert(cname);
+        		
+        		jQuery.ajaxSettings.traditional = true;
+    			$.ajax({
+    				
+    				url : "searchHomeworkBBS2.jsp", //요청할 서버페이지 경로 
+    				type : "post", //전송요청방식 GET 또는 POST중에 하나
+    				data : {"searchField":searchField,"searchText":searchText,"cname":cname},
+    				success : function(data){//searchHomeworkBBS.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
+    				
+    					$("tr").filter('#searchZone').remove();
+    					$("tr").filter('#menu_re').remove();
+    					$("#a").remove();
+    					$("#b").remove();
+   					$("#searchAddZone").html(data);
+    				},
+    				error : function(data){
+    		           alert("망");
+    		        }
+    			});					
+        	});	
+        </script>
         
         
     </body>

@@ -118,7 +118,7 @@ public class MoreInfoDAO {
 					
 		System.out.println("getmoreList메소드가 받는 과목명: " + cname);
 		
-		String sql = "select * from moreInfo where cname=?";	
+		String sql = "select * from moreInfo where cname=? order by week asc";	
 		
 		try {
 			
@@ -143,7 +143,8 @@ public class MoreInfoDAO {
 				bean.setWay(rs.getString("way"));
 				bean.setTime(rs.getString("time"));
 				bean.setHomework(rs.getString("homework"));
-		
+				
+				
 				list.add(bean);
 			}	
 			
@@ -160,4 +161,146 @@ public class MoreInfoDAO {
 		return list;
 
 	}//getmoreList end
+	
+	
+	//세부강의 수정을 위해 선택한 한 강의의 정보를 modMoreInfo.jsp에 뿌려주기 위해 리턴하는 메소드
+	public MoreInfoBean getMoreInfo(int week) {
+		
+		System.out.println("getMoreInfo메소드가 받는 주차: " + week);
+		String sql = "select * from moreInfo where week=?";
+		
+		MoreInfoBean bean = new MoreInfoBean();
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(sql);
+			
+			//DB에 전달할 ?값 세팅
+			pstmt.setInt(1, week);
+			
+			rs = pstmt.executeQuery();
+			
+			//수정할 과목 하나의 데이터들을 bean객체에 저장
+			if (rs.next()) {
+		
+				bean.setWeek(rs.getInt("week"));
+				bean.setSession(rs.getInt("session"));
+				bean.setTopic(rs.getString("topic"));
+				bean.setWay(rs.getString("way"));
+				bean.setTime(rs.getString("time"));
+				bean.setHomework(rs.getString("homework"));
+				
+			}	
+			
+			System.out.println("수정할 세부강의 불러오는 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getMoreInfo메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return bean;
+
+	}//getMoreInfo end
+
+	
+	//세부강의 수정하는 기능의 메소드
+	public void modifyMoreInfo(MoreInfoBean bean) {			
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			String sql = "update moreInfo set session=?, topic=?, way=?, time=?, homework=? where week=?";
+			pstmt = con.prepareStatement(sql);
+								
+			pstmt.setInt(1, bean.getSession());
+			pstmt.setString(2, bean.getTopic());
+			pstmt.setString(3, bean.getWay());
+			pstmt.setString(4, bean.getTime());
+			pstmt.setString(5, bean.getHomework());
+			pstmt.setInt(6, bean.getWeek());
+	
+			
+			pstmt.executeUpdate();
+			
+			System.out.println("세부강의 수정 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("modifyMoreInfo메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+	}//modifyMoreInfo end
+	
+	
+	//세부 정보 삭제하는 기능의 메소드
+	public void delMoreInfo(String cname, int week) {
+		
+		String sql = "delete from moreInfo where cname=? and week=?";
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+	
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setString(1, cname);
+			pstmt.setInt(2, week);
+			
+			pstmt.executeUpdate();
+						
+			System.out.println("세부정보 삭제 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delMoreInfo메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+			
+	}//delMoreInfo end
+	
+	//해당 과목에 대한 세부 정보를 studyplannerdb 데이터베이스의 moreInfo에 추가시키는 기능의 메소드
+	public int insertMI(MoreInfoBean moreInfoBean) {
+		
+		try {
+			
+			//DB연결 
+			con = ds.getConnection();
+			
+			//insert sql문 만들기
+			String sql = "insert into moreInfo (cname, week, session, topic, way, time, homework)"
+					   + "values (?, ?, ?, ?, ?, ?, ?);";
+
+			//insert문 실행할 pstmt 실행 객체 얻기
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, moreInfoBean.getCname());
+			pstmt.setInt(2, moreInfoBean.getWeek()); 
+			pstmt.setInt(3, moreInfoBean.getSession()); 
+			pstmt.setString(4, moreInfoBean.getTopic()); 		
+			pstmt.setString(5, moreInfoBean.getWay()); 						
+			pstmt.setString(6, moreInfoBean.getTime()); 			
+			pstmt.setString(7, moreInfoBean.getHomework()); 	
+
+			//insert문 실행
+			return pstmt.executeUpdate();			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 freeResource();	
+		}
+		return 0;
+		
+	}//insertMI end
+
 }

@@ -151,7 +151,7 @@ public class CourseDAO {
 				//System.out.println("과목 정보 저장 완료");				
 			}			
 			
-			System.out.println("과목 조회 sql구문 실행 완료");
+			System.out.println("강의 조회 sql구문 실행 완료");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -9,7 +9,6 @@ public class HomeWorkDTO {
 	private String taskTitle;
 	private String title;
 	private String content;
-	private String passwd;
 	private String fileName;
 	private String fileRealName;
 	private int homeWorkOK;
@@ -25,7 +24,7 @@ public class HomeWorkDTO {
 	
 	
 		//모든 매개변수를 받을 생성자
-		public HomeWorkDTO(int num,String studentName, String cname, String taskTitle, String title, String content, String passwd,
+		public HomeWorkDTO(int num,String studentName, String cname, String taskTitle, String title, String content,
 			String fileName, String fileRealName, Timestamp date) {
 		super();
 		this.num = num;
@@ -34,7 +33,7 @@ public class HomeWorkDTO {
 		this.taskTitle = taskTitle;
 		this.title = title;
 		this.content = content;
-		this.passwd = passwd;
+		
 		this.fileName = fileName;
 		this.fileRealName = fileRealName;
 		this.date = date;
@@ -45,17 +44,18 @@ public class HomeWorkDTO {
 
 
 		public HomeWorkDTO(String studentName, String cname, String taskTitle, String title, String content,
-			String passwd, String fileName, String fileRealName) {
+		 String fileName, String fileRealName, Timestamp date) {
 		super();
 		this.studentName = studentName;
 		this.cname = cname;
 		this.taskTitle = taskTitle;
 		this.title = title;
 		this.content = content;
-		this.passwd = passwd;
+		this.date = date;
 		this.fileName = fileName;
 		this.fileRealName = fileRealName;
 	}
+		
 
 		//setter & getter
 	public String getStudentName() {
@@ -106,13 +106,7 @@ public class HomeWorkDTO {
 		this.content = content;
 	}
 
-	public String getPasswd() {
-		return passwd;
-	}
-
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
-	}
+	
 
 	public String getFileName() {
 		return fileName;

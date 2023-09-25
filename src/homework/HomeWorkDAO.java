@@ -165,7 +165,7 @@ public void freeResource() {
 					
 					
 		} catch (Exception e) {
-			System.out.println("HomeWorkDAO클래스에서 getLectureModify메소드의 sql문 실행 오류"+e);
+			System.out.println("HomeWorkDAO클래스에서 gethomeworkModifyNum메소드의 sql문 실행 오류"+e);
 		}finally {
 			freeResource();
 		}
@@ -175,7 +175,7 @@ public void freeResource() {
 	
 	
 	//검색버튼을 눌렀을때 조회해올 메소드
-	public List<HomeWorkDTO> searchBoard(String searchField,String searchText) {
+	public List<HomeWorkDTO> searchBoard(String searchField,String searchText, String cnam) {
 		
 		List<HomeWorkDTO> boardlist = new ArrayList<HomeWorkDTO>();
 		
@@ -185,7 +185,7 @@ public void freeResource() {
 			
 			//sql문 작성
 			
-			String sql = "select * from homework where " + searchField.trim();
+			String sql = "select * from homework where cname = ? && " + searchField.trim();
 				
 			
 				sql += " like '%" + searchText.trim() + "%';";
@@ -193,19 +193,21 @@ public void freeResource() {
 				
 				
 				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, cnam);
+
  			rs =pstmt.executeQuery();
 			
 			while(rs.next()) {
 				String studentName = rs.getString("studentName");
 				String cname = rs.getString("cname");
+				Timestamp date =  rs.getTimestamp("date");
 				String taskTitle = rs.getString("taskTitle");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
-				String passwd = rs.getString("passwd");
 				String fileName = rs.getString("fileName");
 				String fileRealName = rs.getString("fileRealName");
 				
-				HomeWorkDTO HomeVO = new HomeWorkDTO(studentName, cname, taskTitle, title, content, passwd, fileName, fileRealName);
+				HomeWorkDTO HomeVO = new HomeWorkDTO(studentName, cname, taskTitle, title, content,fileName, fileRealName,date);
 				boardlist.add(HomeVO);
 			}
 			
@@ -218,5 +220,34 @@ public void freeResource() {
 		}
 		return boardlist;
 	}
+	
+	// 검색한 글의 총 갯수 가져오는 메소드
+			public int getSearchCount(String searchField, String searchText, String cname) {
+				int count = 0;
+			try {
+				//DB연결
+				con = getConnection();
+				
+				// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
+				String sql = "select count(*) from homework where cname = ? && " + searchField.trim();
+				
+				sql += " like '%" + searchText.trim() + "%';";
+				
+				pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, cname);
+				rs = pstmt.executeQuery();
+					
+				if(rs.next()) { //만약 조회해서 글개수가 있으면
+					count = rs.getInt(1);
+				}
+				
+			} catch (Exception e) {
+				System.out.println("HomeWorkBoardDAO클래스의 getBoardCount메소드의 sql문 오류" + e);
+			}finally {
+				//자원해제
+				freeResource();
+			}
+			return count;
+		}
 
 }//class의 끝

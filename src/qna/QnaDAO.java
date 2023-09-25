@@ -25,9 +25,6 @@ public class QnaDAO {
 	private ResultSet rs;
 	private String sql;
 	
-	//커넥션풀(DataSource)얻는 기능의 생성자
-	public QnaDAO() { }
-	
 	//커넥션풀 생성 및 커넥션 객체를 얻어 커넥션객체자체를 반환 하는  기능의 메소드 
 	private Connection getConnection() throws Exception {
 		//1. InitialContext객체 생성
@@ -107,13 +104,21 @@ public class QnaDAO {
 	}
 
 	//bnotice테이블에 저장된 레코드의 개수를 반환하는 메소드
-	public int getBoardCount() {
+	public int getBoardCount(String keyField, String searchText) {
 		int count = 0;
 		
 		try {
 			con = getConnection();
 			
+			System.out.println("getcount searchText: " + searchText);
 			sql = "select count(*) from qna";
+			
+			if(searchText == null || searchText.length() == 0 || searchText == "") {
+				System.out.println("getcount메소드 if문 탑승");
+			} else {
+				System.out.println("getcount메소드 else문 탑승");
+				sql += " where " + keyField + " like '%" + searchText + "%'";
+			}
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -143,7 +148,7 @@ public class QnaDAO {
 			con = getConnection();
 			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
 			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
-			pstmt = con.prepareStatement("select * from qna order by no desc limit 5");
+			pstmt = con.prepareStatement("select * from qna order by pos asc limit 5");
 
 			//3. rs에 sql문 실행 후 결과 담기
 			rs = pstmt.executeQuery();
@@ -158,6 +163,9 @@ public class QnaDAO {
 				dto.setReadCount( rs.getInt("readCount") );
 				dto.setWriteDate( rs.getDate("writeDate") );
 				dto.setId( rs.getString("id") );
+				dto.setLevel( rs.getInt("level") );
+				dto.setPno( rs.getInt("pno") );
+				dto.setPos( rs.getInt("pos") );
 				
 				list.add(dto);
 				
@@ -173,59 +181,115 @@ public class QnaDAO {
 	}
 	
 	//모든 글의 레코드정보를 조회, 반환하는 메소드
-		public List<QnaDTO> getBoardList(String keyField, String searchText, int startRow, int pageSize) { //content.jsp에서 호출한 메소드
+	public List<QnaDTO> getBoardList(String keyField, String searchText) { //content.jsp에서 호출한 메소드
+		
+		List<QnaDTO> list = new ArrayList<QnaDTO>();
+		
+		try {
+			//1. 커넥션풀(DataSource)에서 DB와 미리 연결 맺은 접속정보를 갖고있는 커넥션 객체 빌려오기
+			//DB와의 연결
+			con = getConnection();
 			
-			List<QnaDTO> list = new ArrayList<QnaDTO>();
-			
-			try {
-				//1. 커넥션풀(DataSource)에서 DB와 미리 연결 맺은 접속정보를 갖고있는 커넥션 객체 빌려오기
-				//DB와의 연결
-				con = getConnection();
-				
-				//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
-				sql = "select * from qna ";
-				
-				if(searchText != null || searchText.length() != 0) {
-					
-					System.out.println("getBoardList if문 탑승");
-					sql += " where " + keyField + " like '%" + searchText + "%'";
-					
-				}
-				
-				sql += " order by no desc limit ?, ?";
-				
-				System.out.println("sql문: " + sql);
-				
-				//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, startRow);
-				pstmt.setInt(2, pageSize);
-				//3. rs에 sql문 실행 후 결과 담기
-				rs = pstmt.executeQuery();
-
-				while(rs.next()) {
-					
-					QnaDTO dto = new QnaDTO();
-					
-					dto.setNo( rs.getInt("no") );
-					dto.setTitle( rs.getString("title") );
-					dto.setContent( rs.getString("content") );
-					dto.setReadCount( rs.getInt("readCount") );
-					dto.setWriteDate( rs.getDate("writeDate") );
-					dto.setId( rs.getString("id") );
-					
-					list.add(dto);
-					
-				}
-				
-			} catch (Exception e) {
-				System.out.println("QnaDAO내부의 getBoardList(4)메소드 내부에서 쿼리문 실행 오류: " + e);
-			} finally {
-				freeResource();
+			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
+			if(searchText == null || searchText.length() == 0) {
+				sql = "select * from qna order by pos asc";
+			} else {
+				System.out.println("getBoardList else문 탑승");
+				sql = "select * from qna where " + keyField + " like '%" + searchText + "%' order by pos asc";
 			}
 			
-			return list; //글제목 클릭 시 전달한 글번호에 해당되는 글의 정보를 NoticeDTO객체에 담아서 NoticeDTO객체 자체를 반환
+//			System.out.println("sql문: " + sql);
+			
+			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
+			pstmt = con.prepareStatement(sql);
+			//3. rs에 sql문 실행 후 결과 담기
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				QnaDTO dto = new QnaDTO();
+				
+				dto.setNo( rs.getInt("no") );
+				dto.setTitle( rs.getString("title") );
+				dto.setContent( rs.getString("content") );
+				dto.setReadCount( rs.getInt("readCount") );
+				dto.setWriteDate( rs.getDate("writeDate") );
+				dto.setId( rs.getString("id") );
+				dto.setLevel( rs.getInt("level") );
+				dto.setPno( rs.getInt("pno") );
+				dto.setPos( rs.getInt("pos") );
+				
+				list.add(dto);
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("QnaDAO내부의 getBoardList(string2)메소드 내부에서 쿼리문 실행 오류: " + e);
+		} finally {
+			freeResource();
 		}
+		
+		return list; //글제목 클릭 시 전달한 글번호에 해당되는 글의 정보를 NoticeDTO객체에 담아서 NoticeDTO객체 자체를 반환
+	}
+	
+	//모든 글의 레코드정보를 조회, 반환하는 메소드
+	public List<QnaDTO> getBoardList(String keyField, String searchText, int startRow, int pageSize) { //content.jsp에서 호출한 메소드
+		
+		List<QnaDTO> list = new ArrayList<QnaDTO>();
+		
+		try {
+			//1. 커넥션풀(DataSource)에서 DB와 미리 연결 맺은 접속정보를 갖고있는 커넥션 객체 빌려오기
+			//DB와의 연결
+			con = getConnection();
+			
+			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
+			sql = "select * from qna ";
+			
+			if(searchText != null || searchText.length() != 0){
+				
+				System.out.println("getBoardList if문 탑승");
+				sql += " where " + keyField + " like '%" + searchText + "%'";
+				
+			}
+			
+			sql += " order by pos asc limit ?, ?";
+			
+			
+//			System.out.println("sql문: " + sql);
+			
+			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, pageSize);
+			//3. rs에 sql문 실행 후 결과 담기
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				
+				QnaDTO dto = new QnaDTO();
+				
+				dto.setNo( rs.getInt("no") );
+				dto.setTitle( rs.getString("title") );
+				dto.setContent( rs.getString("content") );
+				dto.setReadCount( rs.getInt("readCount") );
+				dto.setWriteDate( rs.getDate("writeDate") );
+				dto.setId( rs.getString("id") );
+				dto.setLevel( rs.getInt("level") );
+				dto.setPno( rs.getInt("pno") );
+				dto.setPos( rs.getInt("pos") );
+				
+				list.add(dto);
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("QnaDAO내부의 getBoardList(4)메소드 내부에서 쿼리문 실행 오류: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return list; //글제목 클릭 시 전달한 글번호에 해당되는 글의 정보를 NoticeDTO객체에 담아서 NoticeDTO객체 자체를 반환
+	}
 
 	//startRow, pageSize를 매개변수로 받아 글 정보를 ArrayList에 담은 후 리턴하는 메소드
 	public List<QnaDTO> getBoardList(int startRow, int pageSize) { 
@@ -238,7 +302,7 @@ public class QnaDAO {
 			con = getConnection();
 			//2. SELECT문장을 만들어 PreparedStatement실행객체에 로드 후 얻기
 			//SELECT문장 → 글번호에 해당하는 글을 조회하는 SELECT문장 만들기
-			sql = "select * from qna order by no desc limit ?, ?";
+			sql = "select * from qna order by pos asc limit ?, ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, pageSize);
@@ -256,6 +320,9 @@ public class QnaDAO {
 				dto.setReadCount( rs.getInt("readCount") );
 				dto.setWriteDate( rs.getDate("writeDate") );
 				dto.setId( rs.getString("id") );
+				dto.setLevel( rs.getInt("level") );
+				dto.setPno( rs.getInt("pno") );
+				dto.setPos( rs.getInt("pos") );
 				
 				list.add(dto);
 				
@@ -277,15 +344,20 @@ public class QnaDAO {
 		try {
 			//1. 커넥션풀에서 커넥션 객체 빌려오기
 			con = getConnection();
+			
+			sql = "update qna set pos = pos+1";
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
 			//insert문 작성
-			sql = "insert into qna (title, content, writeDate, id) " + 
-						"values(?, ?, now(), ?)";
+			sql = "insert into qna (title, content, writeDate, id, pos) " + 
+						"values(?, ?, now(), ?, ?)";
 			
 			pstmt = con.prepareStatement(sql);
-			
 			pstmt.setString(1, dto.getTitle());
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getId());
+			pstmt.setInt(4, 0);
 			
 			pstmt.executeUpdate();
 			
@@ -297,6 +369,58 @@ public class QnaDAO {
 		}
 		
 	}//insertBoard메소드 끝
+	
+	public void replyUppos(int ParentPos) {
+		
+		try {
+			con = getConnection();
+			
+			sql = "update qna set pos=pos+1 where pos > ?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, ParentPos);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("QnaDAO의 replyUppos메소드 내부에서 쿼리문 실행오류: " + e.toString());
+		}
+		
+		
+	}
+	
+	//게시판의 새 글 정보를 DB의 board테이블에 추가하는 기능의 메소드
+	public void insertAnswer(QnaDTO dto, int pno) {
+		
+		try {
+			//1. 커넥션풀에서 커넥션 객체 빌려오기
+			con = getConnection();
+			
+			int pos = dto.getPos() + 1;
+			
+			//insert문 작성
+			sql = "insert into qna (title, content, qnatype, writeDate, id, pno, pos, level) " + 
+					"values(?, ?, ?, now(), ?, ?, ?, ( (select level from (select * from qna) as q where q.no=?)) +1 )";
+			
+			pstmt = con.prepareStatement(sql);
+			
+//			System.out.println("id: " + dto.getId());
+			
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, "[답변]");
+			pstmt.setString(4, dto.getId());
+			pstmt.setInt(5, pno);
+			pstmt.setInt(6, pos);
+			pstmt.setInt(7, pno);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("QnaDAO의 insertBoard메소드 내부에서 쿼리문 실행오류: " + e.toString());
+		} finally {
+			//자원해제
+			freeResource();
+		}
+		
+	}//insertAnswer끝
 	
 	public QnaDTO getBoard(int no) { //content.jsp에서 호출한 메소드
 		
@@ -334,6 +458,9 @@ public class QnaDAO {
 			dto.setWriteDate(_writeDate);//조회된 글 작성일 저장
 			dto.setTitle(_title);//조회된 글 제목 저장
 			dto.setContent(_content);//조회된 글 내용 저장
+			dto.setLevel( rs.getInt("level") );
+			dto.setPno( rs.getInt("pno") );
+			dto.setPos( rs.getInt("pos") );
 			
 		} catch (Exception e) {
 			System.out.println("QnaDAO내부의 getBoard메소드 내부에서 쿼리문 실행 오류: " + e);
@@ -425,6 +552,17 @@ public class QnaDAO {
 			freeResource();
 		}
 		
+	}
+	
+	public String useDepth(int level) {
+		String result = "";
+		if(level > 0) {
+			for (int i=0; i<level*3; i++) {
+				result += "&nbsp;";
+			}
+			result += "└ ";
+		}
+		return result;
 	}
 	
 }
