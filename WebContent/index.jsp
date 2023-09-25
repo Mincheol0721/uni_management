@@ -479,7 +479,7 @@ List<ScheduleDTO> list = dao.getScheduleList();
 	    		  alert('Slide count: ' + count);
 	    		  return false;
 	    		});
-	      });
+	      }) 
 	    
 	    </script>
     </body>

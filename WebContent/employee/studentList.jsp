@@ -525,7 +525,7 @@
 										if(nowBlock > 0){
 								%>			
 										<%--이전 을 누르면 이전블럭위치 값과 ,  이전블럭위치의 시작페이지번호를 notice.jsp로 요청시 전달합니다. --%>
-										<a href="studentList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>"">   
+										<a href="studentList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>">   
 											이전<%=pagePerBlock%>개<<< 
 										</a>							
 								<%			
