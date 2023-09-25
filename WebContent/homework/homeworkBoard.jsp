@@ -35,10 +35,12 @@
     	HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
     	
     	HomeWorkDAO homeDAO = new HomeWorkDAO();
-    
+    	
+    	//사용자의 이름을 가져오는 구문
     	HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
     	
     	String studentName = name.getName();
+    	
     	//전체글 개수
     	int count = homeBoardDAO.getBoardCount(cname);
     	 //out.println(count);
@@ -158,24 +160,35 @@
                    	          		for(int i=0; i <list.size(); i++) {
                    	          			HomeWorkBoardDTO home = list.get(i);
                    	          			
+                   	          		String taskTitle = home.getTasktitle();
+           	           				String check = homeWork.getHomeWorkOK(studentName, taskTitle);
+                   	          			
                    	          	%>
                    	          		
                    	          		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" id="searchZone">
                    	           			<td width=5% hidden=""><%=home.getNum()%></td>
                    	           			<td width="5%" hidden=""><%=home.getCname()%></td>
                    	           			<td width=5%><%=home.getTasktype()%></td>
-                   	           			<td width=5%><a href="homeWorkBoardModify.jsp?num=<%=home.getNum()%>&cname=<%=home.getCname()%>&tasktitle=<%=home.getTasktitle()%>" style="text-decoration: none"><%=home.getTasktitle()%></a></td>
+                   	           			<%
+                   	           				if(check.equals("제출완료")){
+                   	           			%>
+                   	           				<td width=5%><a style="text-decoration: none" id="tasktit"><%=home.getTasktitle()%></a></td>
+                   	           			<%
+                   	           				}else {
+                   	           			%>
+                   	           				<td width=5%><a href="homeWorkBoardModify.jsp?num=<%=home.getNum()%>&cname=<%=home.getCname()%>&tasktitle=<%=home.getTasktitle()%>" style="text-decoration: none" id="tasktit"><%=home.getTasktitle()%></a></td>
+                   	           			<%
+                   	           				} 
+                   	           			%>
+                   	           			
                    	           			<td width=5%><%=home.getTaskmethod()%></td>
                    	           			<td width=5%><%=home.getPeriod()%></td>
                    	           			
-                   	           			<%
                    	           			
-                   	           				String taskTitle = home.getTasktitle();
-                   	           				String check = homeWork.getHomeWorkOK(studentName, taskTitle);
-                   	           			%>
-       									<td width=5%><%=check%></td>
-<%--                    	  					<td>체크 값 :<%=check%></td> --%>
-<%--                    	  					<td>과제명 : <%=taskTitle%></td> --%>
+       									<td width=5% id="check"><%=check%></td>
+                    	  				<%-- 	<td>체크 값 :<%=check%></td> --%>
+                  	  			        <%--		<td>과제명 : <%=taskTitle%></td> --%>
+                  	  			        
                    	           			<td width=5% hidden=""><%=home.getNumpeople()%></td>
                    	           			
                    	           		</tr>
@@ -286,7 +299,8 @@
     		           alert("망");
     		        }
     			});					
-        	});	
+        	});
+        	
         </script>
         
     </body>
