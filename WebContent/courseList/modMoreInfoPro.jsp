@@ -20,7 +20,8 @@
 			request.getParameter("topic"),
 			request.getParameter("way"),
 			request.getParameter("time"),
-			request.getParameter("homework")
+			request.getParameter("homework"),
+			(String)session.getAttribute("id")
 			);
 	
 	   System.out.println("받아오는 주차 : " + request.getParameter("modweek"));	
@@ -33,7 +34,7 @@
 <script>
 
 	alert("선택한 강의가 수정되었습니다.");
-	location.href = "moreInfo.jsp?cname=" + encodeURIComponent("<%=bean.getCname()%>");
+	location.href = "moreInfo_professor.jsp?cname=" + encodeURIComponent("<%=bean.getCname()%>");
 
 	
 </script>

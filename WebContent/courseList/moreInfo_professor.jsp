@@ -1,3 +1,4 @@
+<%@page import="board_course.BoardBean"%>
 <%@page import="courseList.CoursePlanBean"%>
 <%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.MoreInfoBean"%>
@@ -27,6 +28,25 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
     	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
+    
+	    <script type="text/javascript">
+	    
+	 	//삭제할 강의 한번 더 확인하는 함수
+	 	function delC(cname,week){ 		
+
+ 			var result = confirm("해당 과목을 삭제하시겠습니까?");
+ 			
+ 			if (result == true) {
+				
+ 				location.href = "delMoreInfo.jsp?cname=" + cname + "&week=" + week;
+			}			
+ 		}	
+	    
+	    </script> 
+    
+    	<style>     	   	  	
+		  a {text-decoration-line: none;}			
+    	</style>  	
     </head>
     <body class="sb-nav-fixed">    
         	<%
@@ -60,40 +80,44 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
            
             <div id="layoutSidenav_content">
                 <main>           
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 페이지</h1>
+                        <h1 class="mt-4">세부 강의 페이지</h1>                        
                         <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">moreInfo_professor</li>                       
-                        </ol>
+                            <li class="breadcrumb-item active">moreInfo_professor</li>                                                                  
+                        </ol>                                          
                         <div class="row">
-                        	<p class="mb-0">    		
+                        	<p class="mb-0">                        	
+	                        <div align="right">
+	                        
+	                        <%-- 교수님이 세부정보를 직접 추가하는 페이지로 이동하는 링크 --%>
+	                        <div align="left">
+	                        	<h5><a href="addMoreInfo.jsp?cname=<%= request.getParameter("cname") %>">세부정보 추가</a></h5>
+                   		    </div>                		
+	                        </div>                      	           		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</td>
-	                   	           			<th width=5%>차시</td>                   	           			
-	                   	           			<th width=5%>강의주제</td>
-	                   	           			<th width=5%>강의방식</td>
-	                   	           			<th width=5%>강의기간</td>
-	                   	           			<th width=5%>과제</td>	
-	                   	           			<th width=5%></td>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=3%>주차</th>
+	                   	           			<th width=3%>차시</th>                   	           			
+	                   	           			<th width=5%>강의주제</th>
+	                   	           			<th width=5%>강의방식</th>
+	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>과제</th>	
+	                   	           			<th width=3%>수정하기</th>
+	                   	           			<th width=3%>삭제하기</th>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
   		
                   	           		<tbody>
                   	           <%	
-                  	           
+                  	         		String loggedInProfessor = (String)session.getAttribute("id");
+                  	           		
 	                        		MoreInfoDAO dao = new MoreInfoDAO();
 	                   	           
 	                        		String cname = request.getParameter("cname");         		
@@ -103,7 +127,8 @@
                    	           		List<MoreInfoBean> list = dao.getmoreList(cname);
                   	           	
                    	           		for(MoreInfoBean bean : list){ 
-                   	          		
+         	           	
+                   	           			
                    	           	%> 
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           			
                   	           			<td><%= bean.getWeek() %>주차</td>
@@ -112,14 +137,20 @@
 							            <td><%= bean.getWay() %></td>
 							            <td><%= bean.getTime() %></td>
 							            <td><%= bean.getHomework() %></td>	
+							    	<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
+							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
+							     	System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							     %>         
 							            <td><a href="modMoreInfo.jsp?cname=<%= bean.getCname() %>&week=<%= bean.getWeek()%>">수정</a></td>	
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                   	           		}  
-                  	           		
-                   	            %>		 
+										<td><a href="javascript:delC('<%= bean.getCname()%>','<%=bean.getWeek()%>')">삭제</a></td>   	           				
+                  	          	<% }else{
+         	           				System.out.println(loggedInProfessor + " : " + bean.getId());
+         	           			%>	
+		       	           			<td>-</td>
+							        <td>-</td>	
+							    <% } %>
+         	           				</tr>                 	           		
+                  	           	<% } %>		
                   	           		</tbody>
      	           										           										           		                 	           		
                    	           </table>

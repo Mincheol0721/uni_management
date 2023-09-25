@@ -89,6 +89,9 @@
 
  	</script>
  	
+ 		<style>     	   	  	
+		  a {text-decoration-line: none;}			
+    	</style>
  	
     </head>
     <body class="sb-nav-fixed">    
@@ -127,12 +130,7 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -140,7 +138,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">강의리스트</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">courseList</li>
+                            <li class="breadcrumb-item active">courseList_professor</li>
                         </ol>
                         <form action="courseList.jsp" method="post">
                         	<select name="search">
@@ -157,11 +155,10 @@
                         	<p class="mb-0">    		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
-	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%></td> 
-	                   	           			<th width=5%>학점</th>
-	                   	           			<th width=5%>이수학년</th>
-	                   	           			<th width=5%>이수학기</th>
+	                   	           		<tr bgcolor="lightgrey" align="center">	                   	           			 
+	                   	           			<th width=4%>학점</th>
+	                   	           			<th width=4%>이수학년</th>
+	                   	           			<th width=4%>이수학기</th>
 	                   	           			<th width=5%>과목명</th>
 	                   	           			<th width=5%>담당교수</th>	                   	           			
 	                   	           			<th width=5%>이수구분</th>          	           			                   	           			               	           			
@@ -179,8 +176,7 @@
                   	            
               	           			
                   	           	%>
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><a href='#'>강의 계획서</a></td>
+                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                  	           			
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			
