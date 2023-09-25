@@ -138,16 +138,27 @@
 			});
         	
         	
-        	/* 
+        	
         	// Create a password for the user
         	var password = '';
-        	var $job = $('input[name="job"]:checked');
-        	var $id = $('#id');
+        	var $job = $('input[name="job"]');
+	    	var $id = $('#id');
         	
+	    	$job.click(function() {
+				var selectedVal = $(this).val();
+				$job.prop('checked', false);
+				$(this).prop('checked', true);
+				
+				if(selectedVal == '교수') {
+				 
+				} else if (selectedVal == '학생') {
+					
+				} else if (selectedVal == '교직원') {
+					
+				}
+				
+			});
         	
-        	if($job.on('change', function() {
-        		alert('job: ' + $job.val() + '\r\nid: ' + $id.val())
-        	}));
         	// Encrypt the password using a secure encryption algorithm, such as AES
         	var encryptedPassword = CryptoJS.AES.encrypt(password, "");
 
@@ -169,7 +180,7 @@
         			alert('망각!');
         		}
         	});
-        	 */
+        	
         	
         </script>
     </body>
