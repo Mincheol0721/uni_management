@@ -67,6 +67,7 @@
  								$resultsTable.append(
  										
  								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
+ 									"<td width=5%>" + "</td>" +
  									"<td width=5%>" + coursebean.grade + "학점" + "</td>" +
  									"<td width=5%>" + coursebean.compyear + "학년" + "</td>" + 
                	           			"<td width=5%>" + coursebean.compsem + "학기" + "</td>" + 
