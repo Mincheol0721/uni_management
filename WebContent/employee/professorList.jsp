@@ -495,7 +495,7 @@
                    	       			Mem = (MemberDTO)profMem.get(cnt);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>"></td>
+                   	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>" class="form-check-input"></td>
                    	           			<td width=5%><%=Mem.getId() %></td>
                    	           			<td width=5%><%=Mem.getName() %></td>
                    	           			<td width=5%><%=Mem.getTel() %></td>
@@ -538,16 +538,19 @@
 								<!-- 검색어 입력하는 곳 -->
 								<input type="text" name="keyWord" class="input_box"> 
 								<!-- 검색(찾기) 버튼 -->
-								<input type="button" value="찾기" class="btn" onclick="check();">	
+								<input type="button" value="찾기" class="btn btn-primary" onclick="check();">	
+							</td>
+							<td>
 								<!-- 목록으로 돌아가기 -->							
 								<a href ="professorList.jsp" 
 								   onclick="fnList(); return false;"
-								   style="text-decoration: none;">목록으로</a>
-								</td>
+								   style="text-decoration : none; color:Black; margin-top: 5px">목록으로</a>
+							</td>
 							</tr>
 						</table>
 					</form>	
 				</div>
+				
 						<form name="list" method="post">
                    	         <!-- 목록으로 돌아가기 -->							
 								<input type="hidden" name="reload" value="true">
@@ -562,8 +565,8 @@
 										if(nowBlock > 0){
 								%>			
 										<%--이전 을 누르면 이전블럭위치 값과 ,  이전블럭위치의 시작페이지번호를 notice.jsp로 요청시 전달합니다. --%>
-										<a href="professorList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>">   
-											이전<%=pagePerBlock%>개<<< 
+										<a href="professorList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>" style="text-decoration: none; color:Black;">   
+											이전<
 										</a>							
 								<%			
 										}
@@ -597,8 +600,8 @@
             					if(totalBlock > nowBlock + 1){
             					%>		
                           		<%--[14] >>>다음3개 링크를 클릭했을때 그다음블럭위치번호와, 그다음블럭의 시작페이지번호를 notice.jsp로 요청해서 전달  --%>
-								<a href="professorList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>">	
-									>>>다음<%=pagePerBlock%>개
+								<a href="professorList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>" style="text-decoration: none; color:Black;">	
+									>다음
 								</a>	
 									
 							<%		
