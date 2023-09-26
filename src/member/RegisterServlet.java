@@ -87,10 +87,6 @@ public class RegisterServlet extends HttpServlet {
 			
 		} else if(action.equals("/checkPid.do")) {
 			
-			response.setContentType("text/html");
-			
-			//System.out.println("job: " + job);
-      
 			if(job.equals("교수")) { 
 				JSONObject jsonObject = new JSONObject(); 
 				
@@ -147,6 +143,48 @@ public class RegisterServlet extends HttpServlet {
 				}
 				
 			}
+        	
+        } else if(action.equals("/checkP.me")) {
+        	JSONObject jsonObject = new JSONObject();
+        	System.out.println("job: " + job + "    id: " + id);
+        	
+        	if(job.equals("교수")) {
+        		pDao = new ProfessorDAO();
+        		
+        		mDto = pDao.selectMember(id);
+        		
+        		jsonObject.put("pwd",mDto.getPwd());
+        		
+        		jsonArray.add(jsonObject);
+        	}
+        	
+        } else if(action.equals("/checkS.me")) {
+        	JSONObject jsonObject = new JSONObject();
+        	System.out.println("job: " + job + "    id: " + id);
+        	
+        	if(job.equals("학생")) {
+        		sDao = new StudentDAO();
+        		
+        		mDto = sDao.selectMember(id);
+        		
+        		jsonObject.put("pwd", mDto.getPwd());
+
+        		jsonArray.add(jsonObject);
+        	}
+        	
+        } else if(action.equals("/checkE.me")) {
+        	JSONObject jsonObject = new JSONObject();
+        	System.out.println("job: " + job + "    id: " + id);
+        	
+        	if(job.equals("교직원")) {
+        		eDao = new EmployeeDAO();
+        		
+        		mDto = eDao.selectMember(id);
+        		
+        		jsonObject.put("pwd",mDto.getPwd());
+
+        		jsonArray.add(jsonObject);
+        	}
         	
         }
 		

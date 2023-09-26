@@ -29,6 +29,7 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script type="text/javascript" src="./jquery.cookie.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
         <style type="text/css">
         	.input {
@@ -78,7 +79,7 @@
                                             <div class="form-check mb-3">
                                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                                 
-                                                <label class="form-check-label" for="inputRememberPassword">비밀번호 기억하기</label>
+                                                <label class="form-check-label" for="inputRememberPassword">30일동안 비밀번호 기억하기</label>
                                             </div>
                                             <div class="d-flex align-items-right mb-0">
                                                 <input type="submit" class="btn btn-primary" value="로그인" >
@@ -117,7 +118,6 @@
         	
         	if($('#pwd').on('keyup', function() {
         		$('.showPwd').show();
-	        	console.log($('#pwd').val().length);
         	}));
         	if($('#pwd').val().length == 0) {
         		$('.showPwd').hide();
@@ -137,8 +137,7 @@
 				}
 			});
         	
-        	
-        	
+        	<%-- 
         	// Create a password for the user
         	var password = '';
         	var $job = $('input[name="job"]');
@@ -149,16 +148,52 @@
 				$job.prop('checked', false);
 				$(this).prop('checked', true);
 				
+// 				console.log('selval: ', selectedVal);
+// 				console.log('id: ', $id.val());
+				
 				if(selectedVal == '교수') {
-				 
+					$.ajax({
+						url : '<%=request.getContextPath()%>/register/checkP.me',
+						type : 'POST',
+						data : {id: $id.val(), job: selectedVal},
+						dataType : 'json',
+						success : function(data) {
+							$.each(data, function(index, dto) {
+// 								console.log(dto.pwd);
+								password = dto.pwd;
+							});
+						}
+					});
 				} else if (selectedVal == '학생') {
-					
+					$.ajax({
+						url : '<%=request.getContextPath()%>/register/checkS.me',
+						type : 'POST',
+						data : {id: $id.val(), job: selectedVal},
+						dataType : 'json',
+						success : function(data) {
+							$.each(data, function(index, dto) {
+// 								console.log(dto.pwd);
+								password = dto.pwd;
+							});						
+						}
+					});
 				} else if (selectedVal == '교직원') {
-					
+					$.ajax({
+						url : '<%=request.getContextPath()%>/register/checkE.me',
+						type : 'POST',
+						data : {id: $id.val(), job: selectedVal},
+						dataType : 'json',
+						success : function(data) {
+							$.each(data, function(index, dto) {
+// 								console.log(dto.pwd);
+								password = dto.pwd;
+							});						
+						}
+					});
 				}
 				
 			});
-        	
+        	/* 
         	// Encrypt the password using a secure encryption algorithm, such as AES
         	var encryptedPassword = CryptoJS.AES.encrypt(password, "");
 
@@ -169,19 +204,29 @@
         	var date = new Date();
         	date.setTime(date.getTime() + (1 * 60 * 1000)); // 1 hour
         	document.cookie = "password=" + encryptedPassword + "; expires=" + date.toUTCString() + ";";
-        	
+        	 */
         	const rememberPwd = $('#inputRememberPassword');
         	rememberPwd.on('change', function() {
+        		
         		if(rememberPwd.is(':checked')) {
         			//로그인 아이디 쿠키 가져오기
         			alert('기억!');
+        			if($.cookie == 'null') {
+        				alert('쿠키저장');
+	        			$.cookie('pwd', password, {expires:30, path:'/'});
+        			} else {
+        				$('#pwd').on('focus', function() {
+	        				$('#pwd').val( $.cookie('pwd') );
+						});
+        			}
+        			
         		} else {
         			//로그인 아이디 쿠키 제거
         			alert('망각!');
+        			$.removeCookie('pwd', {path: '/'});
         		}
         	});
-        	
-        	
+        	 --%>
         </script>
     </body>
 </html>
