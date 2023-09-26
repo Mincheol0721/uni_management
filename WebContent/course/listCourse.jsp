@@ -134,7 +134,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">전체 강의</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">course</li>
+                            <li class="breadcrumb-item active">listCourse</li>
                         </ol>
                         <form action="listCourse.jsp" method="post">
                         	<select name="search">
