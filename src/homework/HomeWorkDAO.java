@@ -50,16 +50,16 @@ public void freeResource() {
 	}
 
 
-	public int getBoardCount() {
+	public int getBoardCount(String cname) {
 			int count = 0;
 		try {
 			//DB연결
 			con = getConnection();
 			
 			// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
-			String sql = "select count(*) from homework";
+			String sql = "select count(*) from homework where cname = ?";
 			pstmt = con.prepareStatement(sql);
-			
+				pstmt.setString(1, cname);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) { //만약 조회해서 글개수가 있으면
@@ -125,7 +125,7 @@ public void freeResource() {
 		}
 		return lectureList;
 	}
-	//num을 course로 변환
+	//
 	public HomeWorkDTO gethomeworkModifyNum(String num) {
 		
 		HomeWorkDTO HomeV = null;

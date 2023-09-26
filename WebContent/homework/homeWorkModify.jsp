@@ -1,3 +1,5 @@
+<%@page import="homework.HomeWorkBoardDAO"%>
+<%@page import="homework.HomeWorkBoardDTO"%>
 <%@page import="homework.HomeWorkDTO"%>
 <%@page import="homework.HomeWorkDAO"%>
 <%@page import="lectureBoard.LectureVO"%>
@@ -11,14 +13,25 @@
 <%
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
+	
+	String cname = request.getParameter("cname");
 
 	//get방식으로 전송된 글번호값 가져오기
 	String num = request.getParameter("num");
 	
+	
+	
 	// 데이터베이스에서 조회해서 뿌려줄 역할을 할 DAO객체 생성
 	HomeWorkDAO homeDAO = new HomeWorkDAO();
-	// LectureDAO의 getLectureModify메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
+	// HomeWorkDAO의 gethomeworkModifyNum메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
 		HomeWorkDTO homeVO = homeDAO.gethomeworkModifyNum(num);	
+	
+		//사용자의 이름을 가져오는 구문
+				HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
+				
+		    	HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
+		    	
+		    	String userName = name.getName();
 	
 %>
 <!DOCTYPE html>
@@ -51,35 +64,43 @@
                         <div class="container">
                         	<div class="row justify-content-center">
                         	
-                        	<form class="form-inline w-75" action="homWorkModifyPro.jsp" method="post">
+                        	<form class="form-inline w-75" action="homeWorkModifyPro.jsp" method="post" enctype="multipart/form-data">
 	                        <div class="input-group flex-nowrap mt-3 mb-3" hidden="">
 							  
 							</div>
-						
+							<input type="text" id="userName" value="<%=userName%>" hidden="">
+							<input type="text" name="cname" value="<%=cname%>" hidden=""> <!-- 과목명 -->
+							<input type="text" name="num" value="<%=num%>" hidden="">
 							<div class="input-group flex-nowrap mt-3 mb-3">
 							  <span class="input-group-text" id="addon-wrapping">학생이름</span>
-							  <input type="text" class="form-control" aria-describedby="addon-wrapping" name="studentName" value="<%=homeVO.getStudentName()%>" disabled="disabled">
+							  <input type="text" class="form-control" aria-describedby="addon-wrapping" name="studentName" id="studentName" value="<%=homeVO.getStudentName()%>" disabled="disabled">
+							</div>
+							<div class="input-group flex-nowrap mt-3">
+								  <span class="input-group-text">과제명</span>
+								  <input type="text" class="form-control" name="taskTitle" id="taskTitle" disabled="disabled" value="<%=homeVO.getTaskTitle()%>">							
 							</div>
 							<div class="input-group flex-nowrap mt-3">
 								  <span class="input-group-text">글 제목</span>
 								  <input type="text" class="form-control" name="title" id="title" disabled="disabled" value="<%=homeVO.getTitle()%>">							
 							</div>
-							 <div class="input-group flex-nowrap mt-3">
-								  <span class="input-group-text">과제명</span>
-								  <input type="text" class="form-control" name="taskTitle" id="taskTitle" disabled="disabled" value="<%=homeVO.getTaskTitle()%>">							
-								  </div>
+							 
 							<div class="form-floating">
 								  <textarea class="form-control" id="content" style="height: 100px" name="content" disabled="disabled"><%=homeVO.getContent()%></textarea>
 								  <label for="floatingTextarea2"></label>
 							</div>
-							<div class="col text-center" id="reflectedList" >
-								<input type="submit" class="btn btn-primary btn-sm" value="수정하기" id="reflected">
-								<input type="button" class="btn btn-primary btn-sm" value="리스트로돌아가기" id="cancel">
+							<span style="display: none" id="fileDisplay"> 첨부파일 :<input type="file" name="file"></span>
+							<div class="col text-center" id="reflectedList" style="display: none">
+								<input type="submit" class="btn btn-primary btn-sm" value="수정반영하기" id="reflected">
+								<input type="button" class="btn btn-primary btn-sm" value="취소" id="cancel">
 							</div>
 							</form>
-						</div>
-						</div>
 							
+						</div>
+						</div>
+						<div class="col text-center" id="modifyList" >
+								<input type="button" class="btn btn-primary btn-sm" value="수정하기" id="modify">
+								<input type="button" class="btn btn-primary btn-sm" value="리스트로돌아가기" id="backlist">
+							</div>	
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -104,6 +125,38 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
         
+        <script type="text/javascript">
+    
+       	
+        	
+        	$("#modify").on('click',function(){
+        	if ($("#studentName").val() == $("#userName").val()) {
+        		//수정하기 버튼을 눌렀을때 수정신청할수 있게 화면이 바뀌게끔 이벤트 등록
+            	
+            		$("#modifyList").css("display","none");
+    				$("#reflectedList").css("display","block");
+    				$("#title").attr("disabled",false);
+    				$("#content").attr("disabled",false);
+    				$("#fileDisplay").css("display","block");
+            	
+ 			}else {
+				alert("본인이 제출한 과제가 아닙니다.");
+			}
+        	});
+        	
+        	$("#cancel").on('click',function(){
+        		$("#modifyList").css("display","block");
+        		$("#reflectedList").css("display","none");
+				$("#options").css("display","none");
+				$("#title").attr("disabled",true);
+				$("#content").attr("disabled",true);
+				$("#fileDisplay").css("display","none");
+        	})
+        	
+        	$("#backlist").on('click',function(){
+        		location.href = "homework.jsp?cname=<%=cname%>";
+        	});
+        </script>
         
     </body>
 </html>
