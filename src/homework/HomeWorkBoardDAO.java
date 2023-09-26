@@ -123,7 +123,7 @@ public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String cn
 	return homeworkList;
 }
 
-public HomeWorkBoardDTO gethomeWorkModify(String num) {
+public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 	
 	HomeWorkBoardDTO homeV = null;
 	
