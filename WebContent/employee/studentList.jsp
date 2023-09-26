@@ -406,7 +406,27 @@
         	
         });
        	
-       	
+			function check(){
+ 			
+ 			//검색어를 입력하지 않았다면?
+ 			if(document.search.keyWord.value == ""){
+ 				alert("검색어를 입력하세요");
+ 				document.search.keyWord.focus();
+ 				return;//check함수 벗어나기 
+ 			}
+ 			
+ 			//검색어를 입력했다면?
+ 			document.search.submit(); //form태그의 action속성에 작성한 notice.jsp로 검색요청시!
+ 									   //입력한  검색어 + 선택한 검색기준값  + hidden값 까지 모두 request에 담아서 전송합니다. 			
+ 		}
+        
+			
+			//목록으로 부분
+			function fnList() {
+				document.list.action="studentList.jsp";
+				document.list.submit();
+				
+			}
         
         
         </script>
@@ -445,11 +465,31 @@
                    	           			<td width=5%>학부</td>
                    	           			<td width=5%>학과</td>
                    	           		</tr>
+                   	           		<%!String keyWord, keyField;  %>
                    	       			<%
+                   	       			
+                   	     		  	//1. 한글처리 (입력한 검색어와 검색기준값에 한글문자 처리)
+	                   	       		request.setCharacterEncoding("UTF-8");
+	                   	       		
+	                   	       	    //2. 조건    만약 검색어가 입력되어 있다면? 선택한 검색기준값과 입력한 검색어를 request에서 받아옵니다.
+	                   	       	    //요약 : 요청한 값 얻기 
+	                   	       	    if(request.getParameter("keyWord") != null){
+	                   	       	    	//검색기준값(이름, 제목, 내용 중에 select option에서 선택한 하나의 값)
+	                   	       	    	keyField = request.getParameter("keyField"); //이름 - name  또는   제목 - subject 또는  내용 - content중에 하나 
+	                   	       	    	//입력한 검색어 얻기 
+	                   	       	    	keyWord = request.getParameter("keyWord");
+	                   	       	    }
+	                   	       	    //목록으로 부분
+	                   	       	   	if(request.getParameter("reload") != null){
+	                   	       	   		if(request.getParameter("reload").equals("true")){
+	                   	       	   			keyWord="";
+	                   	       	   		}
+	                   	       	   	}
+	                   	       	    
                    	       			StudentDAO dao = new StudentDAO();
                    	       			
                    	       			
-                   	       			List studMem = dao.listStudent();
+                   	       			List studMem = dao.listStudent(keyWord, keyField);
                    	       			
                    	    			MemberDTO Mem = null;
                    	    			
@@ -516,6 +556,37 @@
                    	           	 <input style="float: right" type="button" id="student_reg" name="student_reg" value="등록">
                    	         </form>
                    	         
+                   	         
+               <div id="table_search">
+				<form action="studentList.jsp" name="search" method="post">
+					<input type="hidden" name="page" value="0">
+					<table border="0" align="center">
+						<tr>
+							<td align="center">
+								<select name="keyField">
+									<option value="name">이름</option>
+									<option value="id">학번</option>
+
+								</select>
+								<!-- 검색어 입력하는 곳 -->
+								<input type="text" name="keyWord" class="input_box"> 
+								<!-- 검색(찾기) 버튼 -->
+								<input type="button" value="찾기" class="btn" onclick="check();">	
+								<!-- 목록으로 돌아가기 -->							
+								<a href ="studentList.jsp" 
+								   onclick="fnList(); return false;"
+								   style="text-decoration: none;">목록으로</a>
+								</td>
+							</tr>
+						</table>
+					</form>	
+				</div>
+				
+						<form name="list" method="post">
+                   	         <!-- 목록으로 돌아가기 -->							
+								<input type="hidden" name="reload" value="true">
+                   	    </form>
+	                   	         
                    	         <%--페이징처리 하는부분 --%>
                    	         <div id="page_control" align="center">
                    	          	<%

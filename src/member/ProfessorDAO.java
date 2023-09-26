@@ -279,17 +279,37 @@ public class ProfessorDAO {
 	}//useCheck메소드 끝
 	
 	
-	public ArrayList listProfessor() {
+	public ArrayList listProfessor(String keyWord,String keyField) {
 		
 		ArrayList list = new ArrayList();
+		
+		String sql="";
 		
 		try {
 			//db에 접속
 			con = getConnection();
+			if(keyWord == null || keyWord.isEmpty()) {//검색어를 입력 하지 않았을 경우
+				
+				
+				sql = "select * from professor";
+				
+				pstmt = con.prepareStatement(sql);
+				
 			
-			String sql = "select * from professor";
 			
-			pstmt = con.prepareStatement(sql);
+			}else {//검색어를 입력 하였을 경우 
+				
+				
+				
+				sql = "SELECT * FROM professor WHERE "+keyField+" like '%"+keyWord+"%'";
+				
+				pstmt = con.prepareStatement(sql);
+				
+
+			}
+			
+			
+		
 			
 			rs = pstmt.executeQuery();
 			

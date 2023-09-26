@@ -303,17 +303,37 @@ public class StudentDAO {
 	}//checkPwd닫는부분
 	
 	
-	public ArrayList listStudent() {
+	public ArrayList listStudent(String keyWord,String keyField) {
 		
 		ArrayList list = new ArrayList();
+		
+		String sql="";
 		
 		try {
 		
 			con = getConnection();
 			
-			String sql="select * from student";
 			
-			pstmt = con.prepareStatement(sql);
+			if(keyWord == null || keyWord.isEmpty()) {//검색어를 입력 하지 않았을 경우
+				
+				
+				sql="select * from student";
+				
+				pstmt = con.prepareStatement(sql);
+				
+			
+			
+			}else {//검색어를 입력 하였을 경우 
+				
+				
+				
+				sql = "SELECT * FROM student WHERE "+keyField+" like '%"+keyWord+"%'";
+				
+				pstmt = con.prepareStatement(sql);
+				
+
+			}
+			
 			
 			rs = pstmt.executeQuery();
 			
