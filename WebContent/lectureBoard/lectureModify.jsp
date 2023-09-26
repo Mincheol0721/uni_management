@@ -1,3 +1,5 @@
+<%@page import="homework.HomeWorkBoardDTO"%>
+<%@page import="homework.HomeWorkBoardDAO"%>
 <%@page import="lectureBoard.LectureVO"%>
 <%@page import="java.util.List"%>
 <%@page import="lectureBoard.LectureDAO"%>
@@ -23,7 +25,14 @@
 	// 데이터베이스에서 조회해서 뿌려줄 역할을 할 DAO객체 생성
 	LectureDAO lectureDAO = new LectureDAO();
 	// LectureDAO의 getLectureModify메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
-		LectureVO lecVO = lectureDAO.getLectureModify(num);	
+		LectureVO lecVO = lectureDAO.getLectureModify(num);
+	
+		//사용자의 이름을 가져오는 구문
+		HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
+		
+    	HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
+    	
+    	String userName = name.getName();
 	
 %>
 <!DOCTYPE html>
@@ -37,12 +46,11 @@
         <title>OO대학교 학사관리 시스템 - 강의평가</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
-        <script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="/inc/logo.jsp" />
+            <jsp:include page="../inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -72,7 +80,7 @@
 						
 							<div class="input-group flex-nowrap mt-3 mb-3">
 							  <span class="input-group-text" id="addon-wrapping">학생이름</span>
-							  <input type="text" class="form-control" aria-describedby="addon-wrapping" name="name" disabled="disabled" value="<%=lecVO.getName()%>">
+							  <input type="text" class="form-control" aria-describedby="addon-wrapping" name="name" id="name" disabled="disabled" value="<%=lecVO.getName()%>">
 							</div>
 							<!-- 여기서부터 안보여줄거야 -->
 							<span style="display: none" id="options">
@@ -130,6 +138,7 @@
 								  <label for="floatingTextarea2"></label>
 							</div>
 							<div class="col text-center" id="reflectedList" style="display: none">
+								<input type="text" value="<%=userName%>" id="userName" hidden="">
 								<input type="submit" class="btn btn-primary btn-sm" value="수정반영하기" id="reflected">
 								<input type="button" class="btn btn-primary btn-sm" value="취소" id="cancel">
 							</div>
@@ -165,14 +174,21 @@
         <script src="js/datatables-simple-demo.js"></script>
         
         <script type="text/javascript">
+        //var a = $("#name").val()
+        //alert(a);
+        
         	//수정하기 버튼을 눌렀을때 수정신청할수 있게 화면이 바뀌게끔 이벤트 등록
         	$("#modify").on('click',function(){
+        	if ($("#name").val() == $("#userName").val()) {
         		$("#modifyList").css("display","none");
 				$("#reflectedList").css("display","block");
 				$("#options").css("display","block");
 				$("#title").attr("disabled",false);
 				$("#mainText").attr("disabled",false);
-        	})
+        	}else {
+				alert("본인이 작성한 글이 아닙니다.");
+			}
+        	});
         	
         	$("#cancel").on('click',function(){
         		$("#modifyList").css("display","block");

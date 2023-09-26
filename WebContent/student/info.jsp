@@ -1,3 +1,5 @@
+<%@page import="homework.HomeWorkBoardDTO"%>
+<%@page import="homework.HomeWorkBoardDAO"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="grade.GradeVO"%>
 <%@page import="java.util.List"%>
@@ -17,7 +19,15 @@
 	//session객체에서 id값을 들고옴
 	String id = (String)session.getAttribute("id");
 	// CourseDAO의 getBoardList메소드를 통해 테이블목록을 가져와서 list배열에 저장	
-	 list =  gradeDAO.getBoardList(id); 
+	 list =  gradeDAO.getBoardList(id);
+	
+	//사용자의 이름을 가져오는 구문
+		HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
+		
+ 	HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
+ 	
+ 	String userName = name.getName();
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,12 +40,11 @@
         <title>OO대학교 학사관리 시스템 - 학사정보</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
-        <script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="/inc/logo.jsp" />
+            <jsp:include page="../inc/logo.jsp" />
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -52,6 +61,7 @@
                         </ol>
                         <div class="row">
                         	<p class="mb-0">
+                        	<input type="text" value="<%=userName%>" id="userName" hidden="">
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
                    	           		<tr bgcolor="lightgrey" align="center">
                    	           			<td width=5%>교수명</td>
@@ -109,7 +119,8 @@
         	$(document).on('click','#emailBtn',function(){
       		
 			var professorName = $(this).closest("tr").find("td[name='professorName']").text();
-//      		alert(professorName);	
+			var userName = $("#userName").val();
+			 //alert(userName);	
 			// 교수 이름이 올바르게 넘어옴      		
         	
         	jQuery.ajaxSettings.traditional = true;
@@ -119,7 +130,7 @@
 				type : "post", //전송요청방식 GET 또는 POST중에 하나
 				data : {"professorName":professorName},
 				success : function(data){//EmailSendSub.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 교수이름에 해당하는 이메일을  받는다
- 					window.open('EmailSendMain.jsp?data='+data,'_blank','width=500,height=400'); // ajax통신 성공 함
+ 					window.open('EmailSendMain.jsp?data='+data + '&userName='+ userName ,'_blank','width=500,height=400'); // ajax통신 성공 함
 					//alert(data);
  					//result = data;
 					
@@ -131,15 +142,15 @@
 		});	
         	//강의 평가 버튼을 눌렀을때 동작할 이벤트
         	$(document).on('click','#lectureResister',function(){
-          		
+        		var userName = $("#userName").val();
         		var professorName = $(this).closest("tr").find("td[name='professorName']").text();
         		var lectureName = $(this).closest("tr").find("td[name='lectureName']").text();
 //         		console.log("교수이름 = "+professorName);
 //         		console.log("과목이름 = "+lectureName);
-
-          		//클릭한 교수이름 과목이름 모두 들고옴
+// 				alert(userName); 
+          		//클릭한 교수이름 과목이름 학생이름 모두 들고옴
           		//여기까지는 됨 
-        		window.open('../lectureBoard/lectureResister.jsp?professorName=' + professorName +'&lectureName=' + lectureName,'_blank','width=500,height=400');
+        		window.open('../lectureBoard/lectureResister.jsp?professorName=' + professorName +'&lectureName=' + lectureName + '&userName=' + userName,'_blank','width=500,height=400');
           		
           		
     		});   	
