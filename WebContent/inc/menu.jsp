@@ -71,6 +71,7 @@
 	                <nav class="sb-sidenav-menu-nested nav">
 	                    <a class="nav-link" href="${path}/course/listCourse.jsp">전체강의</a>
 	                    <a class="nav-link" href="${path}/courseList/courseList_professor.jsp">세부강의 수정</a>
+	                    <a class="nav-link" href="${path}/grade_professor/listGrade.jsp?propId=${sessionScope.id}">성적 조회</a>	                    
 	                </nav>
 	            </div>
 			</c:when>
