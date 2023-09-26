@@ -133,6 +133,7 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 				var $noticeTable = $("#noticeTable");
 				var $path = '<%=request.getContextPath()%>';
 				var $job = '<%=job%>';
+				var $id = '<%=(String)session.getAttribute("id")%>';
 				
 				if($job == '학생' || $id == 'null') {
 					$('.calTd').attr('onclick', 'location.href="'+$path+'/menu/schedule.jsp"');
