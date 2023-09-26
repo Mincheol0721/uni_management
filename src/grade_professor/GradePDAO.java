@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import courseList.CourseBean;
+import courseList.MoreInfoBean;
 
 public class GradePDAO {
 
@@ -110,5 +111,130 @@ public class GradePDAO {
 		return list;
 	
 	}//조회 end	
+	
+	//점수와 등급을 0과 X로 초기화시키는 기능의 메소드
+	public void resetGradeAndRate(int ccode, String id) {
+		
+		int grade = 0;
+		String rate = "X";
+		
+		String sql = "UPDATE cHistory "
+					+ "SET grade =?, rate =? "
+					+ "WHERE ccode =? AND id =?;";
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+	
+			pstmt = con.prepareStatement(sql);		
+			pstmt.setInt(1, grade);
+			pstmt.setString(2, rate);
+			pstmt.setInt(3, ccode);
+			pstmt.setString(4, id);
+			
+			pstmt.executeUpdate();
+						
+			System.out.println("초기화 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("resetGradeAndRate메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+			
+	}//resetGradeAndRate end
+	
+	//성적 수정을 위해 선택한 한 학생의 성적 정보를 modGrade.jsp에 뿌려주기 위해 리턴하는 메소드
+	public GradeBean getModGrade(int ccode, String name, String id) {
+		
+		System.out.println("getModGrade메소드가 받는 과목코드: " + ccode);
+		
+		String sql = "SELECT c.ccode, c.cname, s.name, ch.rate, ch.grade, s.id " 
+	             	+ "FROM course c " 
+	             	+ "INNER JOIN cHistory ch ON c.ccode = ch.ccode " 
+	             	+ "INNER JOIN student s ON ch.id = s.id " 
+	             	+ "WHERE c.ccode = ? " 
+	             	+ "AND s.name = ? " 
+	             	+ "AND s.id = ?;";
+
+		
+		GradeBean bean = new GradeBean();
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			pstmt = con.prepareStatement(sql);
+			
+			//DB에 전달할 ?값 세팅
+			pstmt.setInt(1, ccode);
+			pstmt.setString(2, name);
+			pstmt.setString(3, id);
+			
+			rs = pstmt.executeQuery();
+						
+			if (rs.next()) {
+
+				bean.setCcode(rs.getInt("ccode"));
+				bean.setCname(rs.getString("cname"));
+				bean.setId(rs.getString("id"));
+				bean.setName(rs.getString("name"));
+				bean.setGrade(rs.getInt("grade"));
+				bean.setRate(rs.getString("rate"));								
+			}	
+			
+			System.out.println("성적 수정할 행의 정보를 불러오는 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("getModGrade메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return bean;
+
+	}//getModGrade end
+
+	
+	//성적을 수정하는 기능의 메소드
+	public void modifyGrade(GradeBean bean) {			
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			String sql = "UPDATE cHistory "
+						+ "SET rate =?, grade =? "
+						+ "WHERE ccode =? "
+						+ "AND id =?;";
+			
+			pstmt = con.prepareStatement(sql);
+								
+			pstmt.setString(1, bean.getRate());
+			pstmt.setInt(2, bean.getGrade());
+			pstmt.setInt(3, bean.getCcode());
+			pstmt.setString(4, bean.getId());
+
+	
+			
+			pstmt.executeUpdate();
+			
+			System.out.println("성적 수정 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("modifyGrade메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+	}//modifyGrade end
+	
+
+	
 		
 }

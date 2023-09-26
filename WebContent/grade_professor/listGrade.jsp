@@ -29,7 +29,21 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
- 	
+	
+	<script type="text/javascript">
+		 	
+		//초기화시킬 지 한 번 더 확인
+ 		function resetG(ccode,id){ 		
+
+			var result = confirm("초기화하시겠습니까?");
+			
+			if (result == true) {
+			
+				location.href = "resetG.jsp?ccode=" + ccode + "&id=" + id;
+			}			
+		}	
+    
+    </script> 
     </head>
     <body class="sb-nav-fixed">    
         	<%
@@ -69,9 +83,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">성적 조회</h1>
+                        <h1 class="mt-4">성적 관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">listGrade</li>
+                            <li class="breadcrumb-item active">management_grade</li>
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
@@ -85,7 +99,7 @@
 	                   	           			<th width=5%>점수</th>
 	                   	           			<th width=5%>등급</th>
 	                   	           			<th width=5%>성적 수정</th>	
-	                   	           			<th width=5%>성적 삭제</th>	                   	           			         	           			                   	           			               	           			
+	                   	           			<th width=5%>성적 초기화</th>	                   	           			         	           			                   	           			               	           			
 	                   	           		</tr>
                    	           		</thead>
                    	           		
@@ -113,8 +127,8 @@
                   	           			<td><%= bean.getName() %></td>                  	           			
                   	           			<td><%= bean.getGrade() %></td>
                   	           			<td><%= bean.getRate() %></td>
-                  	           			<td><a href="#">수정</a></td>	
-										<td><a href="#">삭제</a></td>   	           									            
+							            <td><a href="modGrade.jsp?ccode=<%= bean.getCcode() %>&id=<%= bean.getId()%>&name=<%= bean.getName()%>">수정</a></td>	
+										<td><a href="javascript:resetG('<%= bean.getCcode()%>','<%=bean.getId()%>')">초기화</a></td>   	           				
          	           			<% }else{
          	           				System.out.println(loggedInProfessor + " : " + bean.getPropId());
          	           			%>	
