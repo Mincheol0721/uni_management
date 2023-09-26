@@ -161,9 +161,9 @@ List<NoticeDTO> nlist = ndao.getBoardList();
                         <h1 class="mt-4"><%-- bxSlider 상단부분 띄우기 위한 태그 --%></h1>
                         <div class="row">
 							<div class="bxslider">
-								<div><img src="assets/img/uni.jpg" width="100%"/></div>
-								<div><img src="assets/img/lib.jpg" width="100%" /></div>
-								<div><img src="assets/img/school.jpg" width="100%" /></div>
+								<div><img src="assets/img/uni.png" width="100%"/></div>
+								<div><img src="assets/img/lib.png" width="100%" /></div>
+								<div><img src="assets/img/lib2.png" width="100%" /></div>
 							</div>
 							<!-- 
 							<p><a href="" id="slider-next">Click me to go to the next slide</a><br />
