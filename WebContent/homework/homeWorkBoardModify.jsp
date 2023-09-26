@@ -42,7 +42,7 @@ request.setCharacterEncoding("UTF-8");
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 강의평가</title>
+        <title>OO대학교 학사관리 시스템 - 과제</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -71,13 +71,7 @@ request.setCharacterEncoding("UTF-8");
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/cPlanMenu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+					<jsp:include page="/inc/cPlanMenu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content" style="background-color: white">
