@@ -26,6 +26,8 @@
 	
 	   System.out.println("받아오는 주차 : " + request.getParameter("modweek"));	
        System.out.println("받아오는 강의명 : " + request.getParameter("cname"));
+       System.out.println("받아오는 교수아이디 : " + request.getParameter("id"));
+       
  
 	//DB작업
 	dao.modifyMoreInfo(bean);	
