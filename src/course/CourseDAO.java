@@ -53,7 +53,7 @@ public class CourseDAO {
 		}
 		//studyplannerdb데이터베이스의 cource게시판테이블에  저장된
 		//지정한 갯수 만큼 글목록을 조회 하여 반환 하는 메소드 
-		public List<CourseVO>  getBoardList(){
+		public List<CourseVO>  getBoardList(int startRow, int pageSize){
 			//int startRow, int pageSize
 			List<CourseVO> boardList = new ArrayList<CourseVO>(); //배열
 			
@@ -64,9 +64,12 @@ public class CourseDAO {
 				//SELECT 구문 만들기
 				//참고. select 구문에 limit이라는 구문이 있습니다.
 				
-				String sql  = "select * from course";
+				String sql  = "select * from course limit ?,?";
 				
 				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setInt(1, startRow);
+				pstmt.setInt(2, pageSize);
 				
 				rs = pstmt.executeQuery();
 				
@@ -79,9 +82,9 @@ public class CourseDAO {
 					int compsem = rs.getInt("compsem");
 					int grade = rs.getInt("grade"); // 조회한 성적
 					String professor = rs.getString("professor");//조회한 담당교수
+					String time = rs.getString("time");
 					
-					
-					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor);
+					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor,time);
 																
 									  
 					boardList.add(bfbb);//ArrayList배열에  추가
@@ -98,5 +101,28 @@ public class CourseDAO {
 			return boardList;//ReferenceNotice.jsp로 ArrayList배열 반환
 		}
 		
-		
+		public int getBoardCount() {
+			int count = 0;
+		try {
+			//DB연결
+			con = getConnection();
+			
+			// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
+			String sql = "select count(*) from course";
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { //만약 조회해서 글개수가 있으면
+				count = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("LectureDAO클래스의 getBoardCount메소드의 sql문 오류" + e);
+		}finally {
+			//자원해제
+			freeResource();
+		}
+		return count;
+	}
 }
