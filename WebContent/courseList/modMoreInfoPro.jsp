@@ -20,7 +20,8 @@
 			request.getParameter("topic"),
 			request.getParameter("way"),
 			request.getParameter("time"),
-			request.getParameter("homework")
+			request.getParameter("homework"),
+			(String)session.getAttribute("id")
 			);
 	
 	   System.out.println("받아오는 주차 : " + request.getParameter("modweek"));	

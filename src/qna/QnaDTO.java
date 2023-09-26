@@ -3,7 +3,7 @@ package qna;
 import java.sql.Date;
 
 public class QnaDTO {
-	private int no, readCount;
+	private int level, no, pno, pos, readCount;
 	private String title, content, id;
 	private Date writeDate;
 	
@@ -15,6 +15,31 @@ public class QnaDTO {
 		this.title = title;
 		this.content = content;
 		this.id = id;
+	}
+
+	
+	public int getPos() {
+		return pos;
+	}
+
+	public void setPos(int pos) {
+		this.pos = pos;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public int getPno() {
+		return pno;
+	}
+
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public int getNo() {

@@ -144,6 +144,7 @@ public class MoreInfoDAO {
 				bean.setTime(rs.getString("time"));
 				bean.setHomework(rs.getString("homework"));
 				bean.setId(rs.getString("id"));
+			
 		
 				list.add(bean);
 			}	

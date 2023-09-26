@@ -12,6 +12,7 @@
     String way = request.getParameter("way");
     String time = request.getParameter("time");
     String homework = request.getParameter("homework");
+    String id = (String)session.getAttribute("id");
 
 //     System.out.println(cname);
 //     System.out.println(week);
@@ -23,7 +24,7 @@
     
     
     // MoreInfoBean 객체 생성
-    MoreInfoBean bean = new MoreInfoBean(cname, week, ses, topic, way, time, homework);
+    MoreInfoBean bean = new MoreInfoBean(cname, week, ses, topic, way, time, homework, id);
 	//System.out.println(bean);
     
     // MoreInfoDAO 객체 생성 및 데이터 추가
