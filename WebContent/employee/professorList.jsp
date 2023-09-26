@@ -524,7 +524,7 @@
                    	         </form>
                    	         
                    	         
-                   	         <div id="table_search">
+               <div id="table_search">
 				<form action="professorList.jsp" name="search" method="post">
 					<input type="hidden" name="page" value="0">
 					<table border="0" align="center">
@@ -543,11 +543,11 @@
 								<a href ="professorList.jsp" 
 								   onclick="fnList(); return false;"
 								   style="text-decoration: none;">목록으로</a>
-							</td>
-						</tr>
-					</table>
-				</form>	
-			</div>
+								</td>
+							</tr>
+						</table>
+					</form>	
+				</div>
 						<form name="list" method="post">
                    	         <!-- 목록으로 돌아가기 -->							
 								<input type="hidden" name="reload" value="true">

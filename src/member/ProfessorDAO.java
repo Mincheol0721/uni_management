@@ -279,7 +279,7 @@ public class ProfessorDAO {
 	}//useCheck메소드 끝
 	
 	
-	public ArrayList listProfessor( String keyWord,String keyField) {
+	public ArrayList listProfessor(String keyWord,String keyField) {
 		
 		ArrayList list = new ArrayList();
 		
@@ -305,7 +305,7 @@ public class ProfessorDAO {
 				
 				pstmt = con.prepareStatement(sql);
 				
-//				pstmt.setString(1, keyWord);
+
 			}
 			
 			
