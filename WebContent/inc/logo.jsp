@@ -9,6 +9,16 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			function popup() {
+				var keyword = document.getElementById('keyword').value;
+				var url = "<%=request.getContextPath()%>/inc/popup.jsp?keyword=" + keyword;
+				var name = "검색결과";
+				var option = "width = 1280, height = 720, top = 100, left = 200, location = yes";
+				window.open(url, name, option);
+			}
+		</script>
 	</head>
 	<body>
 		<!-- 로고-->
@@ -19,8 +29,8 @@
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
             	<%-- 검색창인풋 --%>
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" name="search" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                <input class="form-control" id="keyword" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" name="search" />
+                <button class="btn btn-primary" id="searchBtn" type="button" onclick="javascript:popup()"><i class="fas fa-search"></i></button>
             </div>
         </form>
         <!-- 사이드바-->
