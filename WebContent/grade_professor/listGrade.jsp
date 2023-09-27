@@ -1,7 +1,9 @@
-<%@page import="courseList.CoursePlanBean"%>
+<%@page import="grade_professor.GradeBean"%>
 <%@page import="courseList.CoursePlanDAO"%>
+<%@page import="courseList.CoursePlanBean"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
+<%@page import="courseList.CourseDAO"%>
 <%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -21,30 +23,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 세부 강의 리스트</title>
+        <title>OO대학교 학사관리 시스템 - 성적조회</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	
+	<script type="text/javascript">
+		 	
+		//초기화시킬 지 한 번 더 확인
+ 		function resetG(ccode,id){ 		
+
+			var result = confirm("초기화하시겠습니까?");
+			
+			if (result == true) {
+			
+				location.href = "resetG.jsp?ccode=" + ccode + "&id=" + id;
+			}			
+		}	
+    
+    </script> 
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
-				request.setCharacterEncoding("UTF-8");
-        	
-		        MoreInfoDAO dao = new MoreInfoDAO();
-				
-				String week = request.getParameter("week");
-				String cname = request.getParameter("cname");
-				
-				MoreInfoBean bean = dao.getMoreInfo(Integer.parseInt(week));
-				
-				System.out.println("수정할 주차 : " + week);
-				System.out.println("수정할 과목명 : " + cname);
+				request.setCharacterEncoding("UTF-8");	
+
 			%>		
 			
-						
+			<jsp:useBean id="gradePDAO" class="grade_professor.GradePDAO"/>		
 					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -72,44 +80,67 @@
                 	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
-           
             <div id="layoutSidenav_content">
-                <main> 
-                	<form action="modMoreInfoPro.jsp?cname=<%=cname %>" method="POST"> 
-                	<input type="hidden" id="week" name="week" value="<%=week%>"/>          
+                <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 수정</h1>
-                        <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">modMoreInfo</li>                        
+                        <h1 class="mt-4">성적 관리</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">management_grade</li>
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</th>
-	                   	           			<th width=5%>차시</th>                   	           			
-	                   	           			<th width=5%>강의주제</th>
-	                   	           			<th width=5%>강의방식</th>
-	                   	           			<th width=5%>강의기간</th>
-	                   	           			<th width=5%>과제</th>	
-	                   	           			<th width=5%>강의수정</th>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%>과목코드</th> 
+	                   	           			<th width=5%>과목명</th>
+	                   	           			<th width=5%>학번</th>
+	                   	           			<th width=5%>이름</th>
+	                   	           			<th width=5%>점수</th>
+	                   	           			<th width=5%>등급</th>
+	                   	           			<th width=5%>성적 수정</th>	
+	                   	           			<th width=5%>성적 초기화</th>	                   	           			         	           			                   	           			               	           			
 	                   	           		</tr>
-                   	           		</thead>  		
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           									         	           				
-								        <td width="5%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
-								        <td width="5%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
-								        <td width="5%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
-								        <td width="5%"><input type="text" name="way" value="<%=bean.getWay()%>"/></td>
-								        <td width="5%"><input type="text" name="time" value="<%=bean.getTime()%>"/></td>
-								        <td width="5%"><input type="text" name="homework" value="<%=bean.getHomework()%>"/></td>
-								        <td width="5%"><input type="submit" value="수정"></td>
-								    </tr>  	           										           										           		                 	           		
+                   	           		</thead>
+                   	           		
+                  	           		<%-- 과목 리스트 --%>
+                  	           		<tbody id="results">
+                  	           <%	
+                  	           
+                  	        		String loggedInProfessor = (String)session.getAttribute("id");
+                  	           		
+                  	           		List<GradeBean> list = gradePDAO.getGrade(); 
+        	           			
+                  	           		for (int i = 0; i < list.size(); i++) {
+                  	           			
+                  	           		GradeBean bean = list.get(i);
+                  	            
+              	           			
+                  	           	%>
+                  	           	<% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getPropId()))  {  
+							    	System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							    %> 
+                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+                  	           			<td><%= bean.getCcode() %></td>
+                  	           			<td><%= bean.getCname() %></td>
+                  	           			<td><%= bean.getId() %></td>
+                  	           			<td><%= bean.getName() %></td>                  	           			
+                  	           			<td><%= bean.getGrade() %></td>
+                  	           			<td><%= bean.getRate() %></td>
+							            <td><a href="modGrade.jsp?ccode=<%= bean.getCcode() %>&id=<%= bean.getId()%>&name=<%= bean.getName()%>">수정</a></td>	
+										<td><a href="javascript:resetG('<%= bean.getCcode()%>','<%=bean.getId()%>')">초기화</a></td>   	           				
+         	           			<% }else{
+         	           				System.out.println(loggedInProfessor + " : " + bean.getPropId());
+         	           			%>	
+							    <% } %>
+         	           				</tr>                 	           		
+                  	           	<% } %>		
+                  	           		</tbody>
+     	           										           		                 	           		
                    	           </table>
                             </p>
                         </div>
                     </div>
-                    </form>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

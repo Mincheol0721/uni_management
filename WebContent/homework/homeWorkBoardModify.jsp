@@ -28,8 +28,8 @@ request.setCharacterEncoding("UTF-8");
 	
 	// 데이터베이스에서 조회해서 뿌려줄 역할을 할 DAO객체 생성
 	HomeWorkBoardDAO homeBoardDAO = new HomeWorkBoardDAO();
-	// HomeWorkBoardDTO의 getLectureModify메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
-		HomeWorkBoardDTO homeVO = homeBoardDAO.gethomeWorkModify(num);
+	// HomeWorkBoardDTO의 gethomeWorkModifyNum메소드를 통해 테이블목록을 글번호에 해당하는 테이블을 가져옴
+		HomeWorkBoardDTO homeVO = homeBoardDAO.gethomeWorkModifyNum(num);
 	
 		HomeWorkBoardDTO name = homeBoardDAO.getStudentName(id);
 		

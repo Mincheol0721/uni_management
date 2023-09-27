@@ -8,6 +8,7 @@
 	String professorName =request.getParameter("professorName");
 	String lectureName = request.getParameter("lectureName");
 	String lectureDivide =request.getParameter("lectureDivide");
+	String userName = request.getParameter("userName");
 %>    
     
 <!DOCTYPE html>
@@ -36,7 +37,7 @@
 							</div>
 							<div class="form-group col-sm-6">
 								<label>학생이름</label>
-								<input type="text" name="name" class="form-control" maxlength="20"/>
+								<input type="text" name="name" class="form-control" maxlength="20" value="<%=userName%>" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="form-row">

@@ -68,7 +68,7 @@ public class CHistoryDAO {
 			con = getConnection();
 
 			// SELECT 구문 만들기
-			String sql = "select chistory.ccode,course.cname,course.compdiv,course.compyear,course.compsem,course.grade,course.professor \r\n"
+			String sql = "select chistory.ccode,course.cname,course.compdiv,course.compyear,course.compsem,course.grade,course.professor,course.time \r\n"
 					+ "from chistory\r\n" 
 					+ "join course\r\n" 
 					+ "on course.ccode = chistory.ccode\r\n"
@@ -89,8 +89,9 @@ public class CHistoryDAO {
 				int compsem = rs.getInt("compsem");// 조회한 학기
 				int grade = rs.getInt("grade"); // 조회한 성적
 				String professor = rs.getString("professor"); // 조회한 담당교수
+				String time = rs.getString("time");
 
-				CourseVO bfbb = new CourseVO(ccode,cname, compdiv, compyear, compsem, grade, professor);
+				CourseVO bfbb = new CourseVO(ccode,cname, compdiv, compyear, compsem, grade, professor,time);
 
 				boardList.add(bfbb);// ArrayList배열에 추가
 
