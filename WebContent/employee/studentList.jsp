@@ -571,11 +571,13 @@
 								<!-- 검색어 입력하는 곳 -->
 								<input type="text" name="keyWord" class="input_box"> 
 								<!-- 검색(찾기) 버튼 -->
-								<input type="button" value="찾기" class="btn" onclick="check();">	
-								<!-- 목록으로 돌아가기 -->							
+								<input type="button" value="찾기" class="btn btn-primary" onclick="check();">	
+								
+								</td>
+								<td>
 								<a href ="studentList.jsp" 
 								   onclick="fnList(); return false;"
-								   style="text-decoration: none;">목록으로</a>
+								   style="text-decoration: none; color:Black;">목록으로</a>
 								</td>
 							</tr>
 						</table>
@@ -597,7 +599,7 @@
 								%>			
 										<%--이전 을 누르면 이전블럭위치 값과 ,  이전블럭위치의 시작페이지번호를 notice.jsp로 요청시 전달합니다. --%>
 										<a href="studentList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>">   
-											이전<%=pagePerBlock%>개<<< 
+											이전< 
 										</a>							
 								<%			
 										}
@@ -611,7 +613,7 @@
                    	           		}
                    	           	%>
                    	           	
-                   	           	<a href= "studentList.jsp?nowPage=<%=(nowBlock * pagePerBlock) + cnt %>&nowBlock=<%=nowBlock%>" style="text-decoration: none;">
+                   	           	<a href= "studentList.jsp?nowPage=<%=(nowBlock * pagePerBlock) + cnt %>&nowBlock=<%=nowBlock%>" style="text-decoration: none; color:Black;">
                    	           			<%--(0 nowBlock이 처음에 0임   *     3) +1  + 0  --%>
                    	           			<%=(nowBlock * pagePerBlock) + 1 + cnt %>
                    	           			
@@ -632,7 +634,7 @@
             					%>		
                           		<%--[14] >>>다음3개 링크를 클릭했을때 그다음블럭위치번호와, 그다음블럭의 시작페이지번호를 notice.jsp로 요청해서 전달  --%>
 								<a href="studentList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>">	
-									>>>다음<%=pagePerBlock%>개
+									>다음
 								</a>	
 									
 							<%		
