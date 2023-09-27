@@ -87,21 +87,61 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</th>
-	                   	           			<th width=5%>차시</th>                   	           			
-	                   	           			<th width=5%>강의주제</th>
+	                   	           			<th width=3%>주차</th>
+	                   	           			<th width=3%>차시</th>                   	           			
+	                   	           			<th width=6%>강의주제</th>
 	                   	           			<th width=5%>강의방식</th>
-	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>강의기간(요일, 시작교시, 끝교시)</th>
 	                   	           			<th width=5%>과제</th>	
 	                   	           			<th width=5%>강의수정</th>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead>  		
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           									         	           				
-								        <td width="5%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
-								        <td width="5%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
-								        <td width="5%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
-								        <td width="5%"><input type="text" name="way" value="<%=bean.getWay()%>"/></td>
-								        <td width="5%"><input type="text" name="time" value="<%=bean.getTime()%>"/></td>
+								        <td width="3%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
+								        <td width="3%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
+								        <td width="6%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
+								        
+								        <td width="5%">
+									        <div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="online" value="온라인" <% if(bean.getWay().equals("온라인")) { %>checked<% } %>>
+											    <label class="form-check-label" for="online">온라인</label>
+											</div>
+											<div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="offline" value="오프라인" <% if(bean.getWay().equals("오프라인")) { %>checked<% } %>>
+											    <label class="form-check-label" for="offline">오프라인</label>
+											</div>
+											<div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="hybrid" value="혼합" <% if(bean.getWay().equals("혼합")) { %>checked<% } %>>
+											    <label class="form-check-label" for="hybrid">혼합</label>
+											</div>
+								        </td>			
+							        	<td width="10%">
+								        <select name="day">
+										    <option value="월요일" <%if(bean.getDay().equals("월요일")){ %>selected<% }%>>월요일</option>
+										    <option value="화요일" <%if(bean.getDay().equals("화요일")){ %>selected<% }%>>화요일</option>
+										    <option value="수요일" <%if(bean.getDay().equals("수요일")){ %>selected<% }%>>수요일</option>
+										    <option value="목요일" <%if(bean.getDay().equals("목요일")){ %>selected<% }%>>목요일</option>
+										    <option value="금요일" <%if(bean.getDay().equals("금요일")){ %>selected<% }%>>금요일</option>
+										</select>	
+										<select name="starttime">
+										    <option value="1교시" <%if(bean.getStarttime().equals("1교시")){ %>selected<% }%>>1교시</option>
+										    <option value="2교시" <%if(bean.getStarttime().equals("2교시")){ %>selected<% }%>>2교시</option>
+										    <option value="3교시" <%if(bean.getStarttime().equals("3교시")){ %>selected<% }%>>3교시</option>
+										    <option value="4교시" <%if(bean.getStarttime().equals("4교시")){ %>selected<% }%>>4교시</option>
+										    <option value="5교시" <%if(bean.getStarttime().equals("5교시")){ %>selected<% }%>>5교시</option>
+										    <option value="6교시" <%if(bean.getStarttime().equals("6교시")){ %>selected<% }%>>6교시</option>
+										    <option value="7교시" <%if(bean.getStarttime().equals("7교시")){ %>selected<% }%>>7교시</option>							   
+										</select>								
+										<select name="endtime">
+										   	<option value="2교시" <%if(bean.getEndtime().equals("2교시")){ %>selected<% }%>>2교시</option>
+										    <option value="3교시" <%if(bean.getEndtime().equals("3교시")){ %>selected<% }%>>3교시</option>
+										    <option value="4교시" <%if(bean.getEndtime().equals("4교시")){ %>selected<% }%>>4교시</option>
+										    <option value="5교시" <%if(bean.getEndtime().equals("5교시")){ %>selected<% }%>>5교시</option>
+										    <option value="6교시" <%if(bean.getEndtime().equals("6교시")){ %>selected<% }%>>6교시</option>
+										    <option value="7교시" <%if(bean.getEndtime().equals("7교시")){ %>selected<% }%>>7교시</option>
+										    <option value="8교시" <%if(bean.getEndtime().equals("8교시")){ %>selected<% }%>>8교시</option>
+										</select>
+								        </td>
 								        <td width="5%"><input type="text" name="homework" value="<%=bean.getHomework()%>"/></td>
 								        <td width="5%"><input type="submit" value="수정"></td>
 								    </tr>  	           										           										           		                 	           		

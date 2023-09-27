@@ -106,8 +106,8 @@
 	                   	           			<th width=3%>주차</th>
 	                   	           			<th width=3%>차시</th>                   	           			
 	                   	           			<th width=5%>강의주제</th>
-	                   	           			<th width=5%>강의방식</th>
-	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>강의방식</th>	                   	           			
+	                   	           			<th width=5%>강의 시간</th>
 	                   	           			<th width=5%>과제</th>	
 	                   	           			<th width=3%>수정하기</th>
 	                   	           			<th width=3%>삭제하기</th>	                   	           			           			                     	           			               	           			
@@ -135,7 +135,7 @@
 							            <td><%= bean.getSession() %>차시</td>
 							            <td><%= bean.getTopic() %></td>
 							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getTime() %></td>
+							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %> - <%= bean.getEndtime() %></td>
 							            <td><%= bean.getHomework() %></td>	
 							    	<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
 							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  

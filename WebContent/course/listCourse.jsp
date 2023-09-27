@@ -28,7 +28,7 @@
   	<script> 
  				
  		$(function(){
- 			
+ 			 var loggedInProfessor = '<%= session.getAttribute("id") %>';
  			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
  			$("#searchText").on("keyup", function(){
  				
@@ -72,8 +72,16 @@
                	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
                	           			"<td width=5%>" + boardbean.ctime +"</td>" + 
                	           			"<td width=5%>" + boardbean.professor + "</td>"  + 
-               	           			"<td width=5%><a href='modCourse.jsp?ccode=" + boardbean.ccode + "'>과목 수정</a></td>" +
-               	              		"<td width=5%><a href='delCourse.jsp?ccode=" + boardbean.ccode + "'>과목 삭제</a></td>" +
+               	           			"<td width='5%'>" +
+                                    (loggedInProfessor != null && loggedInProfessor === boardbean.professor ?
+                                    "<a href='modCourse.jsp?ccode=" + boardbean.ccode + "'>과목 수정</a>" :
+                                    "-") +
+                                    "</td>" +
+                                    "<td width='5%'>" +
+                                    (loggedInProfessor != null && loggedInProfessor === boardbean.professor ?
+                                    "<a href='delCourse.jsp?ccode=" + boardbean.ccode + "'>과목 삭제</a>" :
+                                    "-") +
+               	              		"</td>" +
  								"</tr>"							
  								);
 							

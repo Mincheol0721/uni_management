@@ -19,7 +19,9 @@
 			Integer.parseInt(request.getParameter("session")),
 			request.getParameter("topic"),
 			request.getParameter("way"),
-			request.getParameter("time"),
+			request.getParameter("day"),
+			request.getParameter("starttime"),
+			request.getParameter("endtime"),			
 			request.getParameter("homework"),
 			(String)session.getAttribute("id")
 			);
