@@ -1,3 +1,4 @@
+<%@page import="member.StudentDAO"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="member.ProfessorDAO"%>
@@ -5,7 +6,9 @@
 
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
 
-<% request.setCharacterEncoding("UTF-8"); %>
+<% 
+	request.setCharacterEncoding("UTF-8");
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +62,9 @@
 					String professor = request.getParameter("professor");
 					String faculty = request.getParameter("faculty");
 					String dept = request.getParameter("dept");
+					
+					MemberDTO dto = null;
+					StudentDAO sdao = new StudentDAO();
 					
 					String addr1 = addr.substring(0, 5);
 					
@@ -121,7 +127,12 @@
 						</tr>
 						<tr>
 							<th>교수</th>
-							<td><input type="text" name="professor" value="<%= professor%>"></td>
+							<td>
+								<select  id="professor" name="professor">
+									<option><%= professor%></option>
+								</select>
+							</td>
+							
 							
 						</tr>
 						<tr>
@@ -130,7 +141,7 @@
 							<%
 							
 							for(int i=0; i<listf.size(); i++ ){
-								MemberDTO dto = (MemberDTO)listf.get(i);
+								dto = (MemberDTO)listf.get(i);
 								
 								
 						    %>
@@ -144,7 +155,7 @@
 							
 							%>
 									
-								</select>
+								</select></td>
 						</tr>
 						<tr>
 							<th>소속 학과</th>
@@ -157,7 +168,7 @@
 							 --%>
 							<%
 							for(int i=0; i<listd.size(); i++ ){
-								MemberDTO dto = (MemberDTO)listd.get(i);
+								dto = (MemberDTO)listd.get(i);
 								
 						    %>
 								<option id="option" value="<%= dto.getDept()%>"<%if(dto.getDept().equals(dept)){%>selected<%}%>>
@@ -205,6 +216,30 @@
         <script src="js/datatables-simple-demo.js"></script>
        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
+		var $name = $("#professor");
+		var strP = '<%=professor%>';
+		$name.one("click", function(e) {
+
+			$.ajax({
+				url : '<%=request.getContextPath()%>/register/professor.do',
+				type : 'POST',
+				dataType : 'json',
+				success : function(data){
+					
+					if(data != null) {
+			    		$name.empty();
+					}
+					
+					$.each(data, function(i, dto) {
+						
+						$name.append("<option value='" + dto.name + "'>" + dto.name + "</option>"); 
+					});
+				}
+			}); //교수 ajax
+		});
+		
+			
+		
 		    function sample6_execDaumPostcode() {
 		        new daum.Postcode({
 		            oncomplete: function(data) {

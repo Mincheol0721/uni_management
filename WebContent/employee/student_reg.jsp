@@ -274,7 +274,7 @@
 					$name.append("<option value='" + dto.name + "'>" + dto.name + "</option>"); 
 				});
 			}
-		}); //학부 ajax
+		}); //교수 ajax
         </script>
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
