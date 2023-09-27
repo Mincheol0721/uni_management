@@ -124,22 +124,22 @@
 										    <option value="금요일" <%if(bean.getDay().equals("금요일")){ %>selected<% }%>>금요일</option>
 										</select>	
 										<select name="starttime">
-										    <option value="1교시" <%if(bean.getStarttime().equals("1교시")){ %>selected<% }%>>1교시</option>
-										    <option value="2교시" <%if(bean.getStarttime().equals("2교시")){ %>selected<% }%>>2교시</option>
-										    <option value="3교시" <%if(bean.getStarttime().equals("3교시")){ %>selected<% }%>>3교시</option>
-										    <option value="4교시" <%if(bean.getStarttime().equals("4교시")){ %>selected<% }%>>4교시</option>
-										    <option value="5교시" <%if(bean.getStarttime().equals("5교시")){ %>selected<% }%>>5교시</option>
-										    <option value="6교시" <%if(bean.getStarttime().equals("6교시")){ %>selected<% }%>>6교시</option>
-										    <option value="7교시" <%if(bean.getStarttime().equals("7교시")){ %>selected<% }%>>7교시</option>							   
+										    <option value="1" <%if(bean.getStarttime() == 1){ %>selected<% }%>>1</option>
+										    <option value="2" <%if(bean.getStarttime() == 2){ %>selected<% }%>>2</option>
+										    <option value="3" <%if(bean.getStarttime() == 3){ %>selected<% }%>>3</option>
+										    <option value="4" <%if(bean.getStarttime() == 4){ %>selected<% }%>>4</option>
+										    <option value="5" <%if(bean.getStarttime() == 5){ %>selected<% }%>>5</option>
+										    <option value="6" <%if(bean.getStarttime() == 6){ %>selected<% }%>>6</option>
+										    <option value="7" <%if(bean.getStarttime() == 7){ %>selected<% }%>>7</option>							   
 										</select>								
 										<select name="endtime">
-										   	<option value="2교시" <%if(bean.getEndtime().equals("2교시")){ %>selected<% }%>>2교시</option>
-										    <option value="3교시" <%if(bean.getEndtime().equals("3교시")){ %>selected<% }%>>3교시</option>
-										    <option value="4교시" <%if(bean.getEndtime().equals("4교시")){ %>selected<% }%>>4교시</option>
-										    <option value="5교시" <%if(bean.getEndtime().equals("5교시")){ %>selected<% }%>>5교시</option>
-										    <option value="6교시" <%if(bean.getEndtime().equals("6교시")){ %>selected<% }%>>6교시</option>
-										    <option value="7교시" <%if(bean.getEndtime().equals("7교시")){ %>selected<% }%>>7교시</option>
-										    <option value="8교시" <%if(bean.getEndtime().equals("8교시")){ %>selected<% }%>>8교시</option>
+										   	<option value="2" <%if(bean.getEndtime() == 2){ %>selected<% }%>>2</option>
+										    <option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>
+										    <option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>
+										    <option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>
+										    <option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>
+										    <option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>
+										    <option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>
 										</select>
 								        </td>
 								        <td width="5%"><input type="text" name="homework" value="<%=bean.getHomework()%>"/></td>
@@ -172,5 +172,83 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        
+        <!-- 선택한 시작 교시에 따라 끝나는 교시가 바뀌게 하는 switch문 -->
+        <script type="text/javascript">
+	        
+	        var startTime;
+	        var endTime;
+	        var str;
+	        
+        	$("select[name='starttime']").change(function(){
+        		
+        		startTime = $("select[name=starttime]").val();        		
+        		endTime = $("select[name=endtime]");
+        		
+        		switch (startTime) {
+        		
+					case '2':
+	 					$("select[name=endtime]").empty();
+						str = '<option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>' +
+					    	  '<option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>' +
+					    	  '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+					    	  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+					    	  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+					    	  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);
+						
+					    break;
+	    
+					case '3':
+	 					$("select[name=endtime]").empty();
+						str = '<option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>' +
+				    		  '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+				    		  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);
+	 				    
+	 				    break;
+				
+					case '4':
+						$("select[name=endtime]").empty();
+						str = '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+				    		  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+			
+					case '5':
+						$("select[name=endtime]").empty();
+						str = '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+	 				    
+					case '6':
+						$("select[name=endtime]").empty();
+						str = '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+	 				    
+					case '7':
+						$("select[name=endtime]").empty();
+						str = '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+
+					default:
+						break;
+				}
+        		
+        	});     
+        </script>     
     </body>
 </html>

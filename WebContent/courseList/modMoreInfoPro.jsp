@@ -20,8 +20,8 @@
 			request.getParameter("topic"),
 			request.getParameter("way"),
 			request.getParameter("day"),
-			request.getParameter("starttime"),
-			request.getParameter("endtime"),			
+			Integer.parseInt(request.getParameter("starttime")),
+			Integer.parseInt(request.getParameter("endtime")),			
 			request.getParameter("homework"),
 			(String)session.getAttribute("id")
 			);

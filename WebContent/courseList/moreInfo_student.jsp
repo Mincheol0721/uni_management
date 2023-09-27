@@ -104,8 +104,13 @@
 							            <td><%= bean.getSession() %>차시</td>
 							            <td><%= bean.getTopic() %></td>
 							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %> - <%= bean.getEndtime() %></td>
-							            <td><%= bean.getHomework() %></td>								            	
+							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
+							            <td>
+										    <form action="homework_student.jsp" method="post">
+										        <input type="hidden" name="homework" value="<%= bean.getHomework() %>">
+										        <button type="submit" class="homework_s">과제 제출</button>
+										    </form>
+										</td>							            	
          	           				</tr>
                   	           	
                   	           	<%

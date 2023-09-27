@@ -10,8 +10,8 @@ public class MoreInfoBean {
 	private String topic;
 	private String way;
 	private String day;
-	private String starttime;
-	private String endtime;	
+	private int starttime;
+	private int endtime;	
 	private String homework;
 	private String id;
 	
@@ -21,8 +21,8 @@ public class MoreInfoBean {
 	}
 
 
-	public MoreInfoBean(String cname, int week, int session, String topic, String way, String day, String starttime,
-			String endtime, String homework, String id) {
+	public MoreInfoBean(String cname, int week, int session, String topic, String way, String day, int starttime,
+			int endtime, String homework, String id) {
 		super();
 		this.cname = cname;
 		this.week = week;
@@ -98,22 +98,22 @@ public class MoreInfoBean {
 	}
 
 
-	public String getStarttime() {
+	public int getStarttime() {
 		return starttime;
 	}
 
 
-	public void setStarttime(String starttime) {
+	public void setStarttime(int starttime) {
 		this.starttime = starttime;
 	}
 
 
-	public String getEndtime() {
+	public int getEndtime() {
 		return endtime;
 	}
 
 
-	public void setEndtime(String endtime) {
+	public void setEndtime(int endtime) {
 		this.endtime = endtime;
 	}
 
