@@ -41,7 +41,7 @@
     			
     				
             	//전체글 개수
-            	int count = homeWorkDAO.getBoardCount();
+            	int count = homeWorkDAO.getBoardCount(cname);
             	 //out.println(count);
             	 
             	 //하나의 화면 마다 보여줄 글개수 = 5
@@ -156,7 +156,7 @@
                    	           			
                    	           			<td width="5%"><%=home.getStudentName()%></td>
                    	           			<td width=5%><%=home.getTaskTitle()%></td>
-                   	           			<td width=5%><a href="homeWorkModify.jsp?num=<%=home.getNum()%>" style="text-decoration: none"><%=home.getTitle()%></a></td>
+                   	           			<td width=5%><a href="homeWorkModify.jsp?num=<%=home.getNum()%>&cname=<%=cname%>" style="text-decoration: none"><%=home.getTaskTitle()%></a></td>
                    	           			<td width=5%><%=home.getDate()%></td>
                    	           			<td width=5% ><a href="<%=contextPath%>/homework/fileDownAction.jsp?directory=upload&fileRealName=<%=home.getFileRealName()%>"   class="btn btn-primary me-md-2" id="down">다운로드</a></td>
                    	           		</tr>

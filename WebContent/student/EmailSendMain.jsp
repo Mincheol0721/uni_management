@@ -14,6 +14,10 @@
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 <%
 	String data = request.getParameter("data");
+	
+	String userName = request.getParameter("userName");
+	
+	String id = (String)session.getAttribute("id");
 %>
 <title>교수에게 이메일 전송</title>
 </head>
@@ -29,12 +33,12 @@
     </tr>
     <tr>    
         <td>
-            받는 사람 : <input type="text" name="to" value="<%=data%>"/ readonly="readonly">
+            받는 사람 : <input type="text" name="to" value="<%=data%>" readonly="readonly">
         </td>
     </tr>
     <tr>    
         <td>
-            제목 : <input type="text" name="subject" size="50" value="" placeholder="학번또는 이름을 입력해 주세요"/>
+          학생이름 : <input type="text" name="subject" size="50" value="<%=userName%> (학번 : <%=id%>)" readonly="readonly">
         </td>
     </tr>
     <tr>    

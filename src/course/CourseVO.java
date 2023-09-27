@@ -8,10 +8,10 @@ public class CourseVO {
 	private int compsem; // 1학기,2학기 중 선택 입력
 	private int grade; // 1점 ~ 3점 선택
 	private String professor;
+	private String time; // 강의 시간
 	
 	
-	
-	public CourseVO(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor) {
+	public CourseVO(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor, String time) {
 		super();
 		this.ccode = ccode;
 		this.cname = cname;
@@ -20,9 +20,10 @@ public class CourseVO {
 		this.compsem = compsem;
 		this.grade = grade;
 		this.professor = professor;
+		this.time = time;
 	}
 	
-	public CourseVO(String cname, String compdiv, int compyear, int compsem, int grade, String professor) {
+	public CourseVO(String cname, String compdiv, int compyear, int compsem, int grade, String professor, String time) {
 		super();
 		
 		this.cname = cname;
@@ -31,6 +32,7 @@ public class CourseVO {
 		this.compsem = compsem;
 		this.grade = grade;
 		this.professor = professor;
+		this.time = time;
 	}
 	//getter & setter
 	public int getCcode() {
@@ -74,6 +76,14 @@ public class CourseVO {
 	}
 	public void setProfessor(String professor) {
 		this.professor = professor;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 	

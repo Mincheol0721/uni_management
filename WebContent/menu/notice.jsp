@@ -23,7 +23,7 @@
 	 
 	NoticeDAO dao = new NoticeDAO();
 	NoticeDTO dto = new NoticeDTO();
-	List<NoticeDTO> list = null;
+	List<NoticeDTO> list = null; 
 	
 	//전체 글 개수
 	int count = dao.getBoardCount();

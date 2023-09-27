@@ -22,7 +22,6 @@
         <title>OO대학교 학사관리 시스템 - 강의평가</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
-        <script src="../js/scripts.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <%
@@ -33,8 +32,8 @@
     	int count = lectureDAO.getBoardCount();
     	 //out.println(count);
     	 
-    	 //하나의 화면 마다 보여줄 글개수 = 15
-    	 int pageSize = 15;
+    	 //하나의 화면 마다 보여줄 글개수 = 5
+    	 int pageSize = 5;
     	 
     	 //---------------------------
     	 //현재 보여질(선택한) 페이지번호 가져오기.
@@ -49,7 +48,7 @@
     	 //------------------------------------------------
     	 
     	 /* 각페이지 마다 맨위에 첫번째로 보여질 시작 글번호 구하기*/
-    	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 15
+    	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 5
     	 int startRow = (currentPage-1)*pageSize;
     	 
     	 //게시판 글객체(LectureVO)를 저장하기 위한 용도
@@ -66,12 +65,29 @@
     %>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <jsp:include page="/inc/logo.jsp" />
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <jsp:include page="/inc/member.jsp" />
+                </li>
+            </ul>
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <jsp:include page="/inc/menu.jsp" />
+					<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -177,11 +193,11 @@
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>">[<%=i%>]</a><%
+                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>">[다음]</a><%
+                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%
                         		}
                         	}
                         %>
@@ -214,7 +230,10 @@
         		
         		var searchField = $("select").find("option:selected").val();
         		var searchText = $("#searchText").val();
-        		
+        		if (searchText == "") {
+					alert("검색어를 입력하지 않으셨습니다.");
+					location.href();
+				}
         		
         		
         		jQuery.ajaxSettings.traditional = true;
@@ -224,8 +243,11 @@
     				type : "post", //전송요청방식 GET 또는 POST중에 하나
     				data : {"searchField":searchField,"searchText":searchText},
     				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
+    				
     					$("tr").filter('#searchZone').remove();
     					$("tr").filter('#menu_re').remove();
+    					$("#a").remove();
+    					$("#b").remove();
    					$("#searchAddZone").html(data);
     				},
     				error : function(data){

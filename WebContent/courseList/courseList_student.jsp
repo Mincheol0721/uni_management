@@ -179,7 +179,7 @@
               	           			
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><a href='#'>강의 계획서</a></td>
+                  	           			<td><a href='<%=request.getContextPath()%>/student/cPlan.jsp?cname=<%=bean.getCname()%>'>강의 계획서</a></td>
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			

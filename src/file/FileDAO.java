@@ -136,7 +136,30 @@ public class FileDAO {
 		return -1; //파일 다운로드 횟수 1증가에 실패 하면 -1을 반환
 	}
 	
-	
+	public int updateFile(String title, String content, String fileName, String fileRealName, String num) {
+		int check = -1;
+		try {
+			//DB연결
+			con = getConnection();
+			//sql문 작성
+			String sql = "update homework set title = ?, content = ?, fileName = ?, fileRealName = ? where num = ?"; 
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, fileName);
+			pstmt.setString(4, fileRealName);
+			pstmt.setString(5, num);
+			
+			check = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("FileDAO클래스 updateFile메소드의 sql문 오류 발생" + e);
+		}finally {
+			freeResource();
+		}
+		return check;
+	}
 	
 	
 	
