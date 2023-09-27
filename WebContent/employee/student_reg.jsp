@@ -89,7 +89,9 @@
 						</tr>
 						<tr>
 							<th>교수</th>
-							<td><input type="text" name="professor" id="professor"></td>
+							<td><select name="professor" id="professor">
+							
+							</select></td>
 							
 						</tr>
 						<%
@@ -213,7 +215,7 @@
         
         var $fsel = $("select[name=faculty]");//학부
 		var $dselect = $("#dept");//학과
-		
+		var $name = $("#professor");
 			
 		
 		$.ajax({
@@ -256,6 +258,23 @@
 			});//ajax닫기
 			
 		}); //onchange 이벤트핸들러
+		
+		
+		$.ajax({
+			url : '<%=request.getContextPath()%>/register/professor.do',
+			type : 'POST',
+			dataType : 'json',
+			success : function(data){
+				
+				if(data != null) {
+	        		$name.empty();
+				}
+				
+				$.each(data, function(i, dto) {
+					$name.append("<option value='" + dto.name + "'>" + dto.name + "</option>"); 
+				});
+			}
+		}); //학부 ajax
         </script>
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>

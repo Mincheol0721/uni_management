@@ -52,6 +52,8 @@ public class RegisterServlet extends HttpServlet {
         
         List<FacultyDTO> flist = new FacultyDAO().fList();
   		List<DeptDTO>  dlist = new DeptDAO().dList(fcode);
+  		String keyWord = null, keyField = null;
+  		List<MemberDTO> plist = new ProfessorDAO().listProfessor(keyWord, keyField);
 
   		String nextPage = "";
     
@@ -186,6 +188,17 @@ public class RegisterServlet extends HttpServlet {
         		jsonArray.add(jsonObject);
         	}
         	
+        }else if(action.equals("/professor.do")) {
+			
+	        for (MemberDTO dto : plist) {
+	        	JSONObject jsonObject = new JSONObject(); 
+	        	
+	        	jsonObject.put("name", dto.getName());
+	        	
+	        	
+	        	jsonArray.add(jsonObject);
+	        } //for
+        	
         }
 		
     	//System.out.println(job);
@@ -193,7 +206,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		// JSON 데이터 전송  ( index.jsp의  $ajax메소드 구문의  succecc:function(data){} 의  data매개변수로 out.print호출시 전달한 JSONArray배열 )
 		out.print(jsonArray.toString()); 
-        
+			pDao = new ProfessorDAO();
         
 	}
 }
