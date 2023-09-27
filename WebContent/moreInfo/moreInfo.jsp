@@ -67,8 +67,8 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-					<jsp:include page="/inc/menu.jsp" />
-                </nav>
+					<jsp:include page="/inc/cPlanMenu.jsp" />
+				</nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>

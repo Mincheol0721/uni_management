@@ -10,7 +10,6 @@
 	String id;
 	
 	MemberDTO dto;
-	String cname;
 %>
 
 <% 
@@ -18,8 +17,7 @@
 	
 	job = (String)session.getAttribute("job");
 	id = (String)session.getAttribute("id");
-
-	cname = request.getParameter("cname");
+	
 	dto = new MemberDTO();
 	
 	if(id != null) {
@@ -61,8 +59,6 @@
 				<a class="nav-link menu" href="${path}/menu/notice.jsp">공지사항</a>
 				<a class="nav-link menu" href="${path}/menu/qna.jsp">질의응답</a>
 				<a class="nav-link menu" href="${path}/menu/schedule.jsp">학사일정</a>
-				<a class="nav-link menu" href="${path}/courseList/courseList_student.jsp">강의 목록</a>
-				
 		<c:choose>
 			<c:when test="${job eq '교수'}">
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -97,16 +93,7 @@
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
 	                	<a class="nav-link menu" href="${path}/student/lecture.jsp">수강신청</a>
-<%-- 	                	<a class="nav-link menu" href="${path}/student/cHistory.jsp">수강 강좌</a> --%>
-	                	<a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="true" aria-controls="pagesCollapseAuth">
-	                		수강강좌
-                            <div class="sb-sidenav-collapse-arrow"><svg class="svg-inline--fa fa-angle-down" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path></svg><!-- <i class="fas fa-angle-down"></i> Font Awesome fontawesome.com --></div>
-                        </a>
-                        <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages" style="">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <jsp:include page="cPlanMenu.jsp" />
-                            </nav>
-                        </div>
+	                	<a class="nav-link menu" href="${path}/student/cHistory.jsp">수강 강좌</a>
                     	<a class="nav-link menu" href="${path}/student/grade.jsp">성적</a>
                     	<a class="nav-link menu" href="${path}/student/info.jsp">학사정보</a>
                     	<a class="nav-link menu" href="${path}/lectureBoard/lectureNotice.jsp">강의평가 게시판</a>
