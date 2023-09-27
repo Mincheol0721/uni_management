@@ -16,7 +16,7 @@
 	String addr1 = request.getParameter("addr1");
 	String addr2 = request.getParameter("addr2");
 	
-	String addr = addr1 + addr2;
+	String addr = addr1 +" "+ addr2;
 	
 	String pwd = request.getParameter("pwd");
 	String professor = request.getParameter("professor");	

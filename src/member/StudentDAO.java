@@ -66,10 +66,18 @@ public class StudentDAO {
 			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
 			//  요약 : DB와의 연결
 			con = getConnection();
+			
+			if(dto.getProfessor() == null) {
 			//2. insert 쿼리문(SQL문) 만들기
 			sql = "insert into student(id,pwd,name,tel,ssn,email,addr,faculty,dept) " +
-							     "values( ?,  ?,   ?,  ?,  ?,    ?,   ?,      ?,   ?)";
+							     "values( ?,  ?,   ?,  ?,  ?,   ?,   ?,      ?,   ?)";
+				System.out.println("if문 탑승");
 			
+			}else {
+				sql="insert into student(id,pwd,name,tel,ssn,email,addr,faculty,dept,professor) " +
+					     "values( ?,  ?,   ?,  ?,  ?,    ?,   ?,    ?,   ?,   ?)";
+				System.out.println("else문 탑승");
+			}
 			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
 			pstmt = con.prepareStatement(sql);
 			//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
@@ -82,6 +90,9 @@ public class StudentDAO {
 			pstmt.setString(7, dto.getAddr());
 			pstmt.setString(8, dto.getFaculty());
 			pstmt.setString(9, dto.getDept());
+			if(dto.getProfessor() != null) {
+			pstmt.setString(10, dto.getProfessor());
+			}
 			
 			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
 			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.

@@ -222,14 +222,6 @@
               
                 form.appendChild(hiddenEmailField);
                 
-//<form method="post" action="professor_mod.jsp">
-	//<input type="hidden" name="id" value="id">
-	//<input type="hidden" name="name" value="name">
-	//<input type="hidden" name="tel" value="tel">
-	//<input type="hidden" name="ssn" value="ssn">
-  	//<input type="hidden" name="email" value="email">
-  	
-//</form> 
 
                  var hiddenAddrField = document.createElement("input");
                  hiddenAddrField.setAttribute("type", "hidden");
@@ -239,16 +231,7 @@
               
                 form.appendChild(hiddenAddrField);
                 
-//<form method="post" action="professor_mod.jsp">
-	//<input type="hidden" name="id" value="id">
-	//<input type="hidden" name="name" value="name">
-	//<input type="hidden" name="tel" value="tel">
-	//<input type="hidden" name="ssn" value="ssn">
-  	//<input type="hidden" name="email" value="email">
-  	 //<input type="hidden" name="addr" value="addr">
-  	
-//</form> 
-
+                
 				var hiddenPwdField = document.createElement("input");
 				hiddenPwdField.setAttribute("type", "hidden");
 				hiddenPwdField.setAttribute("name", "pwd");
@@ -257,17 +240,7 @@
 				              
 				form.appendChild(hiddenPwdField);
 				                
-				//<form method="post" action="professor_mod.jsp">
-					//<input type="hidden" name="id" value="id">
-					//<input type="hidden" name="name" value="name">
-					//<input type="hidden" name="tel" value="tel">
-					//<input type="hidden" name="ssn" value="ssn">
-				  	//<input type="hidden" name="email" value="email">
-				  	 //<input type="hidden" name="addr" value="addr">
-				  	 //<input type="hidden" name="pwd" value="pwd">
-				  	
-				//</form>
-				
+
 				var hiddenProfessorField = document.createElement("input");
 				hiddenProfessorField.setAttribute("type", "hidden");
 				hiddenProfessorField.setAttribute("name", "professor");
@@ -276,19 +249,6 @@
 				              
 				form.appendChild(hiddenProfessorField);
 				                
-				//<form method="post" action="professor_mod.jsp">
-					//<input type="hidden" name="id" value="id">
-					//<input type="hidden" name="name" value="name">
-					//<input type="hidden" name="tel" value="tel">
-					//<input type="hidden" name="ssn" value="ssn">
-				  	//<input type="hidden" name="email" value="email">
-				  	 //<input type="hidden" name="addr" value="addr">
-				  	 //<input type="hidden" name="pwd" value="pwd">
-				  	 //<input type="hidden" name="professor" value="professor">
-				  	
-				//</form>
-				
-				
 				var hiddenFacultyField = document.createElement("input");
 				hiddenFacultyField.setAttribute("type", "hidden");
 				hiddenFacultyField.setAttribute("name", "faculty");
@@ -297,20 +257,6 @@
 				              
 				form.appendChild(hiddenFacultyField);
 				                
-				//<form method="post" action="professor_mod.jsp">
-					//<input type="hidden" name="id" value="id">
-					//<input type="hidden" name="name" value="name">
-					//<input type="hidden" name="tel" value="tel">
-					//<input type="hidden" name="ssn" value="ssn">
-				  	//<input type="hidden" name="email" value="email">
-				  	 //<input type="hidden" name="addr" value="addr">
-				  	 //<input type="hidden" name="pwd" value="pwd">
-				  	  //<input type="hidden" name="professor" value="professor">
-				  	 //<input type="hidden" name="faculty" value="faculty">
-				  	
-				//</form>
-				
-				
 				var hiddenDeptField = document.createElement("input");
 				hiddenDeptField.setAttribute("type", "hidden");
 				hiddenDeptField.setAttribute("name", "dept");
@@ -318,42 +264,8 @@
 				                //<input type="hidden" name="dept" value="dept">
 				              
 				form.appendChild(hiddenDeptField);
-				                
-				//<form method="post" action="professor_mod.jsp">
-					//<input type="hidden" name="id" value="id">
-					//<input type="hidden" name="name" value="name">
-					//<input type="hidden" name="tel" value="tel">
-					//<input type="hidden" name="ssn" value="ssn">
-				  	//<input type="hidden" name="email" value="email">
-				  	 //<input type="hidden" name="addr" value="addr">
-				  	 //<input type="hidden" name="pwd" value="pwd">
-				  	  //<input type="hidden" name="professor" value="professor">
-				  	 //<input type="hidden" name="faculty" value="faculty">
-				  	  //<input type="hidden" name="dept" value="dept">	  	
-				//</form>
-
-
-
-                
-              
-                           
-
-
+				               
                 document.body.appendChild(form);
-              //<body> 
-				//<form method="post" action="professor_mod.jsp">
-				//<input type="hidden" name="id" value="id">
-				//<input type="hidden" name="name" value="name">
-				//<input type="hidden" name="tel" value="tel">
-				//<input type="hidden" name="ssn" value="ssn">
-			  	//<input type="hidden" name="email" value="email">
-			  	 //<input type="hidden" name="addr" value="addr">
-			  	 //<input type="hidden" name="pwd" value="pwd">
-			  	  //<input type="hidden" name="professor" value="professor">
-			  	 //<input type="hidden" name="faculty" value="faculty">
-			  	  //<input type="hidden" name="dept" value="dept">	  	
-				//</form>
-			 //</body>
 
                 form.submit();
                  
