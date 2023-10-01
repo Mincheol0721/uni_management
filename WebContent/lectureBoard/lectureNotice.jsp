@@ -10,6 +10,10 @@
 <%
 	//세션 id값 가져오기
 	String id = (String)session.getAttribute("id");
+
+	String searchText = request.getParameter("searchText");
+	
+	String searchField = request.getParameter("searchField");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,10 +31,18 @@
     <%
     	//DB작업할 DAO생성
     	LectureDAO lectureDAO = new LectureDAO();
+    	
+    	int count = 0;
     
-    	//전체글 개수
-    	int count = lectureDAO.getBoardCount();
-    	 //out.println(count);
+    	if(searchText != null & searchText != "") {
+    		count = lectureDAO.getSearchCount(searchField, searchText);
+    	}else {
+    		//전체글 개수
+        	count = lectureDAO.getBoardCount();
+        	 
+    	}
+    	//out.println(count);
+    	
     	 
     	 //하나의 화면 마다 보여줄 글개수 = 5
     	 int pageSize = 5;
@@ -38,6 +50,8 @@
     	 //---------------------------
     	 //현재 보여질(선택한) 페이지번호 가져오기.
     	 String pageNum = request.getParameter("pageNum");
+    	 
+    	 String pageNum2 = request.getParameter("pageNum2");
     	 //현재보여질(선택한) 페이지번호가 없으면 1페이지 처리
     	 if(pageNum == null) {
     		 pageNum = "1";
@@ -56,9 +70,14 @@
     	 
     	 //만약 게시판에 글이 있다면..
     	 if(count > 0) {
+    		 if(searchText != null & searchText != ""){
+    		 
     		 //글목록 가져오기
     		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
+    		 list = lectureDAO.searchBoard(searchField, searchText,startRow,pageSize);
+    		}else{
     		 list = lectureDAO.getBoardList(startRow,pageSize);
+    		}
     	 }
     	 //날짜 포맷
     	 SimpleDateFormat sdf = new SimpleDateFormat("yyy.MM.dd");
@@ -118,6 +137,7 @@
 								<td>
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
 									<td><button type="button" class="btn btn-primary" id="searchBtn">검색</button></td>
+									<td><a type="button" class="btn btn-primary" href="lectureNotice.jsp">목록으로</a></td>
 							</tr>
 						</table>
 						
@@ -195,15 +215,28 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%
+                        			if(searchText != null & searchText != ""){
+                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>">[이전]</a><%
+                        			}else {
+                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%	
+                        			}		
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%
+                        			if(searchText != null & searchText != ""){
+                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="a">[<%=i%>]</a><%
+                        			}else {
+                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%	
+                        			}	
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%
+                        			if(searchText != null & searchText != ""){
+                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="b">[다음]</a><%	
+                        			}else{
+                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%	
+                        			}
+                        			
                         		}
                         	}
                         %>

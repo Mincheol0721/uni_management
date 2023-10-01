@@ -137,7 +137,7 @@ public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 			pstmt.setString(1, num);
 			rs = pstmt.executeQuery();
 			//rs.next이용해서 homework객체에 조회해온 값 넣어주기
-			 rs.next(); 
+			 if(rs.next()) {
 				int number = rs.getInt("num");
 				String cname = rs.getString("cname");
 				String tasktitle = rs.getString("tasktitle");
@@ -145,7 +145,7 @@ public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 				String period = rs.getString("period");
 				int numpeople = rs.getInt("numpeople");
 				
-				
+			
 				homeV = new HomeWorkBoardDTO();
 				homeV.setNum(number);
 				homeV.setCName(cname);
@@ -154,11 +154,11 @@ public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 				homeV.setPeriod(period);
 				homeV.setNumpeople(numpeople);
 				
-				
+			 }	
 				
 				
 	} catch (Exception e) {
-		System.out.println("HomeWorkDAO객체에서 getLectureModify메소드의 sql문 실행 오류"+e);
+		System.out.println("HomeWorkBoardDAO클레스에서 getLectureModify메소드의 sql문 실행 오류"+e);
 	}finally {
 		freeResource();
 	}
@@ -167,7 +167,7 @@ public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 
 
 //검색버튼을 눌렀을때 조회해올 메소드
-public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText, String cnam) {
+public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText, String cnam, int startRow, int pageSize) {
 	
 	List<HomeWorkBoardDTO> boardlist = new ArrayList<HomeWorkBoardDTO>();
 	
@@ -180,12 +180,14 @@ public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText, 
 		String sql = "select * from homeworkBoard where cname = ? && " + searchField.trim();
 			
 		
-			sql += " like '%" + searchText.trim() + "%';";
+			sql += " like '%" + searchText.trim() + "%' limit ?,?";
 		
 			
 			
 			pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, cnam);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, pageSize);
 			rs =pstmt.executeQuery();
 		
 		while(rs.next()) {
@@ -195,8 +197,8 @@ public List<HomeWorkBoardDTO> searchBoard(String searchField,String searchText, 
 			String tasktitle = rs.getString("tasktitle");
 			String taskmethod = rs.getString("taskmethod");
 			String period = rs.getString("period");
-			int numpeople = rs.getInt("numpeople");
-			HomeWorkBoardDTO homeDTO = new HomeWorkBoardDTO(cname, tasktype, tasktitle, taskmethod, period, numpeople);
+			
+			HomeWorkBoardDTO homeDTO = new HomeWorkBoardDTO(num,cname, tasktype, tasktitle, taskmethod, period);
 			boardlist.add(homeDTO);
 		}
 		

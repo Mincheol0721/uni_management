@@ -74,8 +74,15 @@
                    	           			<td width=5%>이메일</td>
                    	           		</tr>
                    	           		<%
+                   	           			GradeDAO gradecheck = new GradeDAO();
+                   	           				
                    	           			for(GradeVO grade : list) {
+                   	           				String professorName = grade.getProfessor();
+                   	           				String lectureName = grade.getCname();
+                   	           		
+                   	           			boolean check = gradecheck.lectureCheck(userName, lectureName, professorName);
                    	           		%>
+<%--                    	           		<input type="text" value="<%=check%>">  boolean값 올바르게 받아오는지 확인 완료--%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                    	           			<td width=5% name="professorName"><%=grade.getProfessor()%></td> <!-- 교수명 -->
                    	           			<td width=5% name="lectureName"><%=grade.getCname()%></td> <!-- 과목명 -->
@@ -83,9 +90,20 @@
                    	           			<td width=5%><%=grade.getCompyear()%></td> 
                    	           			<td width=5%><%=grade.getGrade()%></td>
                    	           			<td width=5%><%=grade.getRate()%></td>
+                   	           			<%
+                   	           				if(check == false){
+                   	           			%>
                    	           			<td width=5%><input type="button" class="btn btn-primary me-md-3" id="lectureResister" name="lectureResister" value="강의평가"></input></td>
+                   	           			<%
+                   	           			}else{
+                   	           			%>
+                   	           			<td width=5% style="color: red">평가완료</td>
+                   	           			<%
+                   	           			}
+                   	           			%>
                    	           			<td width=5%><input type="button" class="btn btn-primary me-md-3" id="emailBtn" name="emailBtn" value="이메일보내기"></input></td>
                    	           		</tr>
+                   	           		
                    	           		<% 
                    	           		}
                    	           		%>

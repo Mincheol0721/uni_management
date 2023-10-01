@@ -101,5 +101,34 @@ public class GradeDAO {
 			return boardList;
 		}
 		
+		public boolean lectureCheck(String name, String lectureName, String professorName) {
+			boolean check = false;
+			try {
+				//db 연결
+				con = getConnection();
+				// sql문 작성
+				String sql = "select * from lectureboard where name= ? "
+						+ " and lecturename = ? and ProfessorName = ? ";
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, name);
+				pstmt.setString(2, lectureName);
+				pstmt.setString(3, professorName);
+				
+				rs = pstmt.executeQuery();
+				
+				if (rs.next()) {
+					check = true;
+				}else {
+					check = false;
+				}
+			} catch (Exception e) {
+				System.out.println("GradeDAO클래스 lectureCheck메소드의 sql문 오류 발생" + e);
+			}finally {
+				freeResource();
+			}
+			return check;
+		}
+		
 		
 }
