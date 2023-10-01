@@ -58,12 +58,14 @@ CREATE TABLE student(
     email VARCHAR(30) NOT NULL,
     pwd VARCHAR(30) NOT NULL,
     addr varchar(30),
-    professor VARCHAR(10) NOT NULL default 'John',
+    professor VARCHAR(20),
     faculty VARCHAR(30) NOT NULL,
     dept VARCHAR(30) NOT NULL,
     foreign key (faculty) references faculty(fname) on update cascade,
     foreign key (dept) references dept(dname) on update cascade
 );
+
+-- alter table student modify professor varchar(20);
 
 -- 강의 개설 정보 테이블
 CREATE table course(
@@ -94,7 +96,18 @@ CREATE TABLE cHistory(
 
 -- drop table chistory;
 
-select * from chistory;
+-- select * from chistory;
+
+
+-- 대분류 테이블 생성
+CREATE TABLE boardClass(
+		clscode varchar(10) primary key,
+		clsname varchar(10) unique
+);
+
+-- select * from boardclass;
+-- drop table boardclass;
+
 
 -- 공지사항 게시판 테이블 생성
 CREATE TABLE bnotice(
@@ -112,8 +125,8 @@ CREATE TABLE bnotice(
 
 -- 질의응답 게시판 테이블 생성
 CREATE TABLE qna(
-		level int not null default 0, -- 글의 레벨 (계층형으로 나타내기 위한 컬럼)
-		no int auto_increment primary key, -- 글 번호
+	level int not null default 0, -- 글의 레벨 (계층형으로 나타내기 위한 컬럼)
+	no int auto_increment primary key, -- 글 번호
     pno int not null default 0, -- 부모글번호
     pos int, -- 부모글에 대한 답변글들의 그룹값
     title varchar(50) not null, -- 글 제목
@@ -128,7 +141,7 @@ CREATE TABLE qna(
 
 -- 일정 게시판 테이블 생성
 CREATE TABLE bschedule(
-		no int auto_increment primary key, -- 글 번호
+	no int auto_increment primary key, -- 글 번호
     title varchar(100) not null, -- 글 제목
     content varchar(4000), -- 글 내용
     writeDate date, -- 글 작성 날짜
@@ -141,61 +154,59 @@ CREATE TABLE bschedule(
 -- drop table bschedule;
 -- drop table boardClass;          
            
--- 대분류 테이블 생성
-CREATE TABLE boardClass(
-		clscode varchar(10) primary key,
-		clsname varchar(10) unique
-);
-
--- drop table boardclass;
-
 -- 수업계획 테이블 생성
 CREATE TABLE cPlan (
-    cname varchar(30), -- 과목명
-    dept varchar(30), -- 학과
-    grade int, -- 학점 1~3
-    time varchar(20), -- 시간
-    compdiv varchar(10), -- 이수구분
-    compyear int, -- 대상학년
-    compsem int, -- 학기
-    email varchar(30), -- 연락이메일
+	no int primary key auto_increment,
+    cname varchar(30) not null, -- 과목명
+    dept varchar(30) not null, -- 학과
+    grade int not null, -- 학점 1~3
+    time varchar(20) not null, -- 시간
+    compdiv varchar(10) not null, -- 이수구분
+    compyear int not null, -- 대상학년
+    compsem int not null, -- 학기
+    email varchar(30) not null, -- 연락이메일
     content varchar(4000), -- 교과목 개요
-    purpose varchar(4000), -- 교육목표
+    purpose varchar(4000) not null, -- 교육목표
     books varchar(50) -- 주 교재
 );
 
+-- drop table cplan;
+
 -- 세부 강의 리스트 관련 테이블 생성
 create table moreInfo (
+	no int primary key auto_increment, -- 세부강의 글번호
 	cname varchar(20), -- 과목명
-	week int, -- 주차 (1주차, 2주차..)
-    session int, -- 차시(1차시, 2차시..)
-    topic varchar(50), -- 강의 주제(수업 주제)
-    way varchar(10), -- 강의 방식(형태)
-    time varchar(30), -- 강의 시간
+	week int not null, -- 주차 (1주차, 2주차..)
+	session int not null, -- 차시(1차시, 2차시..)
+	topic varchar(50) not null, -- 강의 주제(수업 주제)
+	way varchar(10) not null, -- 강의 방식(형태)
+    day varchar(10), -- 요일
+    starttime int not null, -- 시작 교시
+    endtime int not null, -- 끝날 교시
     homework varchar(20), -- 과제
-    id varchar(30),
-    foreign key(id) references professor(id) on update cascade
+    id varchar(30) not null
 );
 
-drop table moreinfo;
+
+ -- drop table moreinfo;
 
 -- 강의평가 게시판
 create table lectureBoard (
-	num int primary key auto_increment, -- 글번호 auto_increment제약조건 추가 insert하지 않아도 자동으로 1씩 늘어가면서 추가
-	name varchar(20), -- 글쓴이 
-    title varchar(20), -- 글제목
-    lecturename varchar(50), -- 강의명
-    ProfessorName varchar(50), -- 교수명
-    lectureYear varchar(10), -- 수강연도
-    semesterDivide varchar(10), -- 수강학기
-    lectureDivide varchar(10), -- 강의구분
-    mainText varchar(300),
-    rate varchar(10),-- 등급
-    re_ref int, -- 부모글과 그로부터 파생된 자식글들이 같은 값을 가지기 위한 필드
-    re_lev int, -- 같은 group내에서의 깊이(들여쓰기)
-    re_seq int, -- 같은 group 글들 내에서의 순서
-    readcount int, -- 글 조회수
-    date datetime -- 글쓴 날짜 저장
+		num int primary key auto_increment, -- 글번호 auto_increment제약조건 추가 insert하지 않아도 자동으로 1씩 늘어가면서 추가
+		name varchar(20), -- 글쓴이 
+		title varchar(20), -- 글제목
+		lecturename varchar(50), -- 강의명
+		ProfessorName varchar(50), -- 교수명
+		lectureYear varchar(10), -- 수강연도
+		semesterDivide varchar(10), -- 수강학기
+		lectureDivide varchar(10), -- 강의구분
+		mainText varchar(300),
+		rate varchar(10),-- 등급
+		re_ref int, -- 부모글과 그로부터 파생된 자식글들이 같은 값을 가지기 위한 필드
+		re_lev int, -- 같은 group내에서의 깊이(들여쓰기)
+		re_seq int, -- 같은 group 글들 내에서의 순서
+		readcount int, -- 글 조회수
+		date datetime -- 글쓴 날짜 저장
 );
 
 -- 과제 확인게시판(파일업로드 처리 테이블)
@@ -206,7 +217,6 @@ CREATE TABLE homework ( -- fileupload 처리 테이블
 	TaskTitle varchar(50) not null, -- 과제 제목
 	title varchar(50) not null, -- 제목
     content varchar(4000), -- 본문
-	
     fileName varchar(3000) , -- 원본파일명
     fileREalName varchar(3000),  -- 파일의 실제 이름
     date timestamp, -- 작성 날짜
@@ -216,7 +226,7 @@ CREATE TABLE homework ( -- fileupload 처리 테이블
 -- 과제 제출 게시판
 create table homeworkBoard(
 	num int auto_increment primary key,
-	course varchar(30) not null, -- 과목
+	cname varchar(30) not null, -- 과목
     tasktype varchar(30) not null, -- 과제 유형
     tasktitle varchar(30) not null, -- 과제 제목
     taskmethod varchar(30) not null, -- 제출 방법
@@ -224,6 +234,7 @@ create table homeworkBoard(
     numpeople int  -- 제출인원
 );
 
+-- drop table homeworkBoard;
 /*
 -- 학부 정보 데이터 입력
 INSERT INTO faculty (fname) VALUES ('공과대학'); -- 10

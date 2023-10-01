@@ -36,11 +36,11 @@ VALUES
     ('1003_prof3', 'David', '010-5555-5555', '880303-9876543', 'david.johnson@example.com', '789 Oak Road', 'prof789', 'Arts', 'History');
     
     
-    INSERT INTO course (cname, compdiv, compyear, compsem, grade, professor, id)
+    INSERT INTO course (cname, compdiv, compyear, compsem, grade, professor, id, time)
 VALUES
-    ('Computer', '전공선택', 2, 1, 3, 'John', '1001_prof1'),
-    ('Physics', '전공필수', 3, 2, 2, 'Jane', '1002_prof2'),
-    ('History', '선택교양', 1, 1, 1, 'David', '1003_prof3');
+    ('Computer', '전공선택', 2, 1, 3, 'John', '1001_prof1', (select concat(day, ' ', starttime, ' - ', endtime) as time from moreinfo where cname='Computer' and week=1 and session=1)),
+    ('Physics', '전공필수', 3, 2, 2, 'Jane', '1002_prof2', (select concat(day, ' ', starttime, ' - ', endtime) as time from moreinfo where cname='Physics' and week=1 and session=1)),
+    ('History', '선택교양', 1, 1, 1, 'David', '1003_prof3', (select concat(day, ' ', starttime, ' - ', endtime) as time from moreinfo where cname='History' and week=1 and session=1));
 
     INSERT INTO student (id, name, tel, ssn, email, pwd, addr, professor, faculty, dept)
 VALUES
@@ -57,7 +57,12 @@ VALUES
     ('2002', 10002, 2.3, 'B'),
     ('2003', 10003, 3.0, 'B');
 
-    
+insert into boardClass values
+		('1', '[수강]'),
+		('2', '[행사]'),
+		('3', '[공지]'),
+		('4', '[필독]');
+        
 INSERT INTO bnotice (title, content, nclass, writeDate, id)
 VALUES 
 		('수강 신청 관련 공지1', '수강신청관련 공지1입니다.', (select clsname from boardClass where clscode='1'), now(), 'emp001'),
@@ -86,11 +91,7 @@ INSERT INTO bschedule (title, content, writeDate, sclass, id, sdate)
 				   ('2학기 수강신청 취소', null, now(), (select clsname from boardClass where clscode='1'), 'emp001', '2023-09-11 ~ 2023-09-18'),
 				   ('2학기 대학원 외국어 및 종합시험 실시', null, now(), (select clsname from boardClass where clscode='1'), 'emp001', '2023-09-18 ~ 2023-09-23');
     
-insert into boardClass values
-		('1', '[수강]'),
-		('2', '[행사]'),
-		('3', '[공지]'),
-		('4', '[필독]');
+
     
 -- 더미 데이터 삽입
 INSERT INTO cPlan (cname, dept, grade, time, compdiv, compyear, compsem, email, content, purpose, books)
@@ -101,46 +102,56 @@ VALUES
     ('History', 'History', 1, '목 15:00-16:30', '선택교양', 1, 1, 'david.johnson@example.com', '세계 역사에 대한 개요를 다룹니다.', '역사 이해', '세계사 1권');
        
         
--- 더미 데이터 삽입 (9월 1일부터 12월 16일까지, 10주차까지)
-INSERT INTO moreInfo (cname, week, session, topic, way, time, homework, id)
+
+INSERT INTO moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework, id)
 VALUES
-    ('Computer', 1, 1, '프로그래밍 기초', '온라인', '2023-09-01 14:00-15:30', '없음', '1001_prof1'),
-    ('Computer', 2, 1, '데이터베이스 설계', '오프라인', '2023-09-08 10:00-11:30', '과제 1 제출', '1001_prof1'),
-    ('Computer', 3, 1, '웹 개발 실습', '혼합', '2023-09-15 13:00-15:00', '프로젝트 진행', '1001_prof1'),
-    ('Computer', 4, 1, '알고리즘 분석', '온라인', '2023-09-22 16:00-17:30', '연구 보고서 작성', '1001_prof1'),
-    ('Computer', 5, 1, '소프트웨어 테스팅', '오프라인', '2023-09-29 09:00-10:30', '과제 2 제출', '1001_prof1'),
-    ('Computer', 6, 1, '데이터 분석', '혼합', '2023-10-06 14:00-15:30', '프로젝트 발표', '1001_prof1'),
-    ('Computer', 7, 1, '네트워크 보안', '온라인', '2023-10-13 10:00-11:30', '중간고사', '1001_prof1'),
-    ('Computer', 8, 1, '클라우드 컴퓨팅', '오프라인', '2023-10-20 09:00-10:30', '과제 3 제출', '1001_prof1'),
-    ('Computer', 9, 1, '소프트웨어 개발', '혼합', '2023-10-27 16:00-17:30', '팀 프로젝트', '1001_prof1'),
-    ('Computer', 10, 1, '컴퓨터 그래픽스', '온라인', '2023-11-03 14:00-15:30', '기말고사', '1001_prof1');
+    ('Computer', 1, 1, '프로그래밍 기초', '온라인', '월요일', '1', '3', '데이터베이스1', '1001_prof1'),
+    ('Computer', 2, 1, '데이터베이스 설계', '오프라인', '월요일','1', '3', '데이터베이스2', '1001_prof1'),
+    ('Computer', 3, 1, '웹 개발 실습', '혼합', '월요일','1', '3', '데이터베이스3', '1001_prof1');
+   
+   
     
-INSERT INTO moreInfo (cname, week, session, topic, way, time, homework, id)
+INSERT INTO moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework, id)
 VALUES
-    ('History', 1, 1, '역사의 기초', '온라인', '2023-09-01 14:00-15:30', '없음', '1003_prof3'),
-    ('History', 2, 1, '중세 역사', '오프라인', '2023-09-08 10:00-11:30', '과제 1 제출', '1003_prof3'),
-    ('History', 3, 1, '현대 역사', '혼합', '2023-09-15 13:00-15:00', '프로젝트 진행', '1003_prof3'),
-    ('History', 4, 1, '세계사', '온라인', '2023-09-22 16:00-17:30', '연구 보고서 작성', '1003_prof3'),
-    ('History', 5, 1, '지역사', '오프라인', '2023-09-29 09:00-10:30', '과제 2 제출', '1003_prof3'),
-    ('History', 6, 1, '문화와 역사', '혼합', '2023-10-06 14:00-15:30', '프로젝트 발표', '1003_prof3'),
-    ('History', 7, 1, '역사 이론', '온라인', '2023-10-13 10:00-11:30', '중간고사', '1003_prof3'),
-    ('History', 8, 1, '문화 유산', '오프라인', '2023-10-20 09:00-10:30', '과제 3 제출', '1003_prof3'),
-    ('History', 9, 1, '전 세계 역사', '혼합', '2023-10-27 16:00-17:30', '팀 프로젝트', '1003_prof3'),
-    ('History', 10, 1, '사회 변화와 역사', '온라인', '2023-11-03 14:00-15:30', '기말고사', '1003_prof3');
-    
-INSERT INTO moreInfo (cname, week, session, topic, way, time, homework, id)
+    ('History', 1, 1, '역사의 기초', '온라인', '월요일', '1', '3', '역사1', '1003_prof3'),
+    ('History', 2, 1, '중세 역사', '오프라인', '월요일', '1', '3', '역사2', '1003_prof3'),
+    ('History', 3, 1, '현대 역사', '혼합', '월요일', '1', '3', '역사3', '1003_prof3');
+   
+INSERT INTO moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework, id)
 VALUES
-    ('Physics', 1, 1, '물리학의 기초', '온라인', '2023-09-01 14:00-15:30', '없음', '1002_prof2'),
-    ('Physics', 2, 1, '전자기학', '오프라인', '2023-09-08 10:00-11:30', '과제 1 제출', '1002_prof2'),
-    ('Physics', 3, 1, '열역학', '혼합', '2023-09-15 13:00-15:00', '프로젝트 진행', '1002_prof2'),
-    ('Physics', 4, 1, '광학', '온라인', '2023-09-22 16:00-17:30', '연구 보고서 작성', '1002_prof2'),
-    ('Physics', 5, 1, '양자역학', '오프라인', '2023-09-29 09:00-10:30', '과제 2 제출', '1002_prof2'),
-    ('Physics', 6, 1, '핵물리학', '혼합', '2023-10-06 14:00-15:30', '프로젝트 발표', '1002_prof2'),
-    ('Physics', 7, 1, '고체물리학', '온라인', '2023-10-13 10:00-11:30', '중간고사', '1002_prof2'),
-    ('Physics', 8, 1, '화학과 물리학', '오프라인', '2023-10-20 09:00-10:30', '과제 3 제출', '1002_prof2'),
-    ('Physics', 9, 1, '우주물리학', '혼합', '2023-10-27 16:00-17:30', '팀 프로젝트', '1002_prof2'),
-    ('Physics', 10, 1, '응용 물리학', '온라인', '2023-11-03 14:00-15:30', '기말고사', '1002_prof2');
+    ('Physics', 1, 1, '물리학 기초', '온라인', '월요일', '1', '3', '역사1', '1002_prof2'),
+    ('Physics', 2, 1, '역학이란', '오프라인', '월요일', '1', '3', '역사2', '1002_prof2'),
+    ('Physics', 3, 1, '역학의 종류', '혼합', '월요일', '1', '3', '역사3', '1002_prof2');
 
+-- 과제 제출 게시판 더미 데이터
 
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('computer','개인과제','데이터베이스1','온라인','2023-09-20~2023-09-25',0);
 
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('computer','개인과제','데이터베이스2','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('computer','개인과제','데이터베이스3','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('computer','개인과제','데이터베이스4','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('computer','개인과제','데이터베이스5','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('History','개인과제','역사1','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('History','개인과제','역사2','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('History','개인과제','역사3','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('History','개인과제','역사4','온라인','2023-09-20~2023-09-25',0);
+
+insert into homeworkboard (cname,tasktype,tasktitle,taskmethod,period,numpeople)
+values('History','개인과제','역사5','온라인','2023-09-20~2023-09-25',0);
     
