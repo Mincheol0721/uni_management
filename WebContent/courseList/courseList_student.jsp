@@ -67,10 +67,11 @@
  								$resultsTable.append(
  										
  								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
- 									"<td width=5%>" + coursebean.grade + "학점" + "</td>" +
- 									"<td width=5%>" + coursebean.compyear + "학년" + "</td>" + 
-               	           			"<td width=5%>" + coursebean.compsem + "학기" + "</td>" + 
-               	           			"<td width=5%><a href='moreInfo.jsp' id='moreInfo'>" + coursebean.cname + "</td>" + 
+ 									"<td width=5%><a href='#'>" + "강의 계획서"  + "</a></td>" +
+ 									"<td width=4%>" + coursebean.grade + "학점" + "</td>" +
+ 									"<td width=4%>" + coursebean.compyear + "학년" + "</td>" + 
+               	           			"<td width=4%>" + coursebean.compsem + "학기" + "</td>" +              	           			
+               	                 	"<td width='5%'><a href='moreInfo_student.jsp?cname=" + encodeURIComponent(coursebean.cname) + "' id='moreInfo'>" + coursebean.cname + "</a></td>" +
                	           			"<td width=5%>" + coursebean.professor + "</td>"  + 
                	           			"<td width=5%>" + coursebean.compdiv + "</td>" +         			                	           			
  								"</tr>"							
@@ -178,7 +179,7 @@
               	           			
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><a href='#'>강의 계획서</a></td>
+                  	           			<td><a href='<%=request.getContextPath()%>/student/cPlan.jsp?cname=<%=bean.getCname()%>'>강의 계획서</a></td>
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			

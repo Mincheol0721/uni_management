@@ -12,7 +12,12 @@
 	String tel = request.getParameter("tel");
 	String ssn = request.getParameter("ssn");
 	String email = request.getParameter("email");
-	String addr = request.getParameter("addr");
+	
+	String addr1 = request.getParameter("addr1");
+	String addr2 = request.getParameter("addr2");
+	
+	String addr = addr1 +" "+ addr2;
+	
 	String pwd = request.getParameter("pwd");
 	String professor = request.getParameter("professor");	
 	String faculty = request.getParameter("faculty");

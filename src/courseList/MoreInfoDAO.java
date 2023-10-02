@@ -89,7 +89,9 @@ public class MoreInfoDAO {
 				bean.setSession(rs.getInt("session"));
 				bean.setTopic(rs.getString("topic"));
 				bean.setWay(rs.getString("way"));
-				bean.setTime(rs.getString("time"));
+				bean.setDay(rs.getString("day"));
+				bean.setStarttime(rs.getInt("starttime"));
+				bean.setEndtime(rs.getInt("endtime"));				
 				bean.setHomework(rs.getString("homework"));
 				
 				list.add(bean);
@@ -141,8 +143,11 @@ public class MoreInfoDAO {
 				bean.setSession(rs.getInt("session"));
 				bean.setTopic(rs.getString("topic"));
 				bean.setWay(rs.getString("way"));
-				bean.setTime(rs.getString("time"));
+				bean.setDay(rs.getString("day"));				
+				bean.setStarttime(rs.getInt("starttime"));
+				bean.setEndtime(rs.getInt("endtime"));
 				bean.setHomework(rs.getString("homework"));
+				bean.setId(rs.getString("id"));
 			
 		
 				list.add(bean);
@@ -190,7 +195,9 @@ public class MoreInfoDAO {
 				bean.setSession(rs.getInt("session"));
 				bean.setTopic(rs.getString("topic"));
 				bean.setWay(rs.getString("way"));
-				bean.setTime(rs.getString("time"));
+				bean.setDay(rs.getString("day"));
+				bean.setStarttime(rs.getInt("starttime"));
+				bean.setEndtime(rs.getInt("endtime"));
 				bean.setHomework(rs.getString("homework"));
 				
 			}	
@@ -216,15 +223,21 @@ public class MoreInfoDAO {
 			
 			//DB연결
 			con = ds.getConnection();
-			String sql = "update moreInfo set session=?, topic=?, way=?, time=?, homework=? where week=?";
+			String sql = "update moreInfo set topic=?, way=?, day=?, starttime=?, endtime=?, homework=?, week=? where cname=? and week=? and session=?";
 			pstmt = con.prepareStatement(sql);
+			
+//			System.out.println("MOD타는중... cname=" + bean.getCname());
 								
-			pstmt.setInt(1, bean.getSession());
-			pstmt.setString(2, bean.getTopic());
-			pstmt.setString(3, bean.getWay());
-			pstmt.setString(4, bean.getTime());
-			pstmt.setString(5, bean.getHomework());
-			pstmt.setInt(6, bean.getWeek());
+			pstmt.setString(1, bean.getTopic());
+			pstmt.setString(2, bean.getWay());
+			pstmt.setString(3, bean.getDay());
+	        pstmt.setInt(4, bean.getStarttime());
+	        pstmt.setInt(5, bean.getEndtime());	        
+			pstmt.setString(6, bean.getHomework());
+			pstmt.setInt(7, bean.getWeek());
+			pstmt.setString(8, bean.getCname());
+			pstmt.setInt(9, bean.getWeek());
+			pstmt.setInt(10, bean.getSession());
 	
 			
 			pstmt.executeUpdate();
@@ -277,8 +290,8 @@ public class MoreInfoDAO {
 			con = ds.getConnection();
 			
 			//insert sql문 만들기
-			String sql = "insert into moreInfo (cname, week, session, topic, way, time, homework)"
-					   + "values (?, ?, ?, ?, ?, ?, ?);";
+			String sql = "insert into moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework)"
+					   + "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -287,9 +300,11 @@ public class MoreInfoDAO {
 			pstmt.setInt(2, moreInfoBean.getWeek()); 
 			pstmt.setInt(3, moreInfoBean.getSession()); 
 			pstmt.setString(4, moreInfoBean.getTopic()); 		
-			pstmt.setString(5, moreInfoBean.getWay()); 						
-			pstmt.setString(6, moreInfoBean.getTime()); 			
-			pstmt.setString(7, moreInfoBean.getHomework()); 	
+			pstmt.setString(5, moreInfoBean.getWay()); 
+			pstmt.setString(6, moreInfoBean.getDay()); 			
+			pstmt.setInt(7, moreInfoBean.getStarttime());  
+			pstmt.setInt(8, moreInfoBean.getEndtime());  			
+			pstmt.setString(9, moreInfoBean.getHomework()); 	
 
 			//insert문 실행
 			return pstmt.executeUpdate();			

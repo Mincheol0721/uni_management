@@ -31,6 +31,8 @@ public class SearchServlet extends HttpServlet {
 		//JSON응답 설정
 		response.setContentType("application/json");
 		
+		response.setCharacterEncoding("UTF-8");
+		
 		PrintWriter out = response.getWriter();
 		
 		//요청한 값 얻기

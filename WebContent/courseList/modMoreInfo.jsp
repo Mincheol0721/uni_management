@@ -69,12 +69,7 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/menu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
            
@@ -92,21 +87,61 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=5%>주차</td>
-	                   	           			<th width=5%>차시</td>                   	           			
-	                   	           			<th width=5%>강의주제</td>
-	                   	           			<th width=5%>강의방식</td>
-	                   	           			<th width=5%>강의기간</td>
-	                   	           			<th width=5%>과제</td>	
-	                   	           			<th width=5%>강의수정</td>	                   	           			           			                     	           			               	           			
+	                   	           			<th width=3%>주차</th>
+	                   	           			<th width=3%>차시</th>                   	           			
+	                   	           			<th width=6%>강의주제</th>
+	                   	           			<th width=5%>강의방식</th>
+	                   	           			<th width=5%>강의기간(요일, 시작교시, 끝교시)</th>
+	                   	           			<th width=5%>과제</th>	
+	                   	           			<th width=5%>강의수정</th>	                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead>  		
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           									         	           				
-								        <td width="5%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
-								        <td width="5%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
-								        <td width="5%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
-								        <td width="5%"><input type="text" name="way" value="<%=bean.getWay()%>"/></td>
-								        <td width="5%"><input type="text" name="time" value="<%=bean.getTime()%>"/></td>
+								        <td width="3%"><input type="text" name="week" value="<%=bean.getWeek()%>"/></td>
+								        <td width="3%"><input type="text" name="session" value="<%=bean.getSession()%>"/></td>
+								        <td width="6%"><input type="text" name="topic" value="<%=bean.getTopic()%>"/></td>
+								        
+								        <td width="5%">
+									        <div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="online" value="온라인" <% if(bean.getWay().equals("온라인")) { %>checked<% } %>>
+											    <label class="form-check-label" for="online">온라인</label>
+											</div>
+											<div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="offline" value="오프라인" <% if(bean.getWay().equals("오프라인")) { %>checked<% } %>>
+											    <label class="form-check-label" for="offline">오프라인</label>
+											</div>
+											<div class="form-check">
+											    <input class="form-check-input" type="radio" name="way" id="hybrid" value="혼합" <% if(bean.getWay().equals("혼합")) { %>checked<% } %>>
+											    <label class="form-check-label" for="hybrid">혼합</label>
+											</div>
+								        </td>			
+							        	<td width="10%">
+								        <select name="day">
+										    <option value="월요일" <%if(bean.getDay().equals("월요일")){ %>selected<% }%>>월요일</option>
+										    <option value="화요일" <%if(bean.getDay().equals("화요일")){ %>selected<% }%>>화요일</option>
+										    <option value="수요일" <%if(bean.getDay().equals("수요일")){ %>selected<% }%>>수요일</option>
+										    <option value="목요일" <%if(bean.getDay().equals("목요일")){ %>selected<% }%>>목요일</option>
+										    <option value="금요일" <%if(bean.getDay().equals("금요일")){ %>selected<% }%>>금요일</option>
+										</select>	
+										<select name="starttime">
+										    <option value="1" <%if(bean.getStarttime() == 1){ %>selected<% }%>>1</option>
+										    <option value="2" <%if(bean.getStarttime() == 2){ %>selected<% }%>>2</option>
+										    <option value="3" <%if(bean.getStarttime() == 3){ %>selected<% }%>>3</option>
+										    <option value="4" <%if(bean.getStarttime() == 4){ %>selected<% }%>>4</option>
+										    <option value="5" <%if(bean.getStarttime() == 5){ %>selected<% }%>>5</option>
+										    <option value="6" <%if(bean.getStarttime() == 6){ %>selected<% }%>>6</option>
+										    <option value="7" <%if(bean.getStarttime() == 7){ %>selected<% }%>>7</option>							   
+										</select>								
+										<select name="endtime">
+										   	<option value="2" <%if(bean.getEndtime() == 2){ %>selected<% }%>>2</option>
+										    <option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>
+										    <option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>
+										    <option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>
+										    <option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>
+										    <option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>
+										    <option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>
+										</select>
+								        </td>
 								        <td width="5%"><input type="text" name="homework" value="<%=bean.getHomework()%>"/></td>
 								        <td width="5%"><input type="submit" value="수정"></td>
 								    </tr>  	           										           										           		                 	           		
@@ -137,5 +172,83 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        
+        <!-- 선택한 시작 교시에 따라 끝나는 교시가 바뀌게 하는 switch문 -->
+        <script type="text/javascript">
+	        
+	        var startTime;
+	        var endTime;
+	        var str;
+	        
+        	$("select[name='starttime']").change(function(){
+        		
+        		startTime = $("select[name=starttime]").val();        		
+        		endTime = $("select[name=endtime]");
+        		
+        		switch (startTime) {
+        		
+					case '2':
+	 					$("select[name=endtime]").empty();
+						str = '<option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>' +
+					    	  '<option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>' +
+					    	  '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+					    	  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+					    	  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+					    	  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);
+						
+					    break;
+	    
+					case '3':
+	 					$("select[name=endtime]").empty();
+						str = '<option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>' +
+				    		  '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+				    		  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);
+	 				    
+	 				    break;
+				
+					case '4':
+						$("select[name=endtime]").empty();
+						str = '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+				    		  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+			
+					case '5':
+						$("select[name=endtime]").empty();
+						str = '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+				    		  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+	 				    
+					case '6':
+						$("select[name=endtime]").empty();
+						str = '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+				    		  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+	 				    
+					case '7':
+						$("select[name=endtime]").empty();
+						str = '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);   
+					    
+	 				    break;
+
+					default:
+						break;
+				}
+        		
+        	});     
+        </script>     
     </body>
 </html>

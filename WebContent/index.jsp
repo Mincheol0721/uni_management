@@ -133,6 +133,7 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 				var $noticeTable = $("#noticeTable");
 				var $path = '<%=request.getContextPath()%>';
 				var $job = '<%=job%>';
+				var $id = '<%=(String)session.getAttribute("id")%>';
 				
 				if($job == '학생' || $id == 'null') {
 					$('.calTd').attr('onclick', 'location.href="'+$path+'/menu/schedule.jsp"');
@@ -160,9 +161,9 @@ List<NoticeDTO> nlist = ndao.getBoardList();
                         <h1 class="mt-4"><%-- bxSlider 상단부분 띄우기 위한 태그 --%></h1>
                         <div class="row">
 							<div class="bxslider">
-								<div><img src="assets/img/uni.jpg" width="100%"/></div>
-								<div><img src="assets/img/lib.jpg" width="100%" /></div>
-								<div><img src="assets/img/school.jpg" width="100%" /></div>
+								<div><img src="assets/img/uni.png" width="100%"/></div>
+								<div><img src="assets/img/lib.png" width="100%" /></div>
+								<div><img src="assets/img/lib2.png" width="100%" /></div>
 							</div>
 							<!-- 
 							<p><a href="" id="slider-next">Click me to go to the next slide</a><br />
@@ -434,6 +435,7 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 	    <script type="text/javascript">
+
 		    var slider = $('.bxslider').bxSlider({
 	    	  mode: 'fade'
 	    	});
@@ -448,6 +450,7 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 	    	  alert('Slide count: ' + count);
 	    	  return false;
 	    	});
+
 	    </script>
         <%-- bxSlider --%>
     </body>

@@ -10,6 +10,8 @@
 
 
 <%
+	
+// 	System.out.println("Pro타는중... week=" + request.getParameter("week"));
 
 	MoreInfoDAO dao = new MoreInfoDAO();
 
@@ -19,13 +21,12 @@
 			Integer.parseInt(request.getParameter("session")),
 			request.getParameter("topic"),
 			request.getParameter("way"),
-			request.getParameter("time"),
+			request.getParameter("day"),
+			Integer.parseInt(request.getParameter("starttime")),
+			Integer.parseInt(request.getParameter("endtime")),			
 			request.getParameter("homework"),
 			(String)session.getAttribute("id")
 			);
-	
-	   System.out.println("받아오는 주차 : " + request.getParameter("modweek"));	
-       System.out.println("받아오는 강의명 : " + request.getParameter("cname"));
  
 	//DB작업
 	dao.modifyMoreInfo(bean);	

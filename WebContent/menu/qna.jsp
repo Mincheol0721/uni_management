@@ -91,14 +91,13 @@
 // 				console.log("path: " + $path);
 // 				console.log("pageNum: " + $pageNum);
 				
-				if($searchText != null || $searchText.length != 0) {
-					$('#viewAll').css('display', 'inline');
+				if($searchText != '') {
+					$('#viewAll').show();
 				} 
 				$('#viewAll').on("click", function() {
 					location.href = '<%=request.getContextPath()%>/menu/qna.jsp';
-					$('#viewAll').css('display', 'none');
+					$('#viewAll').hide();
 				});
-				
 				
 				
         		//검색 시 검색한 필드 및 텍스트값에 해당하는 게시글만 띄우기 위한 ajax

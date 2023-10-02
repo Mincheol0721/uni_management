@@ -103,7 +103,7 @@ public List<HomeWorkBoardDTO> getBoardList(int startRow, int pageSize, String cn
 				HomeWorkBoardDTO homeWorkDTO = new HomeWorkBoardDTO();
 				//rs => homeWorkDTO 객체에 저장	
 				homeWorkDTO.setNum((rs.getInt("num")));
-				homeWorkDTO.setCName((rs.getString("cname")));
+				homeWorkDTO.setCname((rs.getString("cname")));
 				homeWorkDTO.setTasktype((rs.getString("tasktype")));
 				homeWorkDTO.setTasktitle((rs.getString("tasktitle")));
 				homeWorkDTO.setTaskmethod((rs.getString("taskmethod")));
@@ -148,7 +148,7 @@ public HomeWorkBoardDTO gethomeWorkModifyNum(String num) {
 			
 				homeV = new HomeWorkBoardDTO();
 				homeV.setNum(number);
-				homeV.setCName(cname);
+				homeV.setCname(cname);
 				homeV.setTasktitle(tasktitle);
 				homeV.setTaskmethod(taskmethod);
 				homeV.setPeriod(period);

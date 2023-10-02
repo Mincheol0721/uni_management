@@ -1,3 +1,5 @@
+<%@page import="member.ProfessorDAO"%>
+<%@page import="member.MemberDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="board_course.BoardBean"%>
 <%@page import="board_course.BoardDAO"%>
@@ -6,7 +8,15 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<% request.setCharacterEncoding("UTF-8"); %>
+<% 
+request.setCharacterEncoding("UTF-8"); 
+String id = (String)session.getAttribute("id");
+
+MemberDTO dto = new ProfessorDAO().selectMember(id);
+
+
+
+%>
 
 <c:set  var="contextPath"  value="${pageContext.request.contextPath}"/>
 
@@ -28,7 +38,8 @@
   	<script> 
  				
  		$(function(){
- 			
+ 			 var loggedInProfessor = '<%= session.getAttribute("id") %>';
+ 			console.log('loginprof', loggedInProfessor);
  			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
  			$("#searchText").on("keyup", function(){
  				
@@ -60,7 +71,6 @@
  						if(data.length > 0){
  							
  							$.each(data, function(index, boardbean){
- 								
  								$resultsTable.append(
  										
  								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
@@ -71,17 +81,25 @@
                	           			"<td width=5%>" + boardbean.compsem + "학기" +"</td>" + 
                	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
                	           			"<td width=5%>" + boardbean.ctime +"</td>" + 
-               	           			"<td width=5%>" + boardbean.professor + "</td>"  +   
-               	           			"<td width=5%><a href='modCourse.jsp' id='modCourse'>과목 수정</td>" + 
-               	           			"<td width=5%><a href='delCourse.jsp' id='delCourse'>과목 삭제</td>" +
+               	           			"<td width=5%>" + boardbean.professor + "</td>"  + 
+               	           			"<td width='5%'>" +
+                                    (loggedInProfessor != null && "<%=dto.getName()%>" === boardbean.professor ?
+                                    "<a href='modCourse.jsp?ccode=" + boardbean.ccode + "'>과목 수정</a>" :
+                                    "-") +
+                                    "</td>" +
+                                    "<td width='5%'>" +
+                                    (loggedInProfessor != null && "<%=dto.getName()%>" === boardbean.professor ?
+                                    "<a href='delCourse.jsp?ccode=" + boardbean.ccode + "'>과목 삭제</a>" :
+                                    "-") +
+               	              		"</td>" +
  								"</tr>"							
  								);
-								
+							
  							});
  							
  						}else{
  							
- 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>")
+ 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>");
  						}											
  					}					 					
  				});								
@@ -134,7 +152,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">전체 강의</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">course</li>
+                            <li class="breadcrumb-item active">listCourse</li>
                         </ol>
                         <form action="listCourse.jsp" method="post">
                         	<select name="search">

@@ -94,7 +94,7 @@ public class BoardDAO {
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
 				bean.setProfessor(rs.getString("professor"));
-				bean.setCtime(rs.getString("ctime"));
+				bean.setCtime(rs.getString("time"));
 				
 				list.add(bean);				
 				
@@ -147,7 +147,7 @@ public class BoardDAO {
 				bean.setCompyear(rs.getInt("compyear"));
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
-				bean.setCtime(rs.getString("ctime"));
+				bean.setCtime(rs.getString("time"));
 				bean.setProfessor(rs.getString("professor"));
 				bean.setId(rs.getString("id"));
 				
@@ -178,7 +178,7 @@ public class BoardDAO {
 			con = ds.getConnection();
 			
 			//insert sql문 만들기
-			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, ctime, professor, id)"
+			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, time, professor, id)"
 					   + "values (?, ?, ?, ?, ?, ?, ?, ?);";
 
 			//insert문 실행할 pstmt 실행 객체 얻기
@@ -214,7 +214,7 @@ public class BoardDAO {
 	        System.out.println("DB 연결 성공");
 	        
 	        // insert SQL 문 만들기
-	        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO course (cname, compdiv, compyear, compsem, grade, ctime, professor, id) VALUES ");
+	        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO course (cname, compdiv, compyear, compsem, grade, time, professor, id) VALUES ");
 	        for (int i = 0; i < arrayList.size(); i++) {
 	            if (i > 0) {
 	                sqlBuilder.append(", ");
@@ -310,7 +310,7 @@ public class BoardDAO {
 				bean.setCompyear(rs.getInt("compyear"));
 				bean.setCompsem(rs.getInt("compsem"));
 				bean.setGrade(rs.getInt("grade"));
-				bean.setCtime(rs.getString("ctime"));
+				bean.setCtime(rs.getString("time"));
 				bean.setProfessor(rs.getString("professor"));
 				bean.setId(rs.getString("id"));
 				
@@ -339,7 +339,7 @@ public class BoardDAO {
 			
 			//DB연결
 			con = ds.getConnection();
-			String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=?, ctime=? where ccode=?";
+			String sql = "update course set cname=?, compdiv=?, compyear=?, compsem=?, grade=?, time=? where ccode=?";
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, bean.getCname());

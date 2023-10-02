@@ -1,3 +1,5 @@
+<%@page import="homework.HomeworkProfessorDAO"%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
@@ -20,7 +22,7 @@
 
 	String cname = request.getParameter("cname");
 	
-	
+	String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,15 +37,26 @@
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
-    <%
-    	//DB작업할 DAO생성
-    	MoreInfoDAO moreInfoDAO = new MoreInfoDAO();
-    	
-    	List<MoreInfoBean> list = null;
     
-    	list = moreInfoDAO.getmoreList(cname);
-   	%>
-    <body class="sb-nav-fixed">
+	    <%
+   
+	    	HomeworkProfessorDAO dao = new HomeworkProfessorDAO();
+	    
+			int week = Integer.parseInt(request.getParameter("week"));
+			int sess = Integer.parseInt(request.getParameter("session"));
+			
+			System.out.println(week + " & " + sess);
+ 	
+	    	HomeWorkBoardDTO dto = dao.getHWList(cname, week, sess);
+	    	
+	    	System.out.println("cname: " + cname);
+	    	System.out.println("tasktype: " + dto.getTasktype());
+	    	System.out.println("tasktitle: " + dto.getTasktitle());
+	    	System.out.println("taskmethod: " + dto.getTaskmethod());
+	    	System.out.println("period: " + dto.getPeriod());
+	    	
+	   	%>
+	<body class="sb-nav-fixed">    					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">OO대학교</a>
@@ -67,65 +80,69 @@
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <jsp:include page="/inc/cPlanMenu.jsp" />
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        
-                    </div>
+                	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의</h1>
+                    <form action="homeworkPro.jsp?cname=<%=cname %>" method="POST"> 
+                	<input type="hidden" id="cname" name="cname" value="<%=cname%>"/>  
+                    	<div class="container-fluid px-4">
+                        <h1 class="mt-4">과제 설정</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">homework</li>
+                            <li class="breadcrumb-item active">homework_professor</li>
                         </ol>
-                       
-	                       
-					
-                        <div class="row">
-                        	
-                        	<p class="mb-0">
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<tr bgcolor="lightgrey" align="center" id="menu_re">
-                   	           			
-                   	           			<td width=5% hidden="">과목명</td>
-                   	           			<td width=5%>주차</td>
-                   	           			<td width=5%>차시</td>
-                   	           			<td width=5%>강의 주제</td>
-                   	           			<td width=5%>강의 방식</td>
-                   	           			<td width=5%>강의 시간</td>
-                   	           		</tr>
-                   	           		
-                   	         <%
-									
-									for(MoreInfoBean moreinfo : list){
-						%>           
-						        	           		
-                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
-                   	           			<td width=5%><%=moreinfo.getWeek()%></td>
-                   	           			<td width=5%><%=moreinfo.getSession()%></td>
-                   	           			<td width=5%><%=moreinfo.getTopic()%></td>
-                   	           			<td width=5%><%=moreinfo.getWay()%></td>
-                   	           			<td width=5%><%=moreinfo.getTime()%></td>
-                   	           		
-									</tr>
-                   	       <%
-                   	        }
-							
-                   	        %> 
-                   	          
-                   	          		
-                   	           	
-                   	           
-                   	           </table>
-                            </p>
-                        </div>                                   
-                        
-                    </div>
+							<div class="container-fluid">
+								<div class="row">
+									<div class="col-md-2">
+										과목명
+									</div>
+									<div class="col-md-10">
+										<input type="text" name="cname" width="100%" value="<%=cname%>">
+									</div>
+									<div class="col-md-2">
+										과제유형
+									</div>
+									<div class="col-md-10">
+										<select name="tasktype">								
+											<option value="" <%if(dto.getTasktype().equals("")){ %>selected<% }%>>---선택---</option>
+											<option value="개인과제" <%if(dto.getTasktype().equals("개인과제")){ %>selected<% }%>>개인과제</option>
+											<option value="팀프로젝트" <%if(dto.getTasktype().equals("팀프로젝트")){ %>selected<% }%>>팀프로젝트</option>
+										</select>
+									</div>
+									<div class="col-md-2">
+										과제명
+									</div>
+									<div class="col-md-10">
+										<input type="text" name="tasktitle" width="100%" value="<%=dto.getTasktitle()%>">
+									</div>
+									<div class="col-md-2">
+										제출방법
+									</div>
+									<div class="col-md-10">
+										<input type="radio" name="taskmethod" value="온라인" <%if(dto.getTaskmethod().equals("온라인")){ %>checked<% }%> > 온라인 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type="radio" name="taskmethod" value="오프라인"<%if(dto.getTaskmethod().equals("오프라인")){ %>checked<% }%>> 오프라인
+									</div>
+									<div class="col-md-2">
+										제출기간
+									</div>
+									<div class="col-md-10">
+									<% String startDate = dto.getPeriod().substring(0, 10);
+										System.out.println("startDate: " + startDate);
+										String endDate = dto.getPeriod().substring(11);
+										System.out.println("endDate: " + endDate);
+									%>
+										<input type="date" name="period" min="<%=today%>" value="<%=startDate%>" width="100%">
+										 ~ 
+										<input type="date" name="period" min="<%=today%>" value="<%=endDate %>" width="100%"> 
+									</div>									
+									<div class="col-md-10">
+										<button type="submit" class="save">저장</button>			
+									</div>
+								</div>
+							</div>
+                    	</div>
+                    </form>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -148,38 +165,5 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-       
-        <script type="text/javascript">
-        	$("#searchBtn").on('click',function(){
-        		
-        		var searchField = $("select").find("option:selected").val();
-        		var searchText = $("#searchText").val();
-        		if (searchText == "") {
-					alert("검색어를 입력하지 않으셨습니다.");
-					location.href();
-				}
-        		
-        		
-        		jQuery.ajaxSettings.traditional = true;
-    			$.ajax({
-    				
-    				url : "searchLectureBBS.jsp", //요청할 서버페이지 경로 
-    				type : "post", //전송요청방식 GET 또는 POST중에 하나
-    				data : {"searchField":searchField,"searchText":searchText},
-    				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
-    				
-    					$("tr").filter('#searchZone').remove();
-    					$("tr").filter('#menu_re').remove();
-    					$("#a").remove();
-    					$("#b").remove();
-   					$("#searchAddZone").html(data);
-    				},
-    				error : function(data){
-    		           alert("망");
-    		        }
-    			});					
-        	});	
-        </script>
-        
     </body>
 </html>

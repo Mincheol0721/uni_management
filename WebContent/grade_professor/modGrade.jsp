@@ -1,7 +1,10 @@
-<%@page import="courseList.CoursePlanBean"%>
+<%@page import="grade_professor.GradePDAO"%>
+<%@page import="grade_professor.GradeBean"%>
 <%@page import="courseList.CoursePlanDAO"%>
+<%@page import="courseList.CoursePlanBean"%>
 <%@page import="courseList.MoreInfoBean"%>
 <%@page import="courseList.MoreInfoDAO"%>
+<%@page import="courseList.CourseDAO"%>
 <%@page import="courseList.CourseBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -21,21 +24,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>OO대학교 학사관리 시스템 - 세부 강의 리스트</title>
+        <title>OO대학교 학사관리 시스템 - 성적조회</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
-    	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
-				request.setCharacterEncoding("UTF-8");	
-  	
-			%>		
+				request.setCharacterEncoding("UTF-8");
 			
-			<jsp:useBean id="moreInfoDAO" class="courseList.MoreInfoDAO"/>			
+        		int ccode =  Integer.parseInt(request.getParameter("ccode"));
+        		String name = request.getParameter("name");
+				String id = request.getParameter("id");							
+				
+				GradePDAO pdao = new GradePDAO();
+				
+				GradeBean bean = pdao.getModGrade(ccode, name, id);
+				
+				System.out.println("수정할 과목코드 : " + ccode);
+				System.out.println("학생명 : " + name);
+				System.out.println("학생 아이디 : " + id);
+				
+			%>		
 					
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
@@ -63,67 +76,49 @@
                 	<jsp:include page="/inc/menu.jsp" />
                 </nav>
             </div>
-           
             <div id="layoutSidenav_content">
-                <main>           
+                <main>
+					<form action="modGradePro.jsp?ccode=<%=ccode %>" method="POST">                     
+ 					<input type="hidden" name="ccode" value="<%= ccode %>">
+		            <input type="hidden" name="id" value="<%= id %>">
+		            <input type="hidden" name="name" value="<%= name %>">                         
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">세부 강의 안내</h1>
-                        <ol class="breadcrumb mb-4">                     	   
-                            <li class="breadcrumb-item active">moreInfo_student</li>                       
+                        <h1 class="mt-4">성적 수정</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">modGrade</li>
                         </ol>
                         <div class="row">
                         	<p class="mb-0">    		
-                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="table table-striped"> 
+                   	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<th width=3%>주차</th>
-	                   	           			<th width=3%>차시</th>                   	           			
-	                   	           			<th width=5%>강의주제</th>
-	                   	           			<th width=5%>강의방식</th>	                   	           			
-	                   	           			<th width=5%>강의 시간</th>
-	                   	           			<th width=5%>과제</th>		                   	           			           			                     	           			               	           			
+	                   	           			<th width=5%>과목코드</th> 
+	                   	           			<th width=5%>과목명</th>
+	                   	           			<th width=5%>학번</th>
+	                   	           			<th width=5%>이름</th>
+	                   	           			<th width=5%>점수</th>
+	                   	           			<th width=5%>등급</th>
+	                   	           			<th width=5%>수정</th>		                   	           			         	           			                   	           			               	           			
 	                   	           		</tr>
-                   	           		</thead> 
-  		
-                  	           		<tbody>
-                  	           <%	
-                  	           
-	                        		MoreInfoDAO dao = new MoreInfoDAO();
-	                   	           
-	                        		String cname = request.getParameter("cname");         		
-	
-	                        	    System.out.println("cname 파라미터 값: " + cname);       		     		
-                  	           		
-                   	           		List<MoreInfoBean> list = dao.getmoreList(cname);
-                  	           	
-                   	           		for(MoreInfoBean bean : list){ 
-                   	          		
-                   	           	%> 
-                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">                	           			
-                  	           			<td><%= bean.getWeek() %>주차</td>
-							            <td><%= bean.getSession() %>차시</td>
-							            <td><%= bean.getTopic() %></td>
-							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
-							            <td>
-										    <form action="homework_student.jsp" method="post">
-										        <input type="hidden" name="homework" value="<%= bean.getHomework() %>">
-										        <button type="submit" class="homework_s">과제 제출</button>
-										    </form>
-										</td>							            	
-         	           				</tr>
-                  	           	
-                  	           	<%
-                  	           	
-                   	           		}  
-                  	           		
-                   	            %>		 
+                   	           		</thead>
+
+                  	           		<tbody id="results">
+	                  	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+								        	<td width="5%"><input type="text" name="ccode" value="<%=bean.getCcode()%>" readonly/></td>
+	                  	           			<td width="5%"><input type="text" name="cname" value="<%=bean.getCname()%>"readonly/></td>
+	                  	           			<td width="5%"><input type="text" name="id" value="<%=bean.getId()%>"readonly/></td>
+	                  	           			<td width="5%"><input type="text" name="name" value="<%=bean.getName()%>"readonly/></td>                  	           			
+	                  	           			<td width="5%"><input type="text" name="grade" value="<%=bean.getGrade()%>"/></td>                  	           			
+	                  	           			<td width="5%"><input type="text" name="rate" value="<%=bean.getRate()%>"/></td>                  	           			
+								       	 	<td width="5%"><input type="submit" value="수정"></td>
+	         	           				</tr>                 	           			
                   	           		</tbody>
-     	           										           										           		                 	           		
+     	           										           		                 	           		
                    	           </table>
                             </p>
                         </div>
                     </div>
+                    </form>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

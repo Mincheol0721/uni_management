@@ -378,8 +378,27 @@
         });
        	
        	
+			function check(){
+ 			
+ 			//검색어를 입력하지 않았다면?
+ 			if(document.search.keyWord.value == ""){
+ 				alert("검색어를 입력하세요");
+ 				document.search.keyWord.focus();
+ 				return;//check함수 벗어나기 
+ 			}
+ 			
+ 			//검색어를 입력했다면?
+ 			document.search.submit(); //form태그의 action속성에 작성한 notice.jsp로 검색요청시!
+ 									   //입력한  검색어 + 선택한 검색기준값  + hidden값 까지 모두 request에 담아서 전송합니다. 			
+ 		}
         
-        
+			
+			//목록으로 부분
+			function fnList() {
+				document.list.action="professorList.jsp";
+				document.list.submit();
+				
+			}
         </script>
     </head>
     <body class="sb-nav-fixed">
@@ -415,17 +434,35 @@
                    	           			<td width=5%>학부</td>
                    	           			<td width=5%>학과</td>
                    	           		</tr>
+                   	           		<%!String keyWord, keyField;  %>
                    	       			<%
+		                   	       	//1. 한글처리 (입력한 검색어와 검색기준값에 한글문자 처리)
+		                   	       		request.setCharacterEncoding("UTF-8");
+		                   	       		
+		                   	       	    //2. 조건    만약 검색어가 입력되어 있다면? 선택한 검색기준값과 입력한 검색어를 request에서 받아옵니다.
+		                   	       	    //요약 : 요청한 값 얻기 
+		                   	       	    if(request.getParameter("keyWord") != null){
+		                   	       	    	//검색기준값(이름, 제목, 내용 중에 select option에서 선택한 하나의 값)
+		                   	       	    	keyField = request.getParameter("keyField"); //이름 - name  또는   제목 - subject 또는  내용 - content중에 하나 
+		                   	       	    	//입력한 검색어 얻기 
+		                   	       	    	keyWord = request.getParameter("keyWord");
+		                   	       	    }
+		                   	       	    //목록으로 부분
+		                   	       	   	if(request.getParameter("reload") != null){
+		                   	       	   		if(request.getParameter("reload").equals("true")){
+		                   	       	   			keyWord="";
+		                   	       	   		}
+		                   	       	   	}
                    	       			ProfessorDAO dao = new ProfessorDAO();
                    	       			
-                   	       			
-                   	       			List profMem = dao.listProfessor();
+                   	       			System.out.print("키워드:"+keyWord);
+                   	       			List profMem = dao.listProfessor(keyWord, keyField);
                    	       			
                    	       			
                    	       			//페이징 처리 
                    	       			//2교수정보에 저장된 전체갯수
                    	       			totalRecord = profMem.size();
-                   	       			
+                   	       			System.out.print(totalRecord);
                    	       			//4전체 페이지번호 갯수구하기 = 전체글의 갯수 / 한페이지당 보여질 글의 갯수
                    	       			totalPage =  (int)Math.ceil(  (double)totalRecord / numPerPage ); 
                    	       			
@@ -458,7 +495,7 @@
                    	       			Mem = (MemberDTO)profMem.get(cnt);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>"></td>
+                   	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>" class="form-check-input"></td>
                    	           			<td width=5%><%=Mem.getId() %></td>
                    	           			<td width=5%><%=Mem.getName() %></td>
                    	           			<td width=5%><%=Mem.getTel() %></td>
@@ -485,6 +522,41 @@
                    	           	 <input style="float: right" type="button" id="professor_mod" name="professor_mod" value="수정">
                    	           	 <input style="float: right" type="button" id="professor_reg" name="professor_reg" value="등록">
                    	         </form>
+                   	         
+                   	         
+               <div id="table_search">
+				<form action="professorList.jsp" name="search" method="post">
+					<input type="hidden" name="page" value="0">
+					<table border="0" align="center">
+						<tr>
+							<td align="center">
+								<select name="keyField">
+									<option value="name">이름</option>
+									<option value="id">교번</option>
+
+								</select>
+								<!-- 검색어 입력하는 곳 -->
+								<input type="text" name="keyWord" class="input_box"> 
+								<!-- 검색(찾기) 버튼 -->
+								<input type="button" value="찾기" onclick="check();">	
+							</td>
+							<td>
+								<!-- 목록으로 돌아가기 -->							
+								<a href ="professorList.jsp" 
+								   onclick="fnList(); return false;"
+								   style="text-decoration : none; color:Black; margin-top: 5px">목록으로</a>
+							</td>
+							</tr>
+						</table>
+					</form>	
+				</div>
+				
+						<form name="list" method="post">
+                   	         <!-- 목록으로 돌아가기 -->							
+								<input type="hidden" name="reload" value="true">
+                   	    </form>
+                   	         
+                   	         
                    	         <div id="page_control" align="center">
                    	          	<%
 									//[15] 게시판에 글이 하나라도 존재하고, 현재 블럭의 위치가 적어도 0보다 크다면?(이전으로 이동할 블럭위치가 있다는 의미)
@@ -493,8 +565,8 @@
 										if(nowBlock > 0){
 								%>			
 										<%--이전 을 누르면 이전블럭위치 값과 ,  이전블럭위치의 시작페이지번호를 notice.jsp로 요청시 전달합니다. --%>
-										<a href="professorList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>">   
-											이전<%=pagePerBlock%>개<<< 
+										<a href="professorList.jsp?nowBlock=<%=nowBlock-1%>&nowPage=<%=(nowBlock-1)*pagePerBlock%>" style="text-decoration: none; color:Black;">   
+											이전<
 										</a>							
 								<%			
 										}
@@ -528,8 +600,8 @@
             					if(totalBlock > nowBlock + 1){
             					%>		
                           		<%--[14] >>>다음3개 링크를 클릭했을때 그다음블럭위치번호와, 그다음블럭의 시작페이지번호를 notice.jsp로 요청해서 전달  --%>
-								<a href="professorList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>">	
-									>>>다음<%=pagePerBlock%>개
+								<a href="professorList.jsp?nowBlock=<%=nowBlock+1%>&nowPage=<%=(nowBlock+1)*pagePerBlock%>" style="text-decoration: none; color:Black;">	
+									>다음
 								</a>	
 									
 							<%		
