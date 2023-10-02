@@ -19,7 +19,7 @@
 		
 		String searchText = request.getParameter("searchText");
 		
-	
+		
 	//-------------------------------------------
 	//전체글 개수
 	int count = lectureDAO.getSearchCount(searchField, searchText);
