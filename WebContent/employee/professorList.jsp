@@ -538,7 +538,7 @@
 								<!-- 검색어 입력하는 곳 -->
 								<input type="text" name="keyWord" class="input_box"> 
 								<!-- 검색(찾기) 버튼 -->
-								<input type="button" value="찾기" class="btn btn-primary" onclick="check();">	
+								<input type="button" value="찾기" onclick="check();">	
 							</td>
 							<td>
 								<!-- 목록으로 돌아가기 -->							
