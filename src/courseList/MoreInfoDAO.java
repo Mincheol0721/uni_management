@@ -223,18 +223,21 @@ public class MoreInfoDAO {
 			
 			//DB연결
 			con = ds.getConnection();
-			String sql = "update moreInfo set session=?, topic=?, way=?, day=?, starttime=?, endtime=?, homework=?, week=? where cname=?";
+			String sql = "update moreInfo set topic=?, way=?, day=?, starttime=?, endtime=?, homework=?, week=? where cname=? and week=? and session=?";
 			pstmt = con.prepareStatement(sql);
+			
+//			System.out.println("MOD타는중... cname=" + bean.getCname());
 								
-			pstmt.setInt(1, bean.getSession());
-			pstmt.setString(2, bean.getTopic());
-			pstmt.setString(3, bean.getWay());
-			pstmt.setString(4, bean.getDay());
-	        pstmt.setInt(5, bean.getStarttime());
-	        pstmt.setInt(6, bean.getEndtime());	        
-			pstmt.setString(7, bean.getHomework());
-			pstmt.setInt(8, bean.getWeek());
-			pstmt.setString(9, bean.getCname());
+			pstmt.setString(1, bean.getTopic());
+			pstmt.setString(2, bean.getWay());
+			pstmt.setString(3, bean.getDay());
+	        pstmt.setInt(4, bean.getStarttime());
+	        pstmt.setInt(5, bean.getEndtime());	        
+			pstmt.setString(6, bean.getHomework());
+			pstmt.setInt(7, bean.getWeek());
+			pstmt.setString(8, bean.getCname());
+			pstmt.setInt(9, bean.getWeek());
+			pstmt.setInt(10, bean.getSession());
 	
 			
 			pstmt.executeUpdate();

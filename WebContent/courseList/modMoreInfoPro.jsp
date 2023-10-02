@@ -10,6 +10,8 @@
 
 
 <%
+	
+// 	System.out.println("Pro타는중... week=" + request.getParameter("week"));
 
 	MoreInfoDAO dao = new MoreInfoDAO();
 
