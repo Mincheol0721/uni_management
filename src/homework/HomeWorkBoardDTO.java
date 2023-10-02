@@ -63,7 +63,7 @@ public class HomeWorkBoardDTO {
 		this.num = num;
 	}
 
-	public void setCName(String cname) {
+	public void setCname(String cname) {
 		this.cname = cname;
 	}
 

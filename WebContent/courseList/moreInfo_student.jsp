@@ -79,8 +79,8 @@
 	                   	           			<th width=3%>주차</th>
 	                   	           			<th width=3%>차시</th>                   	           			
 	                   	           			<th width=5%>강의주제</th>
-	                   	           			<th width=5%>강의방식</th>
-	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>강의방식</th>	                   	           			
+	                   	           			<th width=5%>강의 시간</th>
 	                   	           			<th width=5%>과제</th>		                   	           			           			                     	           			               	           			
 	                   	           		</tr>
                    	           		</thead> 
@@ -104,8 +104,13 @@
 							            <td><%= bean.getSession() %>차시</td>
 							            <td><%= bean.getTopic() %></td>
 							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getTime() %></td>
-							            <td><%= bean.getHomework() %></td>								            	
+							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
+							            <td>
+										    <form action="homework_student.jsp" method="post">
+										        <input type="hidden" name="homework" value="<%= bean.getHomework() %>">
+										        <button type="submit" class="homework_s">과제 제출</button>
+										    </form>
+										</td>							            	
          	           				</tr>
                   	           	
                   	           	<%

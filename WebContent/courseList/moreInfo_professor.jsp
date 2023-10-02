@@ -86,7 +86,7 @@
            
             <div id="layoutSidenav_content">
                 <main>           
-                    <div class="container-fluid px-4">
+                    <div class="container-fluid px-4">                 
                         <h1 class="mt-4">세부 강의 페이지</h1>                        
                         <ol class="breadcrumb mb-4">                     	   
                             <li class="breadcrumb-item active">moreInfo_professor</li>                                                                  
@@ -106,8 +106,8 @@
 	                   	           			<th width=3%>주차</th>
 	                   	           			<th width=3%>차시</th>                   	           			
 	                   	           			<th width=5%>강의주제</th>
-	                   	           			<th width=5%>강의방식</th>
-	                   	           			<th width=5%>강의기간</th>
+	                   	           			<th width=5%>강의방식</th>	                   	           			
+	                   	           			<th width=5%>강의 시간</th>
 	                   	           			<th width=5%>과제</th>	
 	                   	           			<th width=3%>수정하기</th>
 	                   	           			<th width=3%>삭제하기</th>	                   	           			           			                     	           			               	           			
@@ -135,12 +135,21 @@
 							            <td><%= bean.getSession() %>차시</td>
 							            <td><%= bean.getTopic() %></td>
 							            <td><%= bean.getWay() %></td>
-							            <td><%= bean.getTime() %></td>
-							            <td><%= bean.getHomework() %></td>	
+							            <td><%= bean.getDay() %>  <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
+
 							    	<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
 							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
 							     	System.out.println(loggedInProfessor + " : " + bean.getId());							     	
 							     %>         
+							     		<td>
+											<%= bean.getHomework() %>
+										    <form action="homework_professor.jsp?cname=<%=cname %>" method="post">
+										        <input type="hidden" name="homework" value="<%= bean.getHomework() %>">
+										        <input type="hidden" name="week" value="<%= bean.getWeek() %>">
+										        <input type="hidden" name="session" value="<%= bean.getSession() %>">
+										        <button type="submit" class="homework_p">과제 설정</button>
+										    </form>
+										</td>
 							            <td><a href="modMoreInfo.jsp?cname=<%= bean.getCname() %>&week=<%= bean.getWeek()%>">수정</a></td>	
 										<td><a href="javascript:delC('<%= bean.getCname()%>','<%=bean.getWeek()%>')">삭제</a></td>   	           				
                   	          	<% }else{

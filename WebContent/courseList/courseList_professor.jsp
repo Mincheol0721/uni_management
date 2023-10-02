@@ -67,10 +67,10 @@
  								$resultsTable.append(
  										
  								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
- 									"<td width=5%>" + coursebean.grade + "학점" + "</td>" +
- 									"<td width=5%>" + coursebean.compyear + "학년" + "</td>" + 
-               	           			"<td width=5%>" + coursebean.compsem + "학기" + "</td>" + 
-               	           			"<td width=5%><a href='moreInfo.jsp' id='moreInfo'>" + coursebean.cname + "</td>" + 
+ 									"<td width=4%>" + coursebean.grade + "학점" + "</td>" +
+ 									"<td width=4%>" + coursebean.compyear + "학년" + "</td>" + 
+               	           			"<td width=4%>" + coursebean.compsem + "학기" + "</td>" + 
+               	                 	"<td width='5%'><a href='moreInfo_professor.jsp?cname=" + encodeURIComponent(coursebean.cname) + "' id='moreInfo'>" + coursebean.cname + "</a></td>" +
                	           			"<td width=5%>" + coursebean.professor + "</td>"  + 
                	           			"<td width=5%>" + coursebean.compdiv + "</td>" +         			                	           			
  								"</tr>"							
