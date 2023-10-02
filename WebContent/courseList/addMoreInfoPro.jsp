@@ -10,21 +10,14 @@
     int ses = Integer.parseInt(request.getParameter("ses"));
     String topic = request.getParameter("topic");
     String way = request.getParameter("way");
-    String time = request.getParameter("time");
+    String day = request.getParameter("day");
+    int starttime = Integer.parseInt(request.getParameter("starttime"));
+    int endtime = Integer.parseInt(request.getParameter("endtime"));
     String homework = request.getParameter("homework");
     String id = (String)session.getAttribute("id");
-
-//     System.out.println(cname);
-//     System.out.println(week);
-//     System.out.println(ses);
-//     System.out.println(topic);
-//     System.out.println(way);
-//     System.out.println(time);
-//     System.out.println(homework);
-    
     
     // MoreInfoBean 객체 생성
-    MoreInfoBean bean = new MoreInfoBean(cname, week, ses, topic, way, time, homework, id);
+    MoreInfoBean bean = new MoreInfoBean(cname, week, ses, topic, way, day, starttime, endtime, homework, id);
 	//System.out.println(bean);
     
     // MoreInfoDAO 객체 생성 및 데이터 추가

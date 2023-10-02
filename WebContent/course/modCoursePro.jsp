@@ -9,7 +9,6 @@
 
 %>
 
-
 <%
 
 	BoardDAO dao = new BoardDAO();
@@ -21,9 +20,11 @@
 			Integer.parseInt(request.getParameter("compyear")),
 			Integer.parseInt(request.getParameter("compsem")),
 			Integer.parseInt(request.getParameter("grade")),
-			request.getParameter("ctime"),
-			request.getParameter("id"),
-			request.getParameter("professor")
+			request.getParameter("professor"),
+			request.getParameter("day"),
+			Integer.parseInt(request.getParameter("starttime")),
+			Integer.parseInt(request.getParameter("endtime")),
+			request.getParameter("id")			
 			);
 	
 	   System.out.println("");	

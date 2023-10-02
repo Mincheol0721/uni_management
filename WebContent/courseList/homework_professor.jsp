@@ -98,7 +98,7 @@
 										과목명
 									</div>
 									<div class="col-md-10">
-										<input type="text" name="cname" width="100%" value="<%=cname%>">
+										<input type="text" name="cname" width="100%" value="<%=cname%>" readonly="readonly">
 									</div>
 									<div class="col-md-2">
 										과제유형

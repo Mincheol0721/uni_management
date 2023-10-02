@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import courseList.CourseBean;
+import courseList.MoreInfoBean;
 
 public class HomeworkProfessorDAO {
 
@@ -106,6 +107,34 @@ public class HomeworkProfessorDAO {
 	
 	}//조회 end	
 		
+	//과제 양식 수정하는 기능의 메소드
+	public void modHomework(HomeWorkBoardDTO dto) {			
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			String sql = "update homeworkboard set tasktype=?, tasktitle=?, taskmethod=?, period=? where cname=? ";
+			pstmt = con.prepareStatement(sql);
+								
+			pstmt.setString(1, dto.getTasktype());
+			pstmt.setString(2, dto.getTasktitle());
+			pstmt.setString(3, dto.getTaskmethod());      
+			pstmt.setString(4, dto.getPeriod());
+			pstmt.setString(5, dto.getCname());
+		
+			pstmt.executeUpdate();
+			
+			System.out.println("과제 양식 수정 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("modHomework메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+	}//modHomework end
 		
 		
 	
