@@ -47,44 +47,46 @@
 				<form action="professor_reg_proc.jsp" method="post" onsubmit="return valid();">
 
 					<table>
+						
 						<tr>
 							<th>아이디</th>
-							<td ><input type="text" name="id" id="id"></td>
+							<td ><input type="text" name="id" id="id" class="form-control"></td>
 							
 						</tr>
+						
 						<tr>
 							<th>이름</th>
-							<td><input type="text" name="name" id="name"></td>
+							<td><input type="text" name="name" id="name" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel" id="tel"></td>
+							<td><input type="text" name="tel" id="tel" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn" id="ssn"></td>
+							<td><input type="text" name="ssn" id="ssn" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email" id="email"></td>
+							<td><input type="text" name="email" id="email" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>주소</th>
 								<td>
-								<input type="text" id="sample6_postcode" name="addr1" placeholder="우편번호">
-								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-								<input type="text" id="sample6_address" name="addr2" placeholder="주소"><br>
-								<input type="text" id="sample6_detailAddress" name="addr3" placeholder="상세주소">
-								<input type="text" id="sample6_extraAddress" name="addr4" placeholder="참고항목">
+								<input type="text" id="sample6_postcode" name="addr1" placeholder="우편번호" class="form-control">
+								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-outline-dark"><br>
+								<input type="text" id="sample6_address" name="addr2" placeholder="주소" class="form-control"><br>
+								<input type="text" id="sample6_detailAddress" name="addr3" placeholder="상세주소" class="form-control">
+								<input type="text" id="sample6_extraAddress" name="addr4" placeholder="참고항목" class="form-control">
 								</td>
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd" id="pwd"></td>
+							<td><input type="text" name="pwd" id="pwd" class="form-control"></td>
 							
 						</tr>
 						<%
@@ -98,21 +100,21 @@
 						%>
 						<tr>
 							<th>소속 학부</th>
-							<td><select name="faculty" id="faculty">
+							<td><select name="faculty" id="faculty" class="form-control">
 							
 							</select></td>
 						</tr>
 						<tr>
 							<th>소속 학과</th>
-							<td><select name="dept" id="dept">
+							<td><select name="dept" id="dept" class="form-control">
 							
 									
 
 							</select></td>
 						</tr>
 					</table>
-							<input type="submit" id="professor_reg" name="professor_reg" value="등록"">
-                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성">
+							<input type="submit" id="professor_reg" name="professor_reg" value="등록" class="btn btn-outline-dark">
+                   	  	    <input type="reset" id="professor_del" name="professor_del" value="다시작성" class="btn btn-outline-dark">
 				</form>
 
 
