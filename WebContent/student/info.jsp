@@ -168,7 +168,7 @@
 // 				alert(userName); 
           		//클릭한 교수이름 과목이름 학생이름 모두 들고옴
           		//여기까지는 됨 
-        		window.open('../lectureBoard/lectureResister.jsp?professorName=' + professorName +'&lectureName=' + lectureName + '&userName=' + userName,'_blank','width=500,height=400');
+        		window.open('../lectureBoard/lectureResister.jsp?professorName=' + professorName +'&lectureName=' + lectureName + '&userName=' + userName,'_blank','width=500,height=720');
           		
           		
     		});   	

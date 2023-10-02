@@ -68,8 +68,8 @@
                    	           			<td width=5%><%=grade.getCname()%></td>
                    	           			<td width=5%><%=grade.getCompdiv()%></td>
                    	           			<td width=5%><%=grade.getCompyear()%></td>
-                   	           			<td width=5%><%=grade.getRate()%></td>
                    	           			<td width=5%><%=grade.getGrade()%></td>
+                   	           			<td width=5%><%=grade.getRate()%></td>
                    	           		</tr>
                    	           	<%
                    	           	}

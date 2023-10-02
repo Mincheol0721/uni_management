@@ -104,7 +104,7 @@
 						style="border-collapse: collapse; border-color: lightgrey;"
 						class="lec">
 						<%
-							out.print(id);
+// 							out.print(id);
 						%>
 						<tr bgcolor="lightgrey" align="center">
 							<td width=5%>과목명</td>

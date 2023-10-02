@@ -76,23 +76,39 @@ request.setCharacterEncoding("UTF-8");
             </div>
             <div id="layoutSidenav_content" style="background-color: white">
                 <main>
-                    <div class="position-relative">
+                  
               			
                         <div class="container" align="center">
-                        	<div class="row justify-content-center">
+                        	<br><br>
+                        	
                         	
                         	<form action="fileUploadAction.jsp" method="post" enctype="multipart/form-data">
 								<input type="text" name="cname" value="<%=cname%>" hidden=""> <!-- 과목명 -->
-								이름 : <input type="text" value="<%=name.getName()%>" name="studentName" readonly="readonly">
-								과제 제목 :<input type="text" value="<%=tasktitle%>" name="taskTitle" readonly="readonly"><br>
-								제목: <input type="text" name="title"><br>
-								<textarea rows="20" cols="60" name="content"></textarea><br> <!-- 본문 -->
-								첨부파일 :	<input type="file" name="file"> 
-								<input type="submit" value="전송하기">
-								<input type="button" id="cancel" value="취소">
+								<div class="input-group flex-nowrap">
+								<span class="input-group-text" id="addon-wrapping">학생이름</span>
+								<input type="text" class="form-control" value="<%=name.getName()%>" name="studentName" readonly="readonly">
+								</div><br>
+								<div class="input-group flex-nowrap">
+								<span class="input-group-text" id="addon-wrapping">과제명</span>
+								<input type="text" class="form-control" value="<%=tasktitle%>" name="taskTitle" readonly="readonly"><br>
+								</div><br>
+								<div class="input-group flex-nowrap">
+								<span class="input-group-text" id="addon-wrapping">제목</span>
+								<input type="text" class="form-control" name="title"><br>
+								</div><br>
+								<div class="form-floating">
+								<textarea class="form-control" style="height: 250px" name="content"></textarea><br> <!-- 본문 -->
+								</div>
+								<div class="input-group mb-3">
+									
+								<input type="file" name="file" class="form-control">
+								</div> 
+								<input type="submit" class="btn btn-primary" value="전송하기">
+								<input type="button" class="btn btn-primary" id="cancel" value="취소">
 							</form>
                     	</div>
-                    </div>
+              
+                
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
