@@ -10,8 +10,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import notice.NoticeDTO;
-
 public class ScheduleDAO {
 	//DB작업에 쓰일 객체들을 저장할 변수들
 		private DataSource ds;	//커넥션풀 DataSource 저장할 변수
@@ -53,7 +51,7 @@ public class ScheduleDAO {
 			
 			try {
 				con = getConnection();
-				String sql = "select * from bschedule order by no desc limit 5";
+				String sql = "select * from bschedule order by no asc limit 5";
 				pstmt = con.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 				
@@ -256,7 +254,7 @@ public class ScheduleDAO {
 				if(month < 10) {
 					sql += "0";
 				}
-				sql += month + "%' order by no desc limit ?, ?";
+				sql += month + "%' order by no asc limit ?, ?";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, startRow);
