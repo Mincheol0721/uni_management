@@ -155,8 +155,9 @@
                   	          	<% }else{
          	           				System.out.println(loggedInProfessor + " : " + bean.getId());
          	           			%>	
-		       	           			<td>-</td>
+		       	           			<td>-</td> 
 							        <td>-</td>	
+							        <td>-</td>								        
 							    <% } %>
          	           				</tr>                 	           		
                   	           	<% } %>		

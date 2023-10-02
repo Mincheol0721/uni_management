@@ -44,7 +44,9 @@
 		   (request.getParameterValues("compyear") != null) ||	
 		   (request.getParameterValues("compsem") != null) ||		
 		   (request.getParameterValues("grade") != null) ||	
-		   (request.getParameterValues("ctime") != null) ||
+		   (request.getParameterValues("day") != null) ||
+		   (request.getParameterValues("starttime") != null) ||
+		   (request.getParameterValues("endtime") != null) ||		   
 		   (request.getParameterValues("professor") != null) ||
 		   (request.getParameterValues("id") != null)){
 			
@@ -63,8 +65,14 @@
 			String[] grade = request.getParameterValues("grade");
 			System.out.print("학점 : " + grade.length);
 			
-			String[] ctime = request.getParameterValues("ctime");
-			System.out.print("강의시간 : " + ctime.length);
+			String[] day = request.getParameterValues("day");
+			System.out.print("요일 : " + day.length);
+			
+			String[] starttime = request.getParameterValues("starttime");
+			System.out.print("시작 교시 : " + day.length);
+			
+			String[] endtime = request.getParameterValues("endtime");
+			System.out.print("끝 교시 : " + day.length);
 			
 			String[] professor = request.getParameterValues("professor");
  			System.out.print("담당교수명 : " + professor.length);
@@ -89,7 +97,9 @@
 		 				boardBean.setCompyear(Integer.valueOf(compyear[i]));
 		 				boardBean.setCompsem(Integer.valueOf(compsem[i]));
 		 				boardBean.setGrade(Integer.valueOf(grade[i]));
-		 				boardBean.setCtime(ctime[i]);
+		 				boardBean.setDay(day[i]);
+		 				boardBean.setStarttime(Integer.valueOf(starttime[i]));
+		 				boardBean.setEndtime(Integer.valueOf(endtime[i]));
 		 				boardBean.setProfessor(professor[i]);
 		 				boardBean.setId(id[i]);
 		 				
@@ -110,7 +120,9 @@
 	 				boardBean.setCompyear(Integer.valueOf(compyear[0]));
 	 				boardBean.setCompsem(Integer.valueOf(compsem[0]));
 	 				boardBean.setGrade(Integer.valueOf(grade[0]));
-	 				boardBean.setCtime(ctime[0]);
+	 				boardBean.setDay(day[0]);
+	 				boardBean.setStarttime(Integer.valueOf(starttime[0]));
+	 				boardBean.setEndtime(Integer.valueOf(endtime[0]));
 	 				boardBean.setProfessor(professor[0]);
 	 				boardBean.setId(id[0]);
 	 				
@@ -197,7 +209,35 @@
                    	           					<option value="3">3학점</option>                   	           					
                    	           				</select>
                    	           			</td>
-                   	           			<td width=5%><input type="text" name="ctime"/></td>                    	           			
+                   	           			<td width="10%">
+									        <select name="day">
+											    <option value="월요일">월요일</option>
+											    <option value="화요일">화요일</option>
+											    <option value="수요일">수요일</option>
+											    <option value="목요일">목요일</option>
+											    <option value="금요일">금요일</option>
+											</select>	
+											<select name="starttime">
+											    <option value="1">1</option>
+											    <option value="2">2</option>
+											    <option value="3">3</option>
+											    <option value="4">4</option>
+											    <option value="5">5</option>
+											    <option value="6">6</option>
+											    <option value="7">7</option>							   
+											</select>
+											<label>교시 -</label>								
+											<select name="endtime">
+											   	<option value="2">2</option>
+											    <option value="3">3</option>
+											    <option value="4">4</option>
+											    <option value="5">5</option>
+											    <option value="6">6</option>
+											    <option value="7">7</option>
+											    <option value="8">8</option>
+											</select>
+											<label>교시</label>	
+								        </td>                   	           			
                    	           			<td width=5% style="text-align:center;"><input type="text" name="professor" value="${professorName}" id="prof"/></td>
                    	           			<input type="hidden" name="id" value="${id}">
                    	           			<td width=5%><input type="button" value="-" class="btn2"></td>
@@ -226,6 +266,20 @@
         <div id="result1"></div>
         
         <script>
+        
+	     	// 시작 교시 셀렉트 박스 변경 이벤트 핸들러
+	        $(document).on("change", "select[name=starttime]", function () {
+	            var trElement = $(this).closest("tr");
+	            var selectedStarttime = parseInt($(this).val()); // 선택된 시작 교시를 정수로 변환
+	
+	            // 종료 교시 옵션을 초기화
+	            trElement.find("select[name=endtime]").empty();
+	
+	            // 종료 교시 옵션 업데이트: 선택된 시작 교시부터 8까지 옵션을 추가
+	            for (var i = selectedStarttime + 1; i <= 8; i++) {
+	                trElement.find("select[name=endtime]").append('<option value="' + i + '">' + i + '</option>');
+	            }
+	        });
 				
         		// '+' 버튼을 누를때마다 한 행씩 추가
 				$('#btn1').click(function(){
@@ -260,7 +314,35 @@
 	           					'<option value="3">3학점</option>'+                   	           					
 	           				'</select>'+
 	           			'</td>'+
-	           			'<td width=5%><input type="text" name="ctime"/></td> ' + 
+   	           			'<td width="10%">' +
+					        '<select name="day">' +
+							    '<option value="월요일">월요일</option>' +
+							    '<option value="화요일">화요일</option>' +
+							    '<option value="수요일">수요일</option>' +
+							    '<option value="목요일">목요일</option>' +
+							    '<option value="금요일">금요일</option>' +
+							'</select> ' +
+							'<select name="starttime">' +
+							    '<option value="1">1</option>' +
+							    '<option value="2">2</option>' +
+							    '<option value="3">3</option>' +
+							    '<option value="4">4</option>' +
+							    '<option value="5">5</option>' +
+							    '<option value="6">6</option>' +
+							    '<option value="7">7</option>' +							   
+							'</select> '	 +	
+							'<label>교시 - </label>'	 +	
+							' <select name="endtime">' +
+							   	'<option value="2">2</option>' +
+							    '<option value="3">3</option>' +
+							    '<option value="4">4</option>' +
+							    '<option value="5">5</option>' +
+							    '<option value="6">6</option>' +
+							    '<option value="7">7</option>' +
+							    '<option value="8">8</option>' +
+							'</select> ' +
+							'<label>교시</label>'	 +	
+			        	'</td>' + 
 	           			'<td width="5%" style="text-align:center;"><input type="text" name="professor" value="${professorName}" id="prof"/></td>'+
 	           			'<input type="hidden" name="id" value="${id}">' +
 	           			'<td width="5%"><input type="button" value="-" class="btn2"></td>'+
@@ -289,7 +371,9 @@
 		            var compyear = trElement.find("select[name=compyear]").val();
 		            var compsem = trElement.find("select[name=compsem]").val();
 		            var grade = trElement.find("select[name=grade]").val();
-		            var ctime = trElement.find("input[name=ctime]").val();
+		            var day = trElement.find("select[name=day]").val(); 
+		            var starttime = trElement.find("select[name=starttime]").val(); 
+		            var endtime = trElement.find("select[name=endtime]").val();		            
 		            var professor = trElement.find("input[name=professor]").val();	
 		            var id = "${id}";
 		        	var target = $(e.target);		        	
@@ -297,14 +381,24 @@
 		        	console.log("e.target.value: " + e.target.value);
 		        	
 		        	console.log("등록버튼을 클릭한 행의 과목 정보 : " + cname + ", " + compdiv + ", " + 
-		        			    compyear + ", " + compsem + ", " + grade + ", " + ctime + ", " + 
-		        			    professor + ", " + id);
+		        			    compyear + ", " + compsem + ", " + grade + ", " + day + ", " + 
+		        			    starttime + ", " + endtime + ", " + professor + ", " + id);
 		        	
 		        	$.ajax({
 		        		
 		        		url:'<%=request.getContextPath()%>/addCourse.do',
 		        		type: 'post',
-		        		data: {cname:cname, compdiv:compdiv, compyear:compyear, compsem:compsem, grade:grade, ctime:ctime, professor:professor, id:id},
+		        		data: {
+			        			cname:cname, 
+			        			compdiv:compdiv, 
+			        			compyear:compyear, 
+			        			compsem:compsem, grade:grade, 
+			        			day:day, 
+			        			starttime:starttime, 
+			        			endtime:endtime, 
+			        			professor:professor, 
+			        			id:id
+		        			},		        				
 		        		dataType:'text',
 		        		success: function(data){
 		        			
@@ -318,10 +412,8 @@
 		        		}	        		
 		        	});       	
 		        });
-		        
-	        
+		        	        
 		</script>
-
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
@@ -329,6 +421,6 @@
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        <script src="js/datatables-simple-demo.js"></script>                  
     </body>
 </html>

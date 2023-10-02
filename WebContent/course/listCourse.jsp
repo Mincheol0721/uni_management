@@ -80,7 +80,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
                	           			"<td width=5%>" + boardbean.compyear + "학년" + "</td>" + 
                	           			"<td width=5%>" + boardbean.compsem + "학기" +"</td>" + 
                	           			"<td width=5%>" + boardbean.grade + "학점" +"</td>" + 
-               	           			"<td width=5%>" + boardbean.ctime +"</td>" + 
+               	           			"<td width=10%>" + boardbean.day + " "+ boardbean.starttime + "교시 - " + boardbean.endtime + "교시</td>" +              	           			
                	           			"<td width=5%>" + boardbean.professor + "</td>"  + 
                	           			"<td width='5%'>" +
                                     (loggedInProfessor != null && "<%=dto.getName()%>" === boardbean.professor ?
@@ -203,7 +203,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
 	                   	           			<th width=5%>이수학년</th>
 	                   	           			<th width=5%>이수학기</th>
 	                   	           			<th width=5%>학점</th>
-	                   	           			<th width=5%>강의시간</th>
+	                   	           			<th width=10%>강의시간</th>
 	                   	           			<th width=5%>담당교수</th>   
 	                   	           			<th width=5%>수정</th> 
 	                   	           			<th width=5%>삭제</th>                	           			
@@ -226,7 +226,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
 							            <td><%= bean.getCompyear() %>학년</td>
 							            <td><%= bean.getCompsem() %>학기</td>
 							            <td><%= bean.getGrade() %>학점</td>
-							            <td><%= bean.getCtime() %></td>
+							            <td><%= bean.getDay() %> <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
 							            <td><%= bean.getProfessor() %></td>							            
 									<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
 							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
