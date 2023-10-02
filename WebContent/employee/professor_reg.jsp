@@ -61,17 +61,17 @@
 						</tr>
 						<tr>
 							<th>전화번호</th>
-							<td><input type="text" name="tel" id="tel" class="form-control"></td>
+							<td><input type="text" name="tel" id="tel" placeholder="010-0000-0000" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>주민등록번호</th>
-							<td><input type="text" name="ssn" id="ssn" class="form-control"></td>
+							<td><input type="text" name="ssn" id="ssn" placeholder="000000-0000000" class="form-control"></td>
 							
 						</tr>
 						<tr>
 							<th>이메일</th>
-							<td><input type="text" name="email" id="email" class="form-control"></td>
+							<td><input type="text" name="email" id="email" placeholder="test@example.com" class="form-control"></td>
 							
 						</tr>
 						<tr>
@@ -86,7 +86,7 @@
 						</tr>
 						<tr>
 							<th>비밀번호</th>
-							<td><input type="text" name="pwd" id="pwd" class="form-control"></td>
+							<td><input type="text" name="pwd" id="pwd" placeholder="8자~16자 사이로 입력해주세요" class="form-control"></td>
 							
 						</tr>
 						<%
@@ -150,7 +150,7 @@
         		
         		if(id.value ==""){
         			alert("아이디를 입력해주세요");
-        			
+        			id.focus();
         			return false;
         		}
         		
@@ -158,7 +158,7 @@
         		
         		if(name.value ==""){
         			alert("이름을 입력해주세요");
-        			
+        			name.focus();
         			return false;
         		}
         			
@@ -166,8 +166,16 @@
         		
         		if(tel.value ==""){
         			alert("전화번호를 입력해주세요");
-        			
+        			tel.focus();
         			return false;
+        		}
+        		
+        		var telCheck = /^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})+$/ // 정규 표현식 수정
+
+        		if (!telCheck.test(tel.value)) {
+        		  alert("전화번호의 형식에 맞게 입력해주세요 ex) 010-0000-0000");
+        		  tel.focus();
+        		  return false;
         		}
         		
         		
@@ -175,27 +183,52 @@
         		
         		if(ssn.value ==""){
         			alert("주민등록번호를 입력해주세요");
-        			
+        			ssn.focus();
         			return false;
+        		}
+        		
+        		var ssnCheck = /^[0-9]{6}-[1-4][0-9]{6}$/; // 정규 표현식 수정
+
+        		if (!ssnCheck.test(ssn.value)) {
+        			alert("주민등록번호의 형식에 맞게 입력해주세요 ex) 000000-0000000");
+        		  ssn.focus();
+        		  return false;
         		}
         		
 				var email = document.getElementById("email"); 
         		
         		if(email.value ==""){
         			alert("이메일을 입력해주세요");
-        			
+        			email.focus();
         			return false;
+        		}
+        		
+        		var emailCheck = /^[a-zA-Z0-9]+@[0-9a-zA-Z]+\\.[a-z]+$/ // 정규 표현식 수정
+
+        		if (!emailCheck.test(email.value)) {
+        			alert("이메일의 형식에 맞게 입력해주세요 ex) test@example.com");
+        			email.focus();
+        		  return false;
         		}
         		
 				var pwd = document.getElementById("pwd"); 
         		
         		if(pwd.value ==""){
         			alert("비밀번호를 입력해주세요");
-        			
+        			pwd.focus();
+        			return false;
+        		}
+        		
+        		var pwdCheck = /^.{8,16}$/;
+        		
+        		if(!pwdCheck.test(pwd.value)){
+        			alert("비밀번호는 8자~16자 사이로 입력해주세요");
+        			pwd.focus();
         			return false;
         		}
         		
         		return true;
+        		
         		
         		
         		
