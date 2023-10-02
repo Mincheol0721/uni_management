@@ -302,6 +302,9 @@
 					location.href();
 				}
         		
+        		if(searchText != null & searchText != ""){
+        			location.href = 'homeworkBoard.jsp?pageNum=1&searchText='+ searchText + '&searchField='+ searchField + '&cname=' + cname;
+        		}
         		
         		jQuery.ajaxSettings.traditional = true;
     			$.ajax({

@@ -273,6 +273,10 @@
 				}
 //         		alert(cname);
         		
+        		if(searchText != null & searchText != ""){
+        			location.href = 'homework.jsp?pageNum=1&searchText='+ searchText + '&searchField='+ searchField + '&cname=' + cname;
+        		}
+        		
         		jQuery.ajaxSettings.traditional = true;
     			$.ajax({
     				

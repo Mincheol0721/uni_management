@@ -215,26 +215,30 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			if(searchText != null & searchText != ""){
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>">[이전]</a><%
-                        			}else {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%	
-                        			}		
+                        			
+                        			 if(searchText != null & searchText != ""){
+                        				 %><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>">[이전]</a><%
+                        			 }else {
+                        				 %><a href="lectureNotice.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%
+                        			 }	
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
+                        			
                         			if(searchText != null & searchText != ""){
-                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="a">[<%=i%>]</a><%
-                        			}else {
-                        			%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%	
+                        				%><a href="lectureNotice.jsp?pageNum=<%=i%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="a">[<%=i%>]</a><%
+                        				}else {
+                        					%><a href="lectureNotice.jsp?pageNum=<%=i%>" id="a">[<%=i%>]</a><%		
+                        				}
                         			}	
-                        		}
+                        		
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
+                        			
                         			if(searchText != null & searchText != ""){
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="b">[다음]</a><%	
-                        			}else{
-                        			%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%	
+                        				%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="b">[다음]</a><%
+                        			}else {
+                        				%><a href="lectureNotice.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%	
                         			}
                         			
                         		}
@@ -269,11 +273,15 @@
         		
         		var searchField = $("select").find("option:selected").val();
         		var searchText = $("#searchText").val();
+        		//alert(searchText);
         		if (searchText == "") {
 					alert("검색어를 입력하지 않으셨습니다.");
 					location.href();
 				}
         		
+        		if(searchText != null & searchText != ""){
+        			location.href = 'lectureNotice.jsp?pageNum=1&searchText='+ searchText + '&searchField='+ searchField;
+        		}
         		
         		jQuery.ajaxSettings.traditional = true;
     			$.ajax({
@@ -288,6 +296,7 @@
     					$("#a").remove();
     					$("#b").remove();
    					$("#searchAddZone").html(data);
+   				
     				},
     				error : function(data){
     		           alert("망");
