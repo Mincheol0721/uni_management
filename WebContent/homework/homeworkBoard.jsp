@@ -16,6 +16,11 @@
 	String id = (String)session.getAttribute("id");
 
 	String cname = request.getParameter("cname");
+	
+	String searchText = request.getParameter("searchText");
+	
+	String searchField = request.getParameter("searchField");
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,10 +46,15 @@
     	
     	String studentName = name.getName();
     	
+    	//-----------------------------------------------------
+    	int count = 0;
     	//전체글 개수
-    	int count = homeBoardDAO.getBoardCount(cname);
-    	 //out.println(count);
-    	 
+    	if(searchText != null & searchText != ""){
+    		count = homeBoardDAO.getSearchCount(searchField, searchText,cname);
+    	}else {
+    		count = homeBoardDAO.getBoardCount(cname);
+       	 out.println(count);
+    	} 
     	 //하나의 화면 마다 보여줄 글개수 = 5
     	 int pageSize = 5;
     	 
@@ -61,18 +71,23 @@
     	 //------------------------------------------------
     	 
     	 /* 각페이지 마다 맨위에 첫번째로 보여질 시작 글번호 구하기*/
-    	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 15
+    	 //(현재 보여질 페이지번호 -1) * 한페이지당 보여줄 글개수 5
     	 int startRow = (currentPage-1)*pageSize;
     	 
     	 //게시판 글객체(HomeWorkDTO)를 저장하기 위한 용도
     	 List<HomeWorkBoardDTO> list = null;
-    	 List<HomeWorkDTO> list2 = null;
+    	
     	 
     	 //만약 게시판에 글이 있다면..
     	 if(count > 0) {
+    		 if(searchText != null & searchText != ""){
+    			 list = homeBoardDAO.searchBoard(searchField, searchText,cname,startRow,pageSize);
+    		 }else {
+    			 list = homeBoardDAO.getBoardList(startRow, pageSize, cname); 
+    		 }
     		 //글목록 가져오기
     		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
-    		 list = homeBoardDAO.getBoardList(startRow, pageSize, cname);
+    		
     		 
     		 
     	 }
@@ -126,6 +141,7 @@
 									<input type="text" name="cname" value="<%=cname%>" id="cname" hidden="">
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
 									<td><button type="button" class="btn btn-primary" id="searchBtn">검색</button></td>
+									<td><a type="button" class="btn btn-primary" href="homeworkBoard.jsp?&cname=<%=cname%>">목록으로</a></td>
 							</tr>
 						</table>
 						
@@ -226,15 +242,27 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>">[이전]</a><%
+                        			}else {
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%	
+                        			}		
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=i%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="a">[<%=i%>]</a><%
+                        			}else {
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%	
+                        			}
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="homeworkBoard.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="b">[다음]</a><%
+                        			}else {
+                        				%><a href="homeworkBoard.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%	
+                        			}
                         		}
                         	}
                         %>

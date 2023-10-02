@@ -53,10 +53,11 @@ public class CourseDAO {
 		}
 		//studyplannerdb데이터베이스의 cource게시판테이블에  저장된
 		//지정한 갯수 만큼 글목록을 조회 하여 반환 하는 메소드 
-		public List<CourseVO>  getBoardList(int startRow, int pageSize){
+		public List<CourseVO>  getBoardList(String id,int startRow, int pageSize){
 			//int startRow, int pageSize
 			List<CourseVO> boardList = new ArrayList<CourseVO>(); //배열
-			
+			System.out.println(startRow);
+			System.out.println(pageSize);
 			try {
 				//DB연결
 				con = getConnection();
@@ -64,12 +65,20 @@ public class CourseDAO {
 				//SELECT 구문 만들기
 				//참고. select 구문에 limit이라는 구문이 있습니다.
 				
-				String sql  = "select * from course limit ?,?";
+				String sql  = "select c.* from course c where c.ccode not in(\n" + 
+						"select chistory.ccode\n" + 
+						"					from chistory \n" + 
+						"					join course \n" + 
+						"					on course.ccode = chistory.ccode\n" + 
+						"					where chistory.id = ?  \n" + 
+						")\n" + 
+						"limit ?,?";
 				
 				pstmt = con.prepareStatement(sql);
 				
-				pstmt.setInt(1, startRow);
-				pstmt.setInt(2, pageSize);
+				pstmt.setString(1, id);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, pageSize);
 				
 				rs = pstmt.executeQuery();
 				
@@ -101,15 +110,23 @@ public class CourseDAO {
 			return boardList;//ReferenceNotice.jsp로 ArrayList배열 반환
 		}
 		
-		public int getBoardCount() {
+		public int getBoardCount(String id) {
 			int count = 0;
 		try {
 			//DB연결
 			con = getConnection();
 			
 			// sql문 작성 LectureBoard 테이블의 모든 글개수 가져오기
-			String sql = "select count(*) from course";
+			String sql = "select count(*) from course c where c.ccode not in( \n" + 
+					"						select chistory.ccode \n" + 
+					"											from chistory  \n" + 
+					"											join course  \n" + 
+					"											on course.ccode = chistory.ccode \n" + 
+					"											where chistory.id = ?  \n" + 
+					"						)";
 			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
 			
 			rs = pstmt.executeQuery();
 			

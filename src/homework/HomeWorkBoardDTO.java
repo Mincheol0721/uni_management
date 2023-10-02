@@ -19,7 +19,7 @@ public class HomeWorkBoardDTO {
 		super();
 	}
 
-	// 모든매개변수를 받을 생성자
+	
 	public HomeWorkBoardDTO(String cname, String tasktype, String tasktitle, String taskmethod, String period,
 			int numpeople) {
 		super();
@@ -29,6 +29,36 @@ public class HomeWorkBoardDTO {
 		this.taskmethod = taskmethod;
 		this.period = period;
 		this.numpeople = numpeople;
+	}
+	
+	
+	// 모든매개변수를 받을 생성자
+	public HomeWorkBoardDTO(String name, int num, String cname, String tasktype, String tasktitle, String taskmethod,
+			String period, String homeworkOk, int numpeople) {
+		super();
+		this.name = name;
+		this.num = num;
+		this.cname = cname;
+		this.tasktype = tasktype;
+		this.tasktitle = tasktitle;
+		this.taskmethod = taskmethod;
+		this.period = period;
+		this.homeworkOk = homeworkOk;
+		this.numpeople = numpeople;
+	}
+
+	
+	
+	public HomeWorkBoardDTO(int num, String cname, String tasktype, String tasktitle, String taskmethod,
+			String period) {
+		super();
+		
+		this.num = num;
+		this.cname = cname;
+		this.tasktype = tasktype;
+		this.tasktitle = tasktitle;
+		this.taskmethod = taskmethod;
+		this.period = period;
 	}
 
 	// getter & setter

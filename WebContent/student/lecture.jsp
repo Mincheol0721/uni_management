@@ -44,7 +44,7 @@
     			String id = (String)session.getAttribute("id");
 				
     			//전체글 개수
-    	    	int count = courseDAO.getBoardCount();
+    	    	int count = courseDAO.getBoardCount(id);
     	    	 //out.println(count);
     	    	 
     	    	 //하나의 화면 마다 보여줄 글개수 = 5
@@ -72,7 +72,7 @@
     	    	//만약 게시판에 글이 있다면..
     	    	 if(count > 0) {
     	    		// CourseDAO의 getBoardList메소드를 통해 테이블목록을 가져와서 list배열에 저장	
-        			 list =  courseDAO.getBoardList(startRow,pageSize); 
+        			 list =  courseDAO.getBoardList(id,startRow,pageSize); 
     	    	 }
     			
  // ---------------------------------------------------------------------------------------    			
@@ -117,6 +117,7 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
                    	           		<%out.print(id); %>
                    	           		<tr bgcolor="lightgrey" align="center">
+                   	           			<td width=5%>과목코드</td>
                    	           			<td width=5%>과목명</td>
                    	           			<td width=5%>전공</td>
                    	           			<td width=5%>학년</td>
@@ -133,7 +134,7 @@
 						%>           
 						        	           		
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
-                   	           			<td width="5%" name="Ccode" hidden="hidden"><%=course.getCcode()%></td>
+                   	           			<td width="5%" name="Ccode"><%=course.getCcode()%></td>
                    	        			<td width=5% name="Cname" id="Cname"><%=course.getCname()%></td> <!-- 과목명 -->
                    	           			<td width=5%><%=course.getCompdiv()%></td> <!-- 전필 전선 교필 교선 -->
                    	           			<td width=5%><%=course.getCompyear()%></td> <!-- 학년 -->
@@ -149,6 +150,7 @@
                    	        %> 
                    	        
 							</table>
+							<ul class="pagination">
 							<%
 							
                         	if(count>0) {
@@ -176,19 +178,19 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="lecture.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a><%
+                        			%><li class="page-item active"><a href="lecture.jsp?pageNum=<%=startPage-pageBlock%>">[이전]</a></li>&nbsp;&nbsp;&nbsp;<%
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="lecture.jsp?pageNum=<%=i%>" id="a" >[<%=i%>]</a><%
+                        			%><li class="page-item active"><a href="lecture.jsp?pageNum=<%=i%>" id="a" >[<%=i%>]</a></li>&nbsp;&nbsp;&nbsp;<%
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="lecture.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a><%
+                        			%><li class="page-item active"><a href="lecture.jsp?pageNum=<%=startPage+pageBlock%>" id="b">[다음]</a></li>&nbsp;&nbsp;&nbsp;<%
                         		}
                         	}
                         %>
-							
+						</ul>	
 						
 							
 							<table style="border-collapse: collapse; border-color: lightgrey;"> 
@@ -198,7 +200,7 @@
   										<input class="btn btn-primary me-md-3" type="button" id="selectBtn2" value="수강취소" name="btn2">
   									</div>	
                    	           		<tr bgcolor="lightgrey" align="center">
-                   	           			
+                   	           			<td width=5%>과목코드</td>
                    	           			<td width=5%>과목명</td>
                    	           			<td width=5%>전공</td>
                    	           			<td width=5%>학년</td>
@@ -212,7 +214,7 @@
                    	           			for(CourseVO cHistory : list2) {
                    	           	%>	
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="cHistory">
-                   	           			<td width="5%" name="getCcode" hidden="hidden"><%=cHistory.getCcode()%></td>
+                   	           			<td width="5%" name="Ccode2"><%=cHistory.getCcode()%></td>
                    	           			<td width=5% id="getCname"><%=cHistory.getCname()%></td> <!-- 과목명 -->
                    	           			<td width=5%><%=cHistory.getCompdiv()%></td> <!-- 전필 전선 교필 교선 -->
                    	           			<td width=5%><%=cHistory.getCompyear()%></td> <!-- 학년 -->
@@ -287,6 +289,7 @@
 				type : "post", //전송요청방식 GET 또는 POST중에 하나
 				data : {"Ccodes":Ccodes},
 				success : function(data){//lectureAdd.jsp서버페이지 요청에 성공하면 data매개변수로 요청한 메뉴목록을 받는다
+					alert("수강신청 되셨습니다.");
 					location.reload();
 				},
 				error : function(data){
@@ -306,7 +309,7 @@
 			checkedCheckboxes2.each(function() {
 			  var checkbox2 = $(this);
 			  var tr2 = checkbox2.closest("tr");
-			  var td2 = tr2.find("td[name='getCcode']");
+			  var td2 = tr2.find("td[name='Ccode2']");
 			  Ccode2 = td2.text();
 			  Ccodes2.push(Ccode2); //과목코드의 값을 Ccodes 배열에 집어 넣기
 			  // Ccode 값 처리

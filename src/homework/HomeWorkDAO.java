@@ -175,7 +175,7 @@ public void freeResource() {
 	
 	
 	//검색버튼을 눌렀을때 조회해올 메소드
-	public List<HomeWorkDTO> searchBoard(String searchField,String searchText, String cnam) {
+	public List<HomeWorkDTO> searchBoard(String searchField,String searchText, String cnam,int startRow, int pagesize) {
 		
 		List<HomeWorkDTO> boardlist = new ArrayList<HomeWorkDTO>();
 		
@@ -188,16 +188,18 @@ public void freeResource() {
 			String sql = "select * from homework where cname = ? && " + searchField.trim();
 				
 			
-				sql += " like '%" + searchText.trim() + "%';";
+				sql += " like '%" + searchText.trim() + "%' limit ?,? ";
 			
 				
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, cnam);
-
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, pagesize);	
  			rs =pstmt.executeQuery();
 			
 			while(rs.next()) {
+				int num = rs.getInt("num");
 				String studentName = rs.getString("studentName");
 				String cname = rs.getString("cname");
 				Timestamp date =  rs.getTimestamp("date");
@@ -207,7 +209,7 @@ public void freeResource() {
 				String fileName = rs.getString("fileName");
 				String fileRealName = rs.getString("fileRealName");
 				
-				HomeWorkDTO HomeVO = new HomeWorkDTO(studentName, cname, taskTitle, title, content,fileName, fileRealName,date);
+				HomeWorkDTO HomeVO = new HomeWorkDTO(num,studentName, cname, taskTitle, title, content,fileName, fileRealName,date);
 				boardlist.add(HomeVO);
 			}
 			
@@ -249,7 +251,7 @@ public void freeResource() {
 			}
 			return count;
 		}
-			
+		// 접속한 학생의 과제 제출여부를 판단하여 제출여부를 String으로 반환하는 메소드
 		public String getHomeWorkOK(String studentName, String taskTitle) {
 			String check = "미제출";
 			try {

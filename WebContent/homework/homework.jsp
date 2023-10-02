@@ -19,6 +19,10 @@
 
 	String cname = request.getParameter("cname");
 	
+	String searchText = request.getParameter("searchText");
+	
+	String searchField = request.getParameter("searchField");
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,12 +42,14 @@
             String contextPath = request.getContextPath();	
     		HomeWorkDAO homeWorkDAO = new HomeWorkDAO();
             	
-    			
-    				
+    			int count = 0;
+    			if(searchText != null & searchText != ""){	
             	//전체글 개수
-            	int count = homeWorkDAO.getBoardCount(cname);
+            		count = homeWorkDAO.getSearchCount(searchField, searchText,cname);
             	 //out.println(count);
-            	 
+    			}else {
+    				 count = homeWorkDAO.getBoardCount(cname);
+    			} 
             	 //하나의 화면 마다 보여줄 글개수 = 5
             	 int pageSize = 5;
             	 
@@ -68,11 +74,14 @@
             	 
             	 //만약 게시판에 글이 있다면..
             	 if(count > 0) {
+            		 if(searchText != null & searchText != ""){
             		 //글목록 가져오기
-            		 //getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
-            		 list = homeWorkDAO.getBoardList(startRow, pageSize,cname);
+            			list = homeWorkDAO.searchBoard(searchField, searchText,cname,startRow,pageSize);
             		
-            		 
+            		 }else {
+            			//getBoardList(각페이지 마다 맨위에 첫번째로 보여질 시작 글번호, 한페이지당 보여줄 글개수)
+                		 list = homeWorkDAO.getBoardList(startRow, pageSize,cname); 
+            		 }
             		 
             	 }
     %>
@@ -125,6 +134,7 @@
 									<input type="text" name="cname" value="<%=cname%>" id="cname" hidden="">
 									<input type="text" class="form-control" placeholder="검색어 입력" name="searchText" maxlength="100" id="searchText"></td>
 									<td><button type="button" class="btn btn-primary" id="searchBtn">검색</button></td>
+									<td><a type="button" class="btn btn-primary" href="homework.jsp?&cname=<%=cname%>">목록으로</a></td>
 							</tr>
 						</table>
 						
@@ -156,7 +166,7 @@
                    	           			
                    	           			<td width="5%"><%=home.getStudentName()%></td>
                    	           			<td width=5%><%=home.getTaskTitle()%></td>
-                   	           			<td width=5%><a href="homeWorkModify.jsp?num=<%=home.getNum()%>&cname=<%=cname%>" style="text-decoration: none"><%=home.getTaskTitle()%></a></td>
+                   	           			<td width=5%><a href="homeWorkModify.jsp?num=<%=home.getNum()%>&cname=<%=cname%>" style="text-decoration: none"><%=home.getTitle()%></a></td>
                    	           			<td width=5%><%=home.getDate()%></td>
                    	           			<td width=5% ><a href="<%=contextPath%>/homework/fileDownAction.jsp?directory=upload&fileRealName=<%=home.getFileRealName()%>"   class="btn btn-primary me-md-2" id="down">다운로드</a></td>
                    	           		</tr>
@@ -173,7 +183,8 @@
                    	         	%>
                    	           </table>
                             </p>
-                        </div>                                   
+                        </div>
+                        <div>                                   
                         <%
                         	if(count>0) {
                         		//전체 페이지수 구하기 글 20개 한페이지 보여줄 글수 10개 => 2페이지
@@ -200,18 +211,31 @@
                         		}
                         		//[이전] 시작페이지 번호가 한화면에 보여줄 페이지수 보다 클때...
                         		if(startPage > pageBlock) {
-                        			%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>">[이전]</a><%
+                        			}else {
+                        				%><a href="homework.jsp?pageNum=<%=startPage-pageBlock%>&cname=<%=cname%>">[이전]</a><%
+                        			}
                         		}
                         		//[1][2][3][4]...[10]
                         		for(int i=startPage; i<=endPage; i++) {
-                        			%><a href="homework.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homework.jsp?pageNum=<%=i%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="a">[<%=i%>]</a><%
+                        			}else {
+                        				%><a href="homework.jsp?pageNum=<%=i%>&cname=<%=cname%>" id="a">[<%=i%>]</a><%
+                        			}
                         		}
                         		//[다음] 끝페이지 번호가 전체페이지수 보다 작을때..
                         		if(endPage < pageCount) {
-                        			%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%
+                        			if(searchText != null & searchText != ""){
+                        				%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>&searchText=<%=searchText%>&searchField=<%=searchField%>" id="b">[다음]</a><%
+                        			}else {
+                        				%><a href="homework.jsp?pageNum=<%=startPage+pageBlock%>&cname=<%=cname%>" id="b">[다음]</a><%
+                        			}
                         		}
                         	}
                         %>
+                       </div>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
