@@ -408,9 +408,6 @@ List<String> scheduleDate = dao.getSdate();
                    	           			
                    	           				dday = (int) ( (dbDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) );
                    	           				
-                   	           				System.out.println("dbDate: " + dbDate);
-                   	           				System.out.println("today: " + today);
-                   	           				System.out.println("dday: " + dday);
                    	           			%>
                    	           					<td>D-<%=dday %></td>
 		                   	           		</tr>
