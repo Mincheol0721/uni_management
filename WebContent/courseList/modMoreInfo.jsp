@@ -187,6 +187,20 @@
         		
         		switch (startTime) {
         		
+        		
+					case '1':
+	 					$("select[name=endtime]").empty();
+	 					str = '<option value="2" <%if(bean.getEndtime() == 2){ %>selected<% }%>>2</option>' +
+							  '<option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>' +
+					    	  '<option value="4" <%if(bean.getEndtime() == 4){ %>selected<% }%>>4</option>' +
+					    	  '<option value="5" <%if(bean.getEndtime() == 5){ %>selected<% }%>>5</option>' +
+					    	  '<option value="6" <%if(bean.getEndtime() == 6){ %>selected<% }%>>6</option>' +
+					    	  '<option value="7" <%if(bean.getEndtime() == 7){ %>selected<% }%>>7</option>' +
+					    	  '<option value="8" <%if(bean.getEndtime() == 8){ %>selected<% }%>>8</option>';
+	 				    endTime.html(str);
+						
+					    break;
+					    
 					case '2':
 	 					$("select[name=endtime]").empty();
 						str = '<option value="3" <%if(bean.getEndtime() == 3){ %>selected<% }%>>3</option>' +

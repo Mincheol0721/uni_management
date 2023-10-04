@@ -92,4 +92,30 @@ public class CplanDAO {
 			}
 			return cPlanDTO;
 		}
+		
+	public int getCount(String cname) {
+		int count = 0;
+		try {
+			//db연결
+			con = getConnection();
+			//sql문 작성
+			String sql = "select count(*) from cplan where cname =?";
+			
+			pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, cname);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+				
+			
+			
+		} catch (Exception e) {
+			System.out.println("cPlanDAO클래스의 getCount 메소드에서 sql문 오류 발생" + e);
+		}finally {
+			freeResource();
+		}
+		return count;
+	}
 }

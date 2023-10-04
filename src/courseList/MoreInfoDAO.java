@@ -290,8 +290,8 @@ public class MoreInfoDAO {
 			con = ds.getConnection();
 			
 			//insert sql문 만들기
-			String sql = "insert into moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework)"
-					   + "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "insert into moreInfo (cname, week, session, topic, way, day, starttime, endtime, homework, id)"
+					   + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -304,7 +304,8 @@ public class MoreInfoDAO {
 			pstmt.setString(6, moreInfoBean.getDay()); 			
 			pstmt.setInt(7, moreInfoBean.getStarttime());  
 			pstmt.setInt(8, moreInfoBean.getEndtime());  			
-			pstmt.setString(9, moreInfoBean.getHomework()); 	
+			pstmt.setString(9, moreInfoBean.getHomework()); 
+			pstmt.setString(10, moreInfoBean.getId());
 
 			//insert문 실행
 			return pstmt.executeUpdate();			

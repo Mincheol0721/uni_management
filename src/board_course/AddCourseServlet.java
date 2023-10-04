@@ -26,7 +26,9 @@ public class AddCourseServlet extends HttpServlet{
 		String compyear = request.getParameter("compyear");	
 		String compsem = request.getParameter("compsem");
 		String grade = request.getParameter("grade");
-		String ctime = request.getParameter("ctime");
+		String day = request.getParameter("day");
+		String starttime = request.getParameter("starttime");
+		String endtime = request.getParameter("endtime");						
 		String professor = request.getParameter("professor");
 		String id = request.getParameter("id");
 		
@@ -37,7 +39,9 @@ public class AddCourseServlet extends HttpServlet{
 		bean.setCompsem(Integer.parseInt(compsem));
 		bean.setCompyear(Integer.parseInt(compyear));
 		bean.setGrade(Integer.parseInt(grade));
-		bean.setCtime(ctime);
+		bean.setDay(day);
+		bean.setStarttime(Integer.parseInt(starttime));
+		bean.setEndtime(Integer.parseInt(endtime));
 		bean.setProfessor(professor);
 		bean.setId(id);
 		

@@ -176,7 +176,7 @@
                    	          	}else { //게시판이 글개수가 존재하지 않으면
                    	          %> 		
                    	           	<tr>
-                   	           		<td colspan="7" align="center">게시판 글 없음</td>
+                   	           		<td colspan="5" align="center">게시판 글 없음</td>
                    	           	</tr>
                    	           	<%
                    	          	} // if ~ else의 끝

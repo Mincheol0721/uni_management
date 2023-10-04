@@ -7,7 +7,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> --%>
-<% request.setCharacterEncoding("UTF-8"); %>
+<% 
+//한글처리
+request.setCharacterEncoding("UTF-8"); 
+
+//path 얻기
+String path = request.getContextPath();
+
+// out.print(path);
+
+%>
 
 <%-- <jsp:useBean id="course" class="course.CourseVO"></jsp:useBean> --%>
 <%-- <jsp:getProperty property="" name="course"/> --%>
@@ -32,7 +41,20 @@
 		
     </head>
     <body class="sb-nav-fixed">
-    
+    <!-- 일정기간이 지나면 수강신청을 할수없도록 차단 -->
+    <script>
+    // 만료 날짜
+    const expirationDate = new Date("2023-10-10");
+
+    // 현재 날짜
+    const now = new Date();
+
+    // 만료 날짜가 지난 경우 접근을 막습니다.
+    if (now > expirationDate) {
+    	alert("수강신청 기간이 아닙니다.");
+      location.href = '<%=path%>/index.jsp';
+    }
+  </script>
     <%			
     			//개설된 강의 목록
     			// CourseDAO 객체 생성
@@ -115,7 +137,7 @@
   							</div>
   									
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec"> 
-                   	           		<%out.print(id); %>
+<%--                    	           		<%out.print(path); %> --%>
                    	           		<tr bgcolor="lightgrey" align="center">
                    	           			<td width=5%>과목코드</td>
                    	           			<td width=5%>과목명</td>
@@ -124,13 +146,15 @@
                    	           			<td width=5%>학기</td>
                    	           			<td width=5%>획득학점</td>
                    	           			<td width=5%>담당교수</td>
-                   	           			<td width=5%>강의 시간</td>
+                   	           			<td width=5%>강의 시작 교시</td>
+                   	           			<td width=5%>강의 끝 교시</td>
                    	           			<td width=5%>수강신청</td>
                    	           		</tr>
                    	           		<!-- Db에서 값을 가져올곳 -->
 						<%
 									
-									for(CourseVO course : list){
+								if(count > 0) {	
+								for(CourseVO course : list){
 						%>           
 						        	           		
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
@@ -141,12 +165,13 @@
                    	           			<td width=5%><%=course.getCompsem()%></td> <!-- 학기 -->
                    	           			<td width=5%><%=course.getGrade()%></td> <!-- 획득학점 -->
                    	           			<td width=5%><%=course.getProfessor()%></td> <!-- 담당교수 -->
-                   	           			<td width=5%><%=course.getTime()%></td> <!-- 담당교수 -->
+                   	           			<td width=5%><%=course.getStartTime()%></td> <!-- 강의 시작 교시 -->
+                   	           			<td width=5%><%=course.getEndTime()%></td>
                    	           		<td width="5%" id="menu2"><input type="checkbox" name="user_CheckBox1" class="user_CheckBox1" value="1"></td>
 									</tr>
                    	       <%
                    	        }
-							
+								}
                    	        %> 
                    	        
 							</table>

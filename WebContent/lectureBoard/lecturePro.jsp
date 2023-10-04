@@ -2,7 +2,9 @@
 <%@page import="lectureBoard.LectureDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ 
 <%
+
 //한글처리
 request.setCharacterEncoding("UTF-8"); 
 %>
@@ -21,7 +23,10 @@ request.setCharacterEncoding("UTF-8");
 	String lectureDivide = request.getParameter("lectureDivide");
 	String mainText = request.getParameter("mainText");
 	String rate = request.getParameter("rate");
-		
+	
+	String path = request.getContextPath();
+	
+	out.print(path);
 	//모든 입력공간에 입력안된게 하나라도 있으면?
 	if(name == null || lectureYear == null || semesterDivide == null || lectureDivide == null || title == null 
 	|| title.equals("") || mainText.equals("")) {
@@ -40,8 +45,12 @@ request.setCharacterEncoding("UTF-8");
 		lectureDAO.insertBoard(lecVO);
 %>
 		<script type="text/javascript">
+			alert("등록 되었습니다.");
+			
 			window.close();
+			opener.document.location.reload();
 		</script>
+
 <%		
 	}
 	

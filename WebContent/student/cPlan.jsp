@@ -54,7 +54,7 @@
 		
 		CplanDTO plan = cPlDAO.selectBoard(cnam);
 		
-		
+		int count = cPlDAO.getCount(cnam);
 	%>
 
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -107,7 +107,8 @@
 
 					
 						<%
-							out.print(cnam);
+// 							out.print(cnam);
+							if(count > 0) {
 						%>
 						
 						<!-- 테이블 -->
@@ -159,6 +160,15 @@
 								</iframe>
 							</td>
 						</tr>
+						<%
+							}else{
+						%>
+							<tr>
+                   	           	<td colspan="5" align="center">강의계획서 작성 전</td>
+                   	        </tr>
+						<%
+						} 
+						%>
 						
 						</table>
 						</div>
