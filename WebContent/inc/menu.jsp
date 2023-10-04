@@ -49,6 +49,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
+		<link rel="Website icon" type="png" href="<%=request.getContextPath()%>/assets/img/university_icon.png">
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	</head>
 	<body>
