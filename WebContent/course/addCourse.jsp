@@ -109,7 +109,7 @@
 		 		   	 }//for문 end
 					System.out.print("사이즈 : " + arrayList.size());
 		 			//다중 과목 추가 메소드 호출
-				    dao.insertMultipleSB(arrayList);
+				    dao.insertMultipleSB(arrayList);				    	
 		 		   	 
 				}else if(professor.length == 1){
 			
@@ -366,37 +366,37 @@
 
 		        	//'등록' 버튼 클릭 시 해당 tr의 정보만 DB에 전송!
 		            var trElement = $(e.target).closest("tr");
-		            var cname = trElement.find("input[name=cname]").val();
-		            var compdiv = trElement.find("select[name=compdiv]").val();
-		            var compyear = trElement.find("select[name=compyear]").val();
-		            var compsem = trElement.find("select[name=compsem]").val();
-		            var grade = trElement.find("select[name=grade]").val();
-		            var day = trElement.find("select[name=day]").val(); 
-		            var starttime = trElement.find("select[name=starttime]").val(); 
-		            var endtime = trElement.find("select[name=endtime]").val();		            
-		            var professor = trElement.find("input[name=professor]").val();	
+		            var cname = trElement.find("input[name=cname]");
+		            var compdiv = trElement.find("select[name=compdiv]");
+		            var compyear = trElement.find("select[name=compyear]");
+		            var compsem = trElement.find("select[name=compsem]");
+		            var grade = trElement.find("select[name=grade]");
+		            var day = trElement.find("select[name=day]"); 
+		            var starttime = trElement.find("select[name=starttime]"); 
+		            var endtime = trElement.find("select[name=endtime]");		            
+		            var professor = trElement.find("input[name=professor]");	
 		            var id = "${id}";
 		        	var target = $(e.target);		        	
 		        	
 		        	console.log("e.target.value: " + e.target.value);
 		        	
-		        	console.log("등록버튼을 클릭한 행의 과목 정보 : " + cname + ", " + compdiv + ", " + 
-		        			    compyear + ", " + compsem + ", " + grade + ", " + day + ", " + 
-		        			    starttime + ", " + endtime + ", " + professor + ", " + id);
+		        	console.log("등록버튼을 클릭한 행의 과목 정보 : " + cname.val() + ", " + compdiv.val() + ", " + 
+		        			    compyear.val() + ", " + compsem.val() + ", " + grade.val() + ", " + day.val() + ", " + 
+		        			    starttime.val() + ", " + endtime.val() + ", " + professor.val() + ", " + id);
 		        	
 		        	$.ajax({
 		        		
 		        		url:'<%=request.getContextPath()%>/addCourse.do',
 		        		type: 'post',
 		        		data: {
-			        			cname:cname, 
-			        			compdiv:compdiv, 
-			        			compyear:compyear, 
-			        			compsem:compsem, grade:grade, 
-			        			day:day, 
-			        			starttime:starttime, 
-			        			endtime:endtime, 
-			        			professor:professor, 
+			        			cname:cname.val(), 
+			        			compdiv:compdiv.val(), 
+			        			compyear:compyear.val(), 
+			        			compsem:compsem.val(), grade:grade.val(), 
+			        			day:day.val(), 
+			        			starttime:starttime.val(), 
+			        			endtime:endtime.val(), 
+			        			professor:professor.val(), 
 			        			id:id
 		        			},		        				
 		        		dataType:'text',
@@ -406,6 +406,16 @@
 								alert("과목이 성공적으로 추가됐습니다.");								
 		        				$(target).val('등록완료');
 		        				$(target).attr('disabled', 'disabled');
+		        				cname.attr('disabled', 'disabled');
+		        				compdiv.attr('disabled', 'disabled');
+		        				compyear.attr('disabled', 'disabled');
+		        				compsem.attr('disabled', 'disabled');
+		        				grade.attr('disabled', 'disabled');
+		        				day.attr('disabled', 'disabled');
+		        				starttime.attr('disabled', 'disabled');
+		        				endtime.attr('disabled', 'disabled');
+		        				professor.attr('disabled', 'disabled');
+		        				id.attr('disabled', 'disabled');
 							}else {
 								alert("과목 추가 실패했습니다.");								
 							}	        			

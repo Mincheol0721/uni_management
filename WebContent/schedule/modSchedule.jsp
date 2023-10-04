@@ -194,13 +194,6 @@
 													<input type="date" class="notice" name="endDate" value="<%=endDate %>">
 												</div>
 												<br><br><hr>
-												<div class="col-md-2">
-													<span class="notice_title">내용</span>
-												</div>
-												<div class="col-md-10">
-													<textarea class="notice" name="content" rows="20"><%=content %></textarea>
-												</div>
-												<br><br><hr>
 											</div>
 										</div>
 	                   	           		<input type="submit" value="수정완료"  class="writeBtn"> &nbsp;&nbsp;

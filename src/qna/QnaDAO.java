@@ -381,6 +381,9 @@ public class QnaDAO {
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			System.out.println("QnaDAO의 replyUppos메소드 내부에서 쿼리문 실행오류: " + e.toString());
+		} finally {
+			//자원해제
+			freeResource();
 		}
 		
 		

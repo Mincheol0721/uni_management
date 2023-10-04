@@ -26,9 +26,14 @@
  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
  	Date today = new Date();
  	String minDate = sdf.format(today);
+ 	String clickDate = "";
  	
- 	String clickDate = year + "-0" + month + "-" + date;
-//  	System.out.println("clickDate: " + clickDate);
+ 	if(month < 10) {
+	 	clickDate = year + "-0" + month + "-" + date;
+ 	} else {
+ 		clickDate = year + "-" + month + "-" + date;
+ 	}
+ 	System.out.println("clickDate: " + clickDate);
  	
 	
 // 	System.out.println("notice.jsp id: " + id);
@@ -149,7 +154,7 @@
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">
-													<span class="notice_title">제목</span>
+													<span class="notice_title">일정명</span>
 												</div>
 												<div class="col-md-10">
 													<input type="text" class="notice" name="title">
@@ -166,13 +171,6 @@
 												</div>
 												<div class="col-md-4">
 													<input type="date" class="notice" name="endDate">
-												</div>
-												<br><br><hr>
-												<div class="col-md-2">
-													<span class="notice_title">내용</span>
-												</div>
-												<div class="col-md-10">
-													<textarea class="notice" name="content" rows="20"></textarea>
 												</div>
 												<br><br><hr>
 											</div>

@@ -310,10 +310,11 @@ List<String> scheduleDate = dao.getSdate();
 							    		       	sYear = Integer.parseInt( s.substring(0, 4) );
 							    		       	sMonth = Integer.parseInt( s.substring(5, 7) );
 							    		       	sDate = Integer.parseInt( s.substring(8, 10));
-							    		       	eYear = Integer.parseInt( s.substring(13, 17) );
-							    		       	eMonth = Integer.parseInt( s.substring(18, 20) );
-							    		       	eDate = Integer.parseInt( s.substring(21, 23) );
-							    		       	
+							    		       	if(s.length() > 11){
+								    		       	eYear = Integer.parseInt( s.substring(13, 17) );
+								    		       	eMonth = Integer.parseInt( s.substring(18, 20) );
+								    		       	eDate = Integer.parseInt( s.substring(21, 23) );
+							    		       	}
 							    		       	dto = dao.getTitle(s);
 							    		       	chkId = dao.idCheck(dto.getNo());
 // 							    		       	System.out.println("title: " + dto.getTitle());
@@ -348,7 +349,7 @@ List<String> scheduleDate = dao.getSdate();
 										         newLine=0;
 										       }
 										}
-										//마지막 공란 LOOP
+										//마지막 공란 LOOP 
 										while(newLine > 0 && newLine < 7)
 										{
 										  out.println("<TD>&nbsp;</TD>");
@@ -378,6 +379,7 @@ List<String> scheduleDate = dao.getSdate();
 		                   	           			<td width=10%>분류</td>
 		                   	           			<td width=15%>날짜</td>
 		                   	           			<td width=20%>일정</td>
+		                   	           			<td width=10%>D-DAY</td>
 		                   	           		</tr>
 	                                    </thead>
 	                                    <tbody id="scheduleList">

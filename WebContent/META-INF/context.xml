@@ -9,7 +9,7 @@
 		password="1234"
 		initialSize="0"
 		minIdle="5"
-		maxIdle="20"
+		maxIdle="-1"
 		maxWaitMillis="5000"
 	/>
 </Context>
