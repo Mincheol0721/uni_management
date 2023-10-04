@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@page import="schedule.ScheduleDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="schedule.ScheduleDTO"%>
@@ -68,6 +69,7 @@ int newLine = 0;
 Calendar todayCal = Calendar.getInstance();
 
 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 
 int intToday = Integer.parseInt(sdf.format(todayCal.getTime()));
 
@@ -385,6 +387,11 @@ List<String> scheduleDate = dao.getSdate();
 	                                    <tbody id="scheduleList">
 	                                    <%
 	                                    List<ScheduleDTO> list = dao.getScheduleList(startRow, pageSize, year, (month+1));
+	                                    
+	                                    Date dbDate = null;
+	                                    Date today = sdf2.parse(sdf2.format(todayCal.getTime()));
+	                                    int dday = 0;
+	                                    
 	                                    for(int i=0; i<list.size(); i++) {
 	                                    	dto = list.get(i);
 	                                    %>
@@ -392,6 +399,20 @@ List<String> scheduleDate = dao.getSdate();
 		                   	           			<td><%=dto.getSclass() %></td>
 		                   	           			<td><%=dto.getSdate() %></td>
 		                   	           			<td><%=dto.getTitle() %></td>
+                   	           			<%
+		                   	           		if(dto.getSdate().length() > 11) {
+		                   	           			dbDate = sdf2.parse( dto.getSdate().substring(13) );
+		                   	           		} else {
+		                   	           			dbDate = sdf2.parse( dto.getSdate().substring(0, 10) );
+		                   	           		}
+                   	           			
+                   	           				dday = (int) ( (dbDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) );
+                   	           				
+                   	           				System.out.println("dbDate: " + dbDate);
+                   	           				System.out.println("today: " + today);
+                   	           				System.out.println("dday: " + dday);
+                   	           			%>
+                   	           					<td>D-<%=dday %></td>
 		                   	           		</tr>
 	                                    <%	
 	                                    }
