@@ -85,10 +85,15 @@
 							</div>
 							 
 							<div class="form-floating">
-								  <textarea class="form-control" id="content" style="height: 100px" name="content" disabled="disabled"><%=homeVO.getContent()%></textarea>
+								  <textarea class="form-control" id="content" style="height: 300px" name="content" disabled="disabled"><%=homeVO.getContent()%></textarea>
 								  <label for="floatingTextarea2"></label>
 							</div>
-							<span style="display: none" id="fileDisplay"> 첨부파일 :<input type="file" name="file"></span>
+							<div class="input-group mb-3">
+							<!-- 파일첨부 -->
+							<span style="display: none" id="fileDisplay">
+								<input type="file" name="file" class="form-control">
+							</span>
+							</div>
 							<div class="col text-center" id="reflectedList" style="display: none">
 								<input type="submit" class="btn btn-primary btn-sm" value="수정반영하기" id="reflected">
 								<input type="button" class="btn btn-primary btn-sm" value="취소" id="cancel">
