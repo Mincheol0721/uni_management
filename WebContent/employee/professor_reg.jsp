@@ -203,7 +203,7 @@
         			return false;
         		}
         		
-        		var emailCheck = /^[a-zA-Z0-9]+@[0-9a-zA-Z]+\\.[a-z]+$/ // 정규 표현식 수정
+        		var emailCheck = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
         		if (!emailCheck.test(email.value)) {
         			alert("이메일의 형식에 맞게 입력해주세요 ex) test@example.com");
