@@ -37,12 +37,14 @@ public class CourseSearchServlet extends HttpServlet {
 		//요청한 값 얻기
 		String search = request.getParameter("search"); //선택한 검색 기준값
 		String searchText = request.getParameter("searchText"); //입력한 검색어
+		int startRow = Integer.parseInt(request.getParameter("startRow"));
+		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 		
 		System.out.println("search : " + search);
 		System.out.println("searchText : " + searchText);
 		
 		//CourseDAO 객체를 생성해서 검색하는 메소드 호출
-		List<CourseBean> list = new CourseDAO().getList(search, searchText);
+		List<CourseBean> list = new CourseDAO().getList(search, searchText, startRow, pageSize);
 		
 		System.out.println(list.size());
 		

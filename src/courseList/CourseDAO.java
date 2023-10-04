@@ -55,10 +55,36 @@ public class CourseDAO {
 			}
 			
 	}//자원해제 end
-	
+
+	//테이블에 저장된 레코드의 개수를 반환하는 메소드
+	public int getBoardCount() {
+		int count = 0;
+		String sql = "";
+		try {
+			con = ds.getConnection();
+			
+			sql = "select count(*) from course";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("CourseDAO내부의 getBoardCount메소드에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return count;
+	}
+		
 	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
 	//검색어가 없으면? 모든 과목 정보 검색 후 리스트에 뿌려줌
-	public ArrayList<CourseBean> getList(String search, String searchText) {
+	public ArrayList<CourseBean> getList(String search, String searchText, int startrow, int pagesize) {
 		
 		//등록된 과목들을 담을 객체
 		ArrayList<CourseBean> list = new ArrayList<CourseBean>();
@@ -76,7 +102,11 @@ public class CourseDAO {
 				sql = "select * from course where " + search + " like '%"+searchText+"%'";
 			}
 			
+			sql += " limit ?, ?";
+			
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startrow);
+			pstmt.setInt(2, pagesize);
 			
 			rs = pstmt.executeQuery();
 			
@@ -111,7 +141,7 @@ public class CourseDAO {
 	
 	
 	//DB로부터 모든 강의들의 정보를 가져오는 메소드(조회)
-	public ArrayList<CourseBean> getList() {
+	public ArrayList<CourseBean> getList(int startrow, int pagesize) {
 		
 		//등록된 과목들을 담을 객체
 		ArrayList<CourseBean> list = new ArrayList<CourseBean>();
@@ -125,10 +155,12 @@ public class CourseDAO {
 			con = ds.getConnection();
 			
 			//sql문
-			sql = "select * from course";
+			sql = "select * from course limit ?, ?";
 			
 			//DB에 쿼리문 문자열 전송
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startrow);
+			pstmt.setInt(2, pagesize);
 	        
 			//쿼리 실행
 			rs = pstmt.executeQuery();
