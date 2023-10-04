@@ -109,7 +109,7 @@
 		 		   	 }//for문 end
 					System.out.print("사이즈 : " + arrayList.size());
 		 			//다중 과목 추가 메소드 호출
-				    dao.insertMultipleSB(arrayList);
+				    dao.insertMultipleSB(arrayList);				    	
 		 		   	 
 				}else if(professor.length == 1){
 			

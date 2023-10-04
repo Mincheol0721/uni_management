@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="member.ProfessorDAO"%>
 <%@page import="member.MemberDTO"%>
 <%@page import="java.util.ArrayList"%>
@@ -9,12 +10,49 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <% 
-request.setCharacterEncoding("UTF-8"); 
-String id = (String)session.getAttribute("id");
+//한글처리
+	request.setCharacterEncoding("UTF-8"); 
 
-MemberDTO dto = new ProfessorDAO().selectMember(id);
+	//id, 직업 값 얻어오기
+	String id = (String)session.getAttribute("id");
+	String job = (String)session.getAttribute("job");
+	
+//	System.out.println("listCourse.jsp id: " + id);
+//	System.out.println("listCourse.jsp job: " + job);
+	 
+	BoardDAO dao = new BoardDAO();
+	BoardBean bean = new BoardBean();
+	List<BoardBean> list = null; 
+	
+	//전체 글 개수
+	int count = dao.getBoardCount(); 
+//	System.out.println("count: " + count);
+	//하나의 화면에 띄워줄 글 개수 10
+	int pageSize = 10;
+	
+	//현재 보여질 페이지번호 가져오기
+	String pageNum = request.getParameter("pageNum");
+	
+	//현재 보여질 페이지 번호가 없으면 1페이지 처리
+	if(pageNum == null) {
+		pageNum = "1";
+	}
+//	System.out.println("pageNum: " + pageNum);
+	
+	//현재 보여질 페이지 번호 "1"을 기본정수 1로 변환
+	int currentPage = Integer.parseInt(pageNum);
+//	System.out.println("currentPage: " + currentPage);
+	
+	//각 페이지마다 맨 위에 보여질 시작 글번호 구하기
+	//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
+	int startRow = (currentPage - 1) * pageSize;
+//	System.out.println("startRow: " + startRow);
+	
+	
+	//날짜 포맷
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
-
+	MemberDTO dto = new ProfessorDAO().selectMember(id);
 
 %>
 
@@ -38,7 +76,10 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
   	<script> 
  				
  		$(function(){
- 			 var loggedInProfessor = '<%= session.getAttribute("id") %>';
+ 			var loggedInProfessor = '<%= session.getAttribute("id") %>';
+ 			var startRow = '<%=startRow%>';
+ 			var pageSize = '<%=pageSize%>';
+			 
  			console.log('loginprof', loggedInProfessor);
  			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
  			$("#searchText").on("keyup", function(){
@@ -56,7 +97,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
  					//SearchServlet.java 서블릿 페이지로 검색 요청!
  					url : '<%=request.getContextPath()%>/searchCourse.do',
  					type : 'post',
- 					data : {search:search, searchText:searchText},
+ 					data : {search:search, searchText:searchText, startRow:startRow, pageSize:pageSize},
  					dataType : 'json',
  					success : function(data){
  						
@@ -99,7 +140,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
  							
  						}else{
  							
- 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>");
+ 							$resultsTable.append("<tr><td colpsan='10' style='text-align:center;'>검색 결과가 없습니다.</td></tr>");
  						}											
  					}					 					
  				});								
@@ -169,13 +210,13 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
                         	<%
 							    String loggedInProfessor = (String) session.getAttribute("id");
 							
-							    List list = boardDAO.getList();
+							    list = boardDAO.getList(startRow, pageSize);
 							
 							    String professorName = "";
 							
 							    for (int i = 0; i < list.size(); i++) {
 							    	
-							        BoardBean bean = (BoardBean) list.get(i);
+							        bean = (BoardBean) list.get(i);
 							        
 							        if (loggedInProfessor.equals(bean.getId())) {
 							        	
@@ -216,7 +257,7 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
                   	           	<%
                   	           		for(int i=0; i < list.size(); i++){
                   	           			
-                  	           			BoardBean bean = (BoardBean)list.get(i);
+                  	           			bean = (BoardBean)list.get(i);
                   	           			              	               
                   	           	%>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
@@ -229,8 +270,11 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
 							            <td><%= bean.getDay() %> <%= bean.getStarttime() %>교시 - <%= bean.getEndtime() %>교시</td>
 							            <td><%= bean.getProfessor() %></td>							            
 									<!--   // 교수 정보가 일치하면 수정 및 삭제 링크 생성 -->
-							     <% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
-							     	//System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+							     <% 
+									System.out.println(loggedInProfessor + " : " + bean.getId());
+
+							     if(loggedInProfessor != null && loggedInProfessor.equals(bean.getId()))  {  
+							     								     	
 							     %>
 						            <td><a href="modCourse.jsp?ccode=<%= bean.getCcode() %>">과목 수정</a></td>
 						            <td><a href="javascript:delC('<%=bean.getCcode()%>')">과목 삭제</a></td>	
@@ -245,7 +289,76 @@ MemberDTO dto = new ProfessorDAO().selectMember(id);
                   	           		</tbody>
      	           										           		                 	           		
                    	           </table>
+                   	           
+                   	           <br>
+	                   	           	<div class="datatable-bottom">
+
+									    <div class="datatable-info">
+									    	전체 강의: <%=count%>개
+									    </div>
+									    <nav>
+											<ul class="pagination">
+<%
+									    	//전체 페이지 수 구하기
+											//전체 페이지 수 = 전체 글 / 한페이지에 보여줄 글 수 + (전체 글 수를 한페이지에 보여줄 글수로 나눈 나머지 값)
+											int pageCount = count / pageSize + (count%pageSize == 0 ? 0:1);
+											//한 화면에 보여줄 페이지 수 설정
+											int pageBlock = 5;
+											
+											//시작페이지 번호 구하기
+											//( 현재 보여질 페이지 번호 / 한 블럭에 보여줄 페이지 수 ) - ( 현재 보여질 페이지 번호 % 한 화면에 보여줄 페이지수 == 0 ? 1:0 )
+											// * 한 블럭에 보여줄 페이지 수 + 1
+											int startPage = ( (currentPage / pageBlock) - (currentPage % pageBlock == 0 ? 1 : 0) ) * pageBlock + 1;
+											
+											//끝페이지 번호 구하기
+											int endPage = startPage + pageBlock - 1;
+											//끝 페이지 번호가 전체 페이지수보다 클 때
+											if(endPage > pageCount) {
+												endPage = pageCount;
+											}
+											/* 
+											System.out.println("startPage: " + startPage);
+											System.out.println("pageBlock: " + pageBlock);
+											System.out.println("pageCount: " + pageCount);
+											System.out.println("endPage: " + endPage);
+											 */
+											//[이전] 시작 페이지 번호가 한 화면에 보여줄 페이지수보다 클 때
+											if(startPage > pageBlock) {
+%>
+												<li class="page-item">
+									    			<a href="listCourse.jsp?pageNum=<%=startPage - pageBlock%>" class="page-link">‹</a>
+									    		</li>
+<%
+											}
+											
+											for(int i = startPage; i <= endPage; i++) {
+												if(i == currentPage) {
+%>											
+									    			<li class="page-item active"><a href="listCourse.jsp?pageNum=<%=currentPage%>" class="page-link"><%=currentPage %></a></li>
+<%
+												} else {
+%>	
+									    			<li class="page-item"><a href="listCourse.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a></li>
+<%	
+												}
+											
+											}
+											//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
+											if(endPage < pageCount) {
+%>													
+												<li class="page-item">
+									    			<a href="listCourse.jsp?pageNum=<%=startPage + pageBlock%>" class="page-link">›</a>
+									    		</li>
+<%													
+											}
+											
+%>
+									    	</ul>
+										</nav>
+									</div>
+                   	           
                             </p>
+                            
                         </div>
                     </div>
                 </main>
