@@ -105,10 +105,10 @@
 							 
 							 <div class="input-group flex-nowrap mt-3">
 								  <span class="input-group-text">제목</span>
-								  <input type="text" class="form-control" name="title" id="title" required="required" value="">							
+								  <input type="text" class="form-control" name="title" id="title" required="required" value="" maxlength="10">							
 							</div>
 							<div class="form-floating">
-								  <textarea class="form-control" id="mainText" style="height: 100px" name="mainText" required="required"></textarea>
+								  <textarea class="form-control" id="mainText" style="height: 100px" name="mainText" required="required" maxlength="100"></textarea>
 								  <label for="floatingTextarea2"></label>
 							</div>
 							<div class="col text-center" id="reflectedList">
@@ -135,7 +135,21 @@
         <script src="js/datatables-simple-demo.js"></script>
         
         <script type="text/javascript">
+    	//제한글자 판독
+
+        $('#title').keyup(function(){
+            if ($(this).val().length > $(this).attr('maxlength')) {
+                
+                $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+            }
+        });
         
+        $('#mainText').keyup(function(){
+            if ($(this).val().length > $(this).attr('maxlength')) {
+                
+                $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+            }
+        });
         </script>
     </body>
 </html>
