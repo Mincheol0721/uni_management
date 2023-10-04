@@ -91,9 +91,11 @@ public class CourseDAO {
 					int compsem = rs.getInt("compsem");
 					int grade = rs.getInt("grade"); // 조회한 성적
 					String professor = rs.getString("professor");//조회한 담당교수
-					String time = rs.getString("time");
+					String startTime = rs.getString("starttime");
+					String endTime = rs.getString("endTime");
 					
-					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor,time);
+					
+					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor,startTime,endTime);
 																
 									  
 					boardList.add(bfbb);//ArrayList배열에  추가

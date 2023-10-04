@@ -8,10 +8,12 @@ public class CourseVO {
 	private int compsem; // 1학기,2학기 중 선택 입력
 	private int grade; // 1점 ~ 3점 선택
 	private String professor;
-	private String time; // 강의 시간
+	private String startTime; // 강의 시작 교시
+	private String endTime; // 강의 끝 교시
 	
 	
-	public CourseVO(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor, String time) {
+	public CourseVO(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor,
+			String startTime, String endTime) {
 		super();
 		this.ccode = ccode;
 		this.cname = cname;
@@ -20,71 +22,102 @@ public class CourseVO {
 		this.compsem = compsem;
 		this.grade = grade;
 		this.professor = professor;
-		this.time = time;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
+
 	
-	public CourseVO(String cname, String compdiv, int compyear, int compsem, int grade, String professor, String time) {
-		super();
-		
-		this.cname = cname;
-		this.compdiv = compdiv;
-		this.compyear = compyear;
-		this.compsem = compsem;
-		this.grade = grade;
-		this.professor = professor;
-		this.time = time;
-	}
+	
 	//getter & setter
 	public int getCcode() {
 		return ccode;
 	}
+
+
 	public void setCcode(int ccode) {
 		this.ccode = ccode;
 	}
+
+
 	public String getCname() {
 		return cname;
 	}
+
+
 	public void setCname(String cname) {
 		this.cname = cname;
 	}
+
+
 	public String getCompdiv() {
 		return compdiv;
 	}
+
+
 	public void setCompdiv(String compdiv) {
 		this.compdiv = compdiv;
 	}
+
+
 	public int getCompyear() {
 		return compyear;
 	}
+
+
 	public void setCompyear(int compyear) {
 		this.compyear = compyear;
 	}
+
+
 	public int getCompsem() {
 		return compsem;
 	}
+
+
 	public void setCompsem(int compsem) {
 		this.compsem = compsem;
 	}
+
+
 	public int getGrade() {
 		return grade;
 	}
+
+
 	public void setGrade(int grade) {
 		this.grade = grade;
 	}
+
+
 	public String getProfessor() {
 		return professor;
 	}
+
+
 	public void setProfessor(String professor) {
 		this.professor = professor;
 	}
 
-	public String getTime() {
-		return time;
+
+	public String getStartTime() {
+		return startTime;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
+
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	
 	
 	
 	
