@@ -262,6 +262,11 @@ public class NoticeDAO {
 	
 	//게시판의 새 글 정보를 DB의 board테이블에 추가하는 기능의 메소드
 	public void insertBoard(NoticeDTO dto) {
+			
+		System.out.println("title: " + dto.getTitle());
+		System.out.println("content: " + dto.getContent());
+		System.out.println("nclass: " + dto.getNclass());
+		System.out.println("id: " + dto.getId());
 		
 		try {
 			//1. 커넥션풀에서 커넥션 객체 빌려오기

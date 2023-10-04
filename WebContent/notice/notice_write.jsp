@@ -39,6 +39,7 @@
         <script type="text/javascript">
         	$(function() {
         		var $id = '<%=id%>';
+        		var $job = '<%=job%>';
         		var $path = '<%=path%>';
         		var $csel = $('select[id=clsSelc]');
         		
@@ -58,7 +59,7 @@
 					}
         		});//대분류 셀렉트 옵션태그
         		
-        		if($id == 'null') {
+        		if($job != '교직원') {
         			alert('관리자만 접근가능한 페이지입니다.');
         			location.href = $path + '/index.jsp';
         		}
@@ -124,7 +125,7 @@
 													<span class="notice_title">분류</span>
 												</div>
 												<div class="col-md-10">
-													<select id="clsSelc"></select>
+													<select id="clsSelc" name="select"></select>
 												</div>
 												<br><br><hr>
 												<div class="col-md-2">

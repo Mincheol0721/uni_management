@@ -182,7 +182,7 @@ public class BoardDAO {
 			
 			//insert sql문 만들기
 			String sql = "insert into course (cname, compdiv, compyear, compsem, grade, day, starttime, endtime, professor, id)"
-					   + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					   + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
 			//insert문 실행할 pstmt 실행 객체 얻기
 			pstmt = con.prepareStatement(sql);
@@ -219,12 +219,12 @@ public class BoardDAO {
 	        System.out.println("DB 연결 성공");
 	        
 	        // insert SQL 문 만들기
-	        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO course (cname, compdiv, compyear, compsem, grade, day, starttime, endtime, professor, id) VALUES ");
+	        StringBuilder sqlBuilder = new StringBuilder("INSERT IGNORE INTO course (cname, compdiv, compyear, compsem, grade, day, starttime, endtime, professor, id) VALUES ");
 	        for (int i = 0; i < arrayList.size(); i++) {
 	            if (i > 0) {
 	                sqlBuilder.append(", ");
 	            }
-	            sqlBuilder.append("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	            sqlBuilder.append(" (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	        }
 	        	     	        
 	        // insert 문 실행할 pstmt 실행 객체 얻기
