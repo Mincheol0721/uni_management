@@ -60,7 +60,6 @@ public class ScheduleDAO {
 					
 					dto.setNo(rs.getInt("no"));
 					dto.setTitle(rs.getString("title"));
-					dto.setContent(rs.getString("content"));
 					dto.setWriteDate(rs.getDate("writeDate"));
 					dto.setSclass(rs.getString("sclass"));
 					dto.setId(rs.getString("id"));
@@ -121,16 +120,15 @@ public class ScheduleDAO {
 				//1. 커넥션풀에서 커넥션 객체 빌려오기
 				con = getConnection();
 				//insert문 작성
-				sql = "insert into bschedule (title, content, writeDate, sclass, id, sdate) " + 
-							"values(?, ?, now(), ?, ?, ?)";
+				sql = "insert into bschedule (title, writeDate, sclass, id, sdate) " + 
+							"values(?, now(), ?, ?, ?)";
 				
 				pstmt = con.prepareStatement(sql);
 				
 				pstmt.setString(1, dto.getTitle());
-				pstmt.setString(2, dto.getContent());
-				pstmt.setString(3, dto.getSclass());
-				pstmt.setString(4, dto.getId());
-				pstmt.setString(5, sdate);
+				pstmt.setString(2, dto.getSclass());
+				pstmt.setString(3, dto.getId());
+				pstmt.setString(4, sdate);
 				
 				pstmt.executeUpdate();
 				
@@ -187,7 +185,6 @@ public class ScheduleDAO {
 					dto.setTitle(rs.getString("title"));
 					dto.setSclass(rs.getString("sclass"));
 					dto.setSdate(rs.getString("sdate"));
-					dto.setContent(rs.getString("content"));
 				}
 				
 //				System.out.println("title: " + title);
@@ -271,7 +268,6 @@ public class ScheduleDAO {
 					
 					dto.setNo( rs.getInt("no") );
 					dto.setTitle( rs.getString("title") );
-					dto.setContent( rs.getString("content") );
 					dto.setSclass( rs.getString("sclass") );
 					dto.setSdate( rs.getString("sdate") );
 					dto.setWriteDate( rs.getDate("writeDate") );
@@ -331,7 +327,6 @@ public class ScheduleDAO {
 				if(rs.next()) {
 					dto = new ScheduleDTO();
 					
-					dto.setContent(rs.getString("content"));
 					dto.setId(rs.getString("id"));
 					dto.setSclass(rs.getString("sclass"));
 					dto.setSdate(rs.getString("sdate"));
@@ -382,14 +377,13 @@ public class ScheduleDAO {
 				//2. UPDATE문 만들기
 				//→ 매개변수로 전달받은 NoticeDTO객체에 저장된 no 변수의 수정할 글 번호에 해당되는 글 수정을 위해 입력한
 				//  글 제목, 글 내용을 수정하는 UPDATE구문 만들기
-				sql = "UPDATE bschedule SET title=?, content=?, sclass=? WHERE no=?";
+				sql = "UPDATE bschedule SET title=?, sclass=? WHERE no=?";
 				//3. PreparedStatement실행객체 얻기
 				pstmt = con.prepareStatement(sql);
 				//3.1  ?에 대응되는 값 설정
 				pstmt.setString(1, dto.getTitle()); //글 제목
-				pstmt.setString(2, dto.getContent()); //글 내용
-				pstmt.setString(3, dto.getSclass()); //글 내용
-				pstmt.setInt(4, dto.getNo()); //글 번호
+				pstmt.setString(2, dto.getSclass()); //글 대분류
+				pstmt.setInt(3, dto.getNo()); //글 번호
 				//4. UPDATE문 실행
 				pstmt.executeUpdate();
 				

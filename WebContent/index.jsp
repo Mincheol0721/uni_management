@@ -316,10 +316,11 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 											       	sYear = Integer.parseInt( s.substring(0, 4) );
 											       	sMonth = Integer.parseInt( s.substring(5, 7) );
 											       	sDate = Integer.parseInt( s.substring(8, 10));
-											       	eYear = Integer.parseInt( s.substring(13, 17) );
-											       	eMonth = Integer.parseInt( s.substring(18, 20) );
-											       	eDate = Integer.parseInt( s.substring(21, 23) );
-											       	
+											       	if(s.length() > 12){
+												       	eYear = Integer.parseInt( s.substring(13, 17) );
+												       	eMonth = Integer.parseInt( s.substring(18, 20) );
+												       	eDate = Integer.parseInt( s.substring(21, 23) );
+											       	}
 											       	sdto = sdao.getTitle(s);
 											       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
 											       		/* if(dao.getTitle(s).length() >= 5) {
