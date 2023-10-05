@@ -103,7 +103,10 @@
        	   });
 
      	//       체크박스에체크된모든행(Row)의값가져오기
-            $("#professor_mod").click(function(){     
+            $("#professor_mod").click(function(){   
+            	
+            	
+            if ($("input[name=check]:checked").is(":checked")){
 //            	먼저 2개의 배열을 선언하였다. 
 //             	rowData는 행의 값을 모두 담을 배열이고, 
 //             	tdArr은 각각 td의 값을 담을 배열이다. 
@@ -327,12 +330,22 @@
 			 //</body>
 
                 form.submit();
-                 
+            	}else{
+            		alert("수정할 사람을 선택해 주세요");
+            	}
                  
             });
      		
           //-----------------------교수삭제-------------------------------
         	$("#professor_del").click(function(){
+        		
+        		
+        		
+        		if(confirm("정말로 삭제하시겠습니까?")){
+        			
+        			
+        		
+        		
 //          	   document.mainform.action = "professor_del.jsp";	
 //           	   document.mainform.submit();
 				var rowData = new Array();
@@ -372,6 +385,10 @@
                form.submit();
       	       
                alert("삭제 되었습니다");
+               
+        		}else{
+        			
+        		}//if else문
       		});
         	
         	
@@ -495,7 +512,7 @@
                    	       			Mem = (MemberDTO)profMem.get(cnt);
                    	       			%>
                    	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                   	           			<td><input type="checkbox" name="check" value="<%=Mem.getId() %>" class="form-check-input"></td>
+                   	           			<td><input type="checkbox" id ="checkbox" name="check" value="<%=Mem.getId() %>" class="form-check-input"></td>
                    	           			<td width=5%><%=Mem.getId() %></td>
                    	           			<td width=5%><%=Mem.getName() %></td>
                    	           			<td width=5%><%=Mem.getTel() %></td>
