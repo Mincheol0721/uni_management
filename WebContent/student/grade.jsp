@@ -58,7 +58,7 @@
                    	           			<td width=5%>과목명</td>
                    	           			<td width=5%>전공</td>
                    	           			<td width=5%>학년</td>
-                   	           			<td width=5%>학점</td>
+                   	           			<td width=5%>점수</td> <!-- 교수쪽과 동일하게 점수로 명칭 바뀌었습니다 -->
                    	           			<td width=5%>등급</td>
                    	           		</tr>
                    	           		<%

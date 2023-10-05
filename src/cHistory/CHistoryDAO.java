@@ -110,18 +110,22 @@ public class CHistoryDAO {
 
 	// lecture 페이지에서 수강신청을 눌렀을떄 insert할 메소드
 
-	public void insertBoard(String id, String Ccode) {
-
+	public void insertBoard(String id, String Ccode, String rate) {
+		
+		rate = "-";
+		
 		try {
 			// 1. 커넥션풀에서 커넥션 객체 빌려오기
 			con = getConnection();
 
-			String sql = "insert into chistory(id,ccode) values(?,?);";
+			String sql = "insert into chistory(id,ccode,rate) values(?,?,?);";
 
 			// PreparedStatement객체 얻기
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, Ccode);
+			pstmt.setString(3, rate);
+			
 
 			// insert문 실행
 			pstmt.executeUpdate();

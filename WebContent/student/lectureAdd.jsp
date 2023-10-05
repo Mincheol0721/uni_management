@@ -19,6 +19,8 @@
 	//Session객체에서 Id값을 가져옴
 	String id = (String) session.getAttribute("id");
 	
+	String rate = request.getParameter("rate");
+	
 	//cHistoryDAO의 checked메소드의 값을 저장할 변수
 	int check = 0;
 	
@@ -27,7 +29,7 @@
 	
 	for (String Ccode : list) {
 	
-		cHistoryDAO.insertBoard(id, Ccode);
+		cHistoryDAO.insertBoard(id, Ccode, rate);
 		 
 	} 
 	// cHistoryVO를 담을 배열 생성
