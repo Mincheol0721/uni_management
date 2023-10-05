@@ -489,6 +489,7 @@ List<String> scheduleDate = dao.getSdate();
 						</div>
 					 </div>
 	              </div>
+	              <jsp:include page="../inc/chat.jsp"></jsp:include>
                 </main>
             </div>
            	<footer class="py-4 bg-light mt-auto">

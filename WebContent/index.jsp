@@ -408,6 +408,7 @@ List<NoticeDTO> nlist = ndao.getBoardList();
 	                        </div>
 	                    </div>
                     </div>
+                    <jsp:include page="/inc/chat.jsp"></jsp:include>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

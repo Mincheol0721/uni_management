@@ -107,8 +107,7 @@ request.setCharacterEncoding("UTF-8");
 								<input type="button" class="btn btn-primary" id="cancel" value="취소">
 							</form>
                     	</div>
-              
-                
+                    	<jsp:include page="../inc/chat.jsp"></jsp:include>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

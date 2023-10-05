@@ -144,6 +144,7 @@
 
 					<br>
 					<br>
+					<jsp:include page="../inc/chat.jsp"></jsp:include>
 					<footer class="py-4 bg-light mt-auto">
 						<div class="container-fluid px-4">
 							<div

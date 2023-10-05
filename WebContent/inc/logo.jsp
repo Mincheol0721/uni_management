@@ -41,5 +41,6 @@
                 <jsp:include page="/inc/member.jsp" />
             </li>
         </ul>
+        
 	</body>
 </html>

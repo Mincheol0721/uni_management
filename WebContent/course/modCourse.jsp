@@ -144,6 +144,7 @@
                         </div>
                     </div>
                     </form>
+                    <jsp:include page="../inc/chat.jsp"></jsp:include>
                 </main>
                 <script> 
                 	document.getElementById('prof').readOnly = true;  //과목 수정시 본인 이름은 바꿀 수 없게끔 readOnly처리                	           			

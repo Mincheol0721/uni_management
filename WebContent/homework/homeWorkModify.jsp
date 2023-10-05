@@ -107,6 +107,7 @@
 								<input type="button" class="btn btn-primary btn-sm" value="리스트로돌아가기" id="backlist">
 							</div>	
                     </div>
+                    <jsp:include page="../inc/chat.jsp"></jsp:include>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">

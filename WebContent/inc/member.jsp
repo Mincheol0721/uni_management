@@ -19,3 +19,7 @@
 	</c:otherwise>
 </c:choose>
 </ul>
+
+<script>
+	sessionStorage.setItem('id', ${id}); 
+</script>

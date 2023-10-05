@@ -122,6 +122,7 @@
 						</div>
 							
                     </div>
+                    <jsp:include page="../inc/chat.jsp"></jsp:include>
                 </main>
                 
             </div>

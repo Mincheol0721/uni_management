@@ -24,4 +24,9 @@
     <param-value>5</param-value>
   </context-param>
   
+   <context-param>
+    <param-name>CHAT_ADDR</param-name>
+    <param-value>ws://localhost:8080/uni_team/</param-value>
+  </context-param>
+  
 </web-app>
