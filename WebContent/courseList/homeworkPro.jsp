@@ -29,7 +29,7 @@
 			);
  
 	//DB작업
-	dao.modHomework(dto,num);
+	dao.modHomework(dto,num);	  
 %>
 
 <script>
