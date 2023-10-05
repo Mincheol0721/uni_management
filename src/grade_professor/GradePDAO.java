@@ -112,11 +112,11 @@ public class GradePDAO {
 	
 	}//조회 end	
 	
-	//점수와 등급을 0과 X로 초기화시키는 기능의 메소드
+	//점수와 등급을 0과 "-"로 초기화시키는 기능의 메소드
 	public void resetGradeAndRate(int ccode, String id) {
 		
 		int grade = 0;
-		String rate = "X";
+		String rate = "-";
 		
 		String sql = "UPDATE cHistory "
 					+ "SET grade =?, rate =? "
