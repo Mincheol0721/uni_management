@@ -9,13 +9,16 @@
 %>
 
 <%
+	int week = Integer.parseInt(request.getParameter("week"));
+	int sess = Integer.parseInt(request.getParameter("session"));
+	int num = Integer.parseInt(request.getParameter("num"));
 	
 	HomeworkProfessorDAO dao = new HomeworkProfessorDAO();
 	String period = request.getParameter("period1") + "~" + request.getParameter("period2");
 	
 	HomeWorkBoardDTO dto = new HomeWorkBoardDTO(		
 			request.getParameter("name"),
-			Integer.parseInt(request.getParameter("num")),
+			num,
 			request.getParameter("cname"),
 			request.getParameter("tasktype"),
 			request.getParameter("tasktitle"),
@@ -26,13 +29,13 @@
 			);
  
 	//DB작업
-	dao.modHomework(dto);	
+	dao.modHomework(dto,num);
 %>
 
 <script>
 
 	alert("선택한 과제 양식이 수정되었습니다.");
-	location.href = "homework_professor.jsp?cname=" + encodeURIComponent("<%=dto.getCname()%>");
+	location.href = "moreInfo_professor.jsp?cname=" + encodeURIComponent("<%=dto.getCname()%>");
 
 	
 </script>
