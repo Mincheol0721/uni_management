@@ -68,7 +68,7 @@
                    	           			<td width=5%>과목명</td>
                    	           			<td width=5%>전공</td>
                    	           			<td width=5%>학년</td>
-                   	           			<td width=5%>학점</td>
+                   	           			<td width=5%>점수</td> <!-- 교수가 매기는 점수에 따라 등급이 바뀌게끔 설정되어서 학점->점수로 변경했습니다 -->
                    	           			<td width=5%>등급</td>
                    	           			<td width=5%>강의평가</td>
                    	           			<td width=5%>이메일</td>

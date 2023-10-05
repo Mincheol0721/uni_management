@@ -109,7 +109,7 @@
 	                  	           			<td width="5%"><input type="text" name="id" value="<%=bean.getId()%>"readonly/></td>
 	                  	           			<td width="5%"><input type="text" name="name" value="<%=bean.getName()%>"readonly/></td>                  	           			
 	                  	           			<td width="5%"><input type="text" name="grade" value="<%=bean.getGrade()%>"/></td>                  	           			
-	                  	           			<td width="5%"><input type="text" name="rate" value="<%=bean.getRate()%>"/></td>                  	           			
+	                  	           			<td width="5%"><input type="text" name="rate" value="<%=bean.getRate()%>" readonly/></td>                  	           			
 								       	 	<td width="5%"><input type="submit" value="수정"></td>
 	         	           				</tr>                 	           			
                   	           		</tbody>
@@ -142,5 +142,38 @@
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
+        
+        
+        <script>
+        
+        	var gradeP; 
+        	var rateP;
+      	
+        	$("input[name='grade']").change(function () {
+        	   
+        	    var gradeP = parseFloat($(this).val()); // 입력 필드의 값은 문자열로 반환되므로 숫자로 변환합니다.
+        	    var rateP = $("input[name='rate']");
+        	   
+        	    if (!isNaN(gradeP)) { // 입력이 유효한 숫자인지 확인합니다. (isNaN함수 : 매개변수가 숫자인지 검사하는 함수//is Not A Number?)
+        	        if (gradeP >= 90) {
+        	            rateP.val("A");
+        	        } else if (gradeP >= 80) {
+        	            rateP.val("B");
+        	        } else if (gradeP >= 70) {
+        	            rateP.val("C");
+        	        } else {
+        	            rateP.val("F");
+        	        }
+        	    } else {
+        	        // 입력이 유효하지 않을 경우(잘못 입력)
+        	        alert("유효한 점수를 입력하세요.");       	        
+        	        rateP.val(""); //입력공간 초기화시킴
+        	    }
+        	});
+        
+        
+        </script>
+        
+        
     </body>
 </html>
