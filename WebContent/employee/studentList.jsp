@@ -367,7 +367,7 @@
           //-----------------------학생삭제-------------------------------
         	$("#student_del").click(function(){
         		
-        		
+        	if ($("input[name=check]:checked").is(":checked")){
         		if(confirm("정말로 삭제하시겠습니까?")){
 //          	   document.mainform.action = "professor_del.jsp";	
 //           	   document.mainform.submit();
@@ -412,6 +412,11 @@
 				}else{
         			
         		}//if else문
+        		
+        	}else{
+        		alert("삭제할 사람을 선택해 주세요");
+        	}
+        	
       		});
         	
         	
