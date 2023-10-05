@@ -110,13 +110,13 @@ public class HomeworkProfessorDAO {
 	}//조회 end	
 		
 	//과제 양식 수정하는 기능의 메소드
-	public void modHomework(HomeWorkBoardDTO dto) {			
+	public void modHomework(HomeWorkBoardDTO dto, int num) {			
 		
 		try {
 			
 			//DB연결
 			con = ds.getConnection();
-			String sql = "update homeworkboard set tasktype=?, tasktitle=?, taskmethod=?, period=? where cname=? ";
+			String sql = "update homeworkboard set tasktype=?, tasktitle=?, taskmethod=?, period=? where cname=? and num=?";
 			pstmt = con.prepareStatement(sql);
 								
 			pstmt.setString(1, dto.getTasktype());
@@ -124,7 +124,9 @@ public class HomeworkProfessorDAO {
 			pstmt.setString(3, dto.getTaskmethod());      
 			pstmt.setString(4, dto.getPeriod());
 			pstmt.setString(5, dto.getCname());
-		
+			pstmt.setInt(6, num);
+			
+			
 			pstmt.executeUpdate();
 			
 			System.out.println("과제 양식 수정 sql구문 실행 완료");

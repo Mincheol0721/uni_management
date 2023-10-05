@@ -88,7 +88,7 @@
                     <form action="homeworkPro.jsp?cname=<%=cname %>" method="POST"> 
                 	<input type="hidden" id="cname" name="cname" value="<%=cname%>"/>  
                 	<input type="hidden" name="week" value="<%=week%>"/>  
-                	<input type="hidden" name="sess" value="<%=sess%>"/>  
+                	<input type="hidden" name="session" value="<%=sess%>"/>  
                 	<input type="hidden" name="num" value="<%=dto.getNum()%>"/>  
                 	<input type="hidden" name="numpeople" value="<%=dto.getNumpeople()%>"/>  
                     	<div class="container-fluid px-4">
