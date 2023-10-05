@@ -64,10 +64,9 @@
                         <div class="container">
                         	<div class="row justify-content-center">
                         	
-                        	<form class="form-inline w-75" action="homeWorkModifyPro.jsp" method="post" enctype="multipart/form-data">
-	                        <div class="input-group flex-nowrap mt-3 mb-3" hidden="">
-							  
-							</div>
+                        	<form class="form-inline w-75" action="homeWorkModifyPro.jsp?numb=<%=num%>" method="post" enctype="multipart/form-data">
+	                       
+							
 							<input type="text" id="userName" value="<%=userName%>" hidden="">
 							<input type="text" name="cname" value="<%=cname%>" hidden=""> <!-- 과목명 -->
 							<input type="text" name="num" value="<%=num%>" hidden="">
@@ -91,7 +90,7 @@
 							<div class="input-group mb-3">
 							<!-- 파일첨부 -->
 							<span style="display: none" id="fileDisplay">
-								<input type="file" name="file" class="form-control">
+								<input type="file" name="file" class="form-control" required="required">
 							</span>
 							</div>
 							<div class="col text-center" id="reflectedList" style="display: none">
@@ -104,6 +103,7 @@
 						</div>
 						<div class="col text-center" id="modifyList" >
 								<input type="button" class="btn btn-primary btn-sm" value="수정하기" id="modify">
+								<input type="button" class="btn btn-primary btn-sm" value="삭제하기" id="delete">
 								<input type="button" class="btn btn-primary btn-sm" value="리스트로돌아가기" id="backlist">
 							</div>	
                     </div>
@@ -177,6 +177,14 @@
                     $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
                 }
             });
+        	
+        	$("#delete").on('click',function(){
+        		if ($("#studentName").val() == $("#userName").val()) {
+        			location.href = 'homeworkModifyDelete.jsp?num=<%=num%>&cname=<%=cname%>';
+				}else {
+					alert("본인이 제출한 과제가 아닙니다.");
+				}
+        	})
         </script>
         
     </body>

@@ -1,5 +1,6 @@
 package file;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -161,7 +162,31 @@ public class FileDAO {
 		return check;
 	}
 	
-	
+	// 물리적인 파일 삭제하기위해 서치하는 메소드
+			public String deleteSearch(String num) {
+				String sql = null;
+				String fileName = null;
+				try {
+					//DB연결
+					con= getConnection();
+					//sql문 작성
+					sql = "select fileRealName from homework where num = ?";
+					
+					pstmt = con.prepareStatement(sql);
+						pstmt.setString(1, num);
+						rs = pstmt.executeQuery();
+						
+						if (rs.next()) {
+							fileName = rs.getString(1);
+						}
+						
+				} catch (Exception e) {
+					System.out.println("HomeWorkDAO클래스의 deleteHomework메소드의 sql문 오류" + e);
+				}finally {
+					freeResource();
+				}
+				return fileName;
+			}
 	
 }
 

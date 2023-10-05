@@ -146,8 +146,7 @@ String path = request.getContextPath();
                    	           			<td width=5%>학기</td>
                    	           			<td width=5%>획득학점</td>
                    	           			<td width=5%>담당교수</td>
-                   	           			<td width=5%>강의 시작 교시</td>
-                   	           			<td width=5%>강의 끝 교시</td>
+                   	           			<td width=5%>강의 시간</td>
                    	           			<td width=5%>수강신청</td>
                    	           		</tr>
                    	           		<!-- Db에서 값을 가져올곳 -->
@@ -165,8 +164,8 @@ String path = request.getContextPath();
                    	           			<td width=5%><%=course.getCompsem()%></td> <!-- 학기 -->
                    	           			<td width=5%><%=course.getGrade()%></td> <!-- 획득학점 -->
                    	           			<td width=5%><%=course.getProfessor()%></td> <!-- 담당교수 -->
-                   	           			<td width=5%><%=course.getStartTime()%></td> <!-- 강의 시작 교시 -->
-                   	           			<td width=5%><%=course.getEndTime()%></td>
+                   	           			<td width=5%><%=course.getDay()%><%=course.getStartTime()%>교시-<%=course.getEndTime()%>교시</td> <!-- 강의 시작 교시 -->
+                   	           			
                    	           		<td width="5%" id="menu2"><input type="checkbox" name="user_CheckBox1" class="user_CheckBox1" value="1"></td>
 									</tr>
                    	       <%
@@ -232,6 +231,7 @@ String path = request.getContextPath();
                    	           			<td width=5%>학기</td>
                    	           			<td width=5%>획득학점</td>
                    	           			<td width=5%>담당교수</td>
+                   	           			<td width=5%>강의 시간</td>
                    	           			<td width=5%>수강취소</td>
                    	           		</tr>
                    	           	<%
@@ -246,6 +246,7 @@ String path = request.getContextPath();
                    	           			<td width=5%><%=cHistory.getCompsem()%></td> <!-- 학기 -->
                    	           			<td width=5%><%=cHistory.getGrade()%></td> <!-- 획득학점 -->
                    	           			<td width=5%><%=cHistory.getProfessor()%></td> <!-- 담당교수 -->
+                   	           			<td width=5%><%=cHistory.getDay()%><%=cHistory.getStartTime()%>교시-<%=cHistory.getEndTime()%>교시</td> <!-- 강의 시작 교시 -->
                    	           			<td width="5%" id="menu2"><input type="checkbox" name="user_CheckBox2" class="user_CheckBox2" value="1"></td>
 									
 									</tr>

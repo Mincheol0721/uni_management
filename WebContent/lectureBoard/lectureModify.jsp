@@ -206,12 +206,12 @@
         	//제한글자 판독
         	
         	$('#title').keyup(function(){
-            if ($(this).val().length > $(this).attr('maxlength')) {
+            if ($(this).val().byteLength() > $(this).attr('maxlength')) {
                 alert('제한글자를 초과하여 입력하셨습니다.');
                 $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
             }
         });
-        alert('안녕');
+//         alert('안녕');
         $('#mainText').keyup(function(){
             if ($(this).val().length > $(this).attr('maxlength')) {
                 alert('제한글자를 초과하여 입력하셨습니다.');

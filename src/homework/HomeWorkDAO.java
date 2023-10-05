@@ -1,5 +1,6 @@
 package homework;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -281,6 +282,60 @@ public void freeResource() {
 			}
 			
 			return check;
+		}
+		
+		
+		// 물리적인 파일 삭제하는 메소드
+		public int deleteSearch(String num, String path) {
+			String sql = null;
+			int count = 0;
+			try {
+				//DB연결
+				con= getConnection();
+				//sql문 작성
+				sql = "select * from homework where num = ?";
+				
+				pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, num);
+					rs = pstmt.executeQuery();
+				
+
+			            // 지정된 파일 삭제
+					if(rs.next()) {
+			            File file = new File(path+rs.getString("fileRealname"));
+			            if (file != null) {
+			                file.delete();
+			            count = 1;
+			            }
+			            	
+			            
+					}
+			            
+			} catch (Exception e) {
+				System.out.println("HomeWorkDAO클래스의 deleteHomework메소드의 sql문 오류" + e);
+			}finally {
+				freeResource();
+			}
+			return count;
+		}
+		//테이블 삭제하는 메소드
+		public void deleteHomework(String num) {
+			try {
+				//DB연결
+				con = getConnection();
+				//sql문 작성
+				String sql = "delete from homework where num = ?";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, num);
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				System.out.println("HomeWorkDAO클래스에서 deleteHomework메소드의 sql문 오류" + e);
+			}finally {
+				freeResource();
+			}
 		}
 		
 }//class의 끝

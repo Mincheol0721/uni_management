@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="file.FileDAO"%>
@@ -6,6 +7,11 @@
 <%
 	//한글처리
 	request.setCharacterEncoding("UTF-8");
+
+	FileDAO fileDAO = new FileDAO();
+	
+	String numb = request.getParameter("numb");
+	
 //참고. application내장객체는 하나의 프로젝트의 모든 서버페이지에 값을 공유할 영역이고
 		//	   하나의 프로젝트의 자원(경로,로그정보,데이터)을 관리하는 객체 입니다.
 		//    서버(톰캣)의 실제 프로젝트 경로에서 자원을 찾을 때 가장 많이 사용합니다.
@@ -21,6 +27,12 @@
 		
 		String path = application.getRealPath("/upload/");
 		out.print(path + "<br>");
+	
+		String name = fileDAO.deleteSearch(numb);
+		File file = new File(path + name);
+		if (file != null) {
+		    file.delete();
+		}
 		//C:\workspace_web\FileUploadDownload\WebContent\ upload \       
 		
 		//2. 한번에 업로드할 파일의 최대 사이즈 설정  1GB = 1024MB
@@ -57,7 +69,7 @@
 		
 		String num = multipartRequest.getParameter("num");
 		
-		new FileDAO().updateFile(title, content, fileName, fileRealName,num);
+		fileDAO.updateFile(title, content, fileName, fileRealName,num);
 %>
 	<script type="text/javascript">
 
