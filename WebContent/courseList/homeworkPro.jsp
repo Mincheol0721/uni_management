@@ -11,7 +11,8 @@
 <%
 	
 	HomeworkProfessorDAO dao = new HomeworkProfessorDAO();
-
+	String period = request.getParameter("period1") + "~" + request.getParameter("period2");
+	
 	HomeWorkBoardDTO dto = new HomeWorkBoardDTO(		
 			request.getParameter("name"),
 			Integer.parseInt(request.getParameter("num")),
@@ -19,7 +20,7 @@
 			request.getParameter("tasktype"),
 			request.getParameter("tasktitle"),
 			request.getParameter("taskmethod"),
-			request.getParameter("period"),
+			period,
 			request.getParameter("homework"),			
 			Integer.parseInt(request.getParameter("numpeople"))
 			);
