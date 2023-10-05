@@ -105,7 +105,9 @@
        	   });
 
      	//       체크박스에체크된모든행(Row)의값가져오기
-            $("#student_mod").click(function(){     
+            $("#student_mod").click(function(){   
+            	
+            	 if ($("input[name=check]:checked").is(":checked")){
 //            	먼저 2개의 배열을 선언하였다. 
 //             	rowData는 행의 값을 모두 담을 배열이고, 
 //             	tdArr은 각각 td의 값을 담을 배열이다. 
@@ -356,12 +358,17 @@
 			 //</body>
 
                 form.submit();
-                 
+           	 }else{
+            		alert("수정할 사람을 선택해 주세요");
+            	}
                  
             });
      		
           //-----------------------학생삭제-------------------------------
         	$("#student_del").click(function(){
+        		
+        		
+        		if(confirm("정말로 삭제하시겠습니까?")){
 //          	   document.mainform.action = "professor_del.jsp";	
 //           	   document.mainform.submit();
 				var rowData = new Array();
@@ -401,6 +408,10 @@
                form.submit();
       	       
                alert("삭제 되었습니다");
+               
+				}else{
+        			
+        		}//if else문
       		});
         	
         	
