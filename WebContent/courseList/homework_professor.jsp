@@ -41,7 +41,7 @@
 	    <%
    
 	    	HomeworkProfessorDAO dao = new HomeworkProfessorDAO();
-	    
+	    	
 			int week = Integer.parseInt(request.getParameter("week"));
 			int sess = Integer.parseInt(request.getParameter("session"));
 			
@@ -87,6 +87,10 @@
                 <main>
                     <form action="homeworkPro.jsp?cname=<%=cname %>" method="POST"> 
                 	<input type="hidden" id="cname" name="cname" value="<%=cname%>"/>  
+                	<input type="hidden" name="week" value="<%=week%>"/>  
+                	<input type="hidden" name="sess" value="<%=sess%>"/>  
+                	<input type="hidden" name="num" value="<%=dto.getNum()%>"/>  
+                	<input type="hidden" name="numpeople" value="<%=dto.getNumpeople()%>"/>  
                     	<div class="container-fluid px-4">
                         <h1 class="mt-4">과제 설정</h1>
                         <ol class="breadcrumb mb-4">
@@ -132,9 +136,9 @@
 										String endDate = dto.getPeriod().substring(11);
 										System.out.println("endDate: " + endDate);
 									%>
-										<input type="date" name="period" min="<%=today%>" value="<%=startDate%>" width="100%">
+										<input type="date" name="period1" min="<%=today%>" value="<%=startDate%>" width="100%">
 										 ~ 
-										<input type="date" name="period" min="<%=today%>" value="<%=endDate %>" width="100%"> 
+										<input type="date" name="period2" min="<%=today%>" value="<%=endDate %>" width="100%"> 
 									</div>									
 									<div class="col-md-10">
 										<button type="submit" class="save">저장</button>			

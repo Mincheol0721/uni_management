@@ -87,11 +87,13 @@ public class HomeworkProfessorDAO {
 			if(rs.next()) {
 				
 				//하나씩 저장
+				dto.setNum(rs.getInt("num"));
 				dto.setCname(rs.getString("cname"));
 				dto.setTasktype(rs.getString("tasktype"));
 				dto.setTasktitle(rs.getString("tasktitle"));
 				dto.setTaskmethod(rs.getString("taskmethod"));
 				dto.setPeriod(rs.getString("period"));		
+				dto.setNumpeople(rs.getInt("numpeople"));
 				
 			}		
 			

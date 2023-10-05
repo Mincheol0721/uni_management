@@ -194,4 +194,57 @@ public class CourseDAO {
 		return list;
 	
 	}//조회 end
+	
+	//DB로부터 모든 강의들의 정보를 가져오는 메소드(조회)
+	public ArrayList<CourseBean> getList() {
+		
+		//등록된 과목들을 담을 객체
+		ArrayList<CourseBean> list = new ArrayList<CourseBean>();
+		
+		//쿼리를 담을 변수 선언
+		String sql = "";	
+		
+		try {
+			
+			//DB연결
+			con = ds.getConnection();
+			
+			//sql문
+			sql = "select * from course";
+			
+			//DB에 쿼리문 문자열 전송
+			pstmt = con.prepareStatement(sql);
+			
+			//쿼리 실행
+			rs = pstmt.executeQuery();
+			
+			//rs객체에 담겨있음 -> 컬렉션 객체에 담기
+			while(rs.next()) {
+				
+				CourseBean bean = new CourseBean();
+				
+				//하나씩 저장
+				bean.setGrade(rs.getInt("grade"));
+				bean.setCompyear(rs.getInt("compyear"));
+				bean.setCompsem(rs.getInt("compsem"));
+				bean.setCname(rs.getString("cname"));
+				bean.setProfessor(rs.getString("professor"));
+				bean.setCompdiv(rs.getString("compdiv"));
+				
+				list.add(bean);
+				
+				//System.out.println("과목 정보 저장 완료");				
+			}			
+			
+			System.out.println("강의 조회 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			freeResource();
+		}
+		
+		return list;
+		
+	}//조회 end
 }

@@ -63,11 +63,10 @@
 			    $.each(d.items, function(index, item) {
 			        str += "<tr align='center'>";
 			        str += "    <td>" + (index + 1) + "</td>";
-			        str += "    <td>" + item.title + "</td>";
-			        str += "    <td>" + item.description + "</td>";
+			        str += "    <td><a href='" + item.link + "' target='_blank'>" + item.title + "</a></td>";
+			        str += "    <td><a href='" + item.link + "' target='_blank'>" + item.description + "</a></td>";
 			        str += "    <td>" + item.bloggername + "</td>";
 			        str += "    <td>" + item.postdate + "</td>";
-			        str += "    <td><input type='button' value='바로가기'><a href='" + item.link + "' target='_blank'></a></td>";
 			        str += "</tr>";
 			    });
 			    $('#searchResult').html(str);
@@ -94,6 +93,14 @@
 				background: none;
 				cursor: pointer;
 			}
+			a {
+				text-decoration: none;
+				color: black;
+			}
+			a:hover {
+				text-decoration: underline;
+				color: darkgray;
+			}
 		</style>
 	</head>
 	<body>
@@ -107,7 +114,6 @@
 		    			<th>요약</th>
 		    			<th>블로그명</th>
 		    			<th>작성일</th>
-		    			<th>바로가기</th>
 		    		</tr>
 		    	</thead>
 		    	<tbody id="searchResult"></tbody>

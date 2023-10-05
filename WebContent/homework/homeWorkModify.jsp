@@ -81,11 +81,11 @@
 							</div>
 							<div class="input-group flex-nowrap mt-3">
 								  <span class="input-group-text">글 제목</span>
-								  <input type="text" class="form-control" name="title" id="title" disabled="disabled" value="<%=homeVO.getTitle()%>">							
+								  <input type="text" class="form-control" name="title" id="title" disabled="disabled" value="<%=homeVO.getTitle()%>" required="required" maxlength="20">							
 							</div>
 							 
 							<div class="form-floating">
-								  <textarea class="form-control" id="content" style="height: 300px" name="content" disabled="disabled"><%=homeVO.getContent()%></textarea>
+								  <textarea class="form-control" id="content" style="height: 300px" name="content" disabled="disabled" required="required" maxlength="800"><%=homeVO.getContent()%></textarea>
 								  <label for="floatingTextarea2"></label>
 							</div>
 							<div class="input-group mb-3">
@@ -148,7 +148,7 @@
 				alert("본인이 제출한 과제가 아닙니다.");
 			}
         	});
-        	
+        	//취소 버튼 눌렀을때
         	$("#cancel").on('click',function(){
         		$("#modifyList").css("display","block");
         		$("#reflectedList").css("display","none");
@@ -156,11 +156,27 @@
 				$("#title").attr("disabled",true);
 				$("#content").attr("disabled",true);
 				$("#fileDisplay").css("display","none");
+				location.reload();
         	})
-        	
+        	//리스트버튼을 눌렀을때
         	$("#backlist").on('click',function(){
         		location.href = "homework.jsp?cname=<%=cname%>";
         	});
+        	
+        	//제한글자 판독
+        	$('#title').keyup(function(){
+                if ($(this).val().length > $(this).attr('maxlength')) {
+                    alert('제한글자를 초과하여 입력하셨습니다.');
+                    $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+                }
+            });
+        	
+        	$('#content').keyup(function(){
+                if ($(this).val().length > $(this).attr('maxlength')) {
+                    alert('제한글자를 초과하여 입력하셨습니다.');
+                    $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+                }
+            });
         </script>
         
     </body>

@@ -94,14 +94,14 @@ request.setCharacterEncoding("UTF-8");
 								</div><br>
 								<div class="input-group flex-nowrap">
 								<span class="input-group-text" id="addon-wrapping">제목</span>
-								<input type="text" class="form-control" name="title"><br>
+								<input type="text" class="form-control" id="title" name="title" required="required" maxlength="20"><br>
 								</div><br>
 								<div class="form-floating">
-								<textarea class="form-control" style="height: 250px" name="content"></textarea><br> <!-- 본문 -->
+								<textarea class="form-control" style="height: 250px" name="content" required="required" maxlength="800" id="mainText"></textarea><br> <!-- 본문 -->
 								</div>
 								<div class="input-group mb-3">
 									
-								<input type="file" name="file" class="form-control">
+								<input type="file" name="file" class="form-control" required="required">
 								</div> 
 								<input type="submit" class="btn btn-primary" value="전송하기">
 								<input type="button" class="btn btn-primary" id="cancel" value="취소">
@@ -137,6 +137,20 @@ request.setCharacterEncoding("UTF-8");
         		history.back();
         	})
         
+        //제한글자 판독
+         $('#title').keyup(function(){
+            if ($(this).val().length > $(this).attr('maxlength')) {
+                alert('제한글자를 초과하여 입력하셨습니다.');
+                $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+            }
+        });
+        	
+        	$('#mainText').keyup(function(){
+                if ($(this).val().length > $(this).attr('maxlength')) {
+                    alert('제한글자를 초과하여 입력하셨습니다.');
+                    $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+                }
+            });	
         </script>
         
     </body>
