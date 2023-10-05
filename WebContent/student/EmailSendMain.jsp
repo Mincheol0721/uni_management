@@ -50,7 +50,7 @@
     </tr>
     <tr>
         <td>
-            <textarea name="content" cols="60" rows="10" placeholder=""></textarea>
+            <textarea name="content" cols="60" rows="10" maxlength="300"></textarea>
         </td>
     </tr>
     <tr>
@@ -67,5 +67,18 @@
      <script src="assets/demo/chart-bar-demo.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
      <script src="js/datatables-simple-demo.js"></script>
+     
+     <script type="text/javascript">
+     
+ 	//제한글자 판독
+
+    $('#content').keyup(function(){
+         if ($(this).val().length > $(this).attr('maxlength')) {
+             
+             $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+         }
+     });
+     
+     </script>
 </body>
 </html>

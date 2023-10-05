@@ -132,9 +132,9 @@
 							  <!-- 여기까지 안보여 줄거야 --> 
 							 <div class="input-group flex-nowrap mt-3">
 								  <span class="input-group-text">제목</span>
-								  <input type="text" class="form-control" name="title" id="title" disabled="disabled" value="<%=lecVO.getTitle()%>">							</div>
+								  <input type="text" class="form-control" name="title" id="title" disabled="disabled" value="<%=lecVO.getTitle()%>" maxlength="10">							</div>
 							<div class="form-floating">
-								  <textarea class="form-control" id="mainText" style="height: 100px" name="mainText" disabled="disabled"><%=lecVO.getMainText()%></textarea>
+								  <textarea class="form-control" id="mainText" style="height: 100px" name="mainText" disabled="disabled" maxlength="800"><%=lecVO.getMainText()%></textarea>
 								  <label for="floatingTextarea2"></label>
 							</div>
 							<div class="col text-center" id="reflectedList" style="display: none">
@@ -189,18 +189,35 @@
 				alert("본인이 작성한 글이 아닙니다.");
 			}
         	});
-        	
+        	// 취소 버튼을 눌렀을때 
         	$("#cancel").on('click',function(){
         		$("#modifyList").css("display","block");
         		$("#reflectedList").css("display","none");
 				$("#options").css("display","none");
 				$("#title").attr("disabled",true);
 				$("#mainText").attr("disabled",true);
+				location.reload();
         	})
-        	
+        	//리스트버튼을 눌렀을때
         	$("#backlist").on('click',function(){
         		location.href = "lectureNotice.jsp";
         	})
+        	
+        	//제한글자 판독
+        	
+        	$('#title').keyup(function(){
+            if ($(this).val().length > $(this).attr('maxlength')) {
+                alert('제한글자를 초과하여 입력하셨습니다.');
+                $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+            }
+        });
+        alert('안녕');
+        $('#mainText').keyup(function(){
+            if ($(this).val().length > $(this).attr('maxlength')) {
+                alert('제한글자를 초과하여 입력하셨습니다.');
+                $(this).val($(this).val().substr(0, $(this).attr('maxlength')));
+            }
+        });
         </script>
     </body>
 </html>

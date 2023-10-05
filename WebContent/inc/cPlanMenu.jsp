@@ -1,3 +1,4 @@
+<%@page import="cPlan.CplanDAO"%>
 <%@page import="member.EmployeeDAO"%>
 <%@page import="member.StudentDAO"%>
 <%@page import="member.ProfessorDAO"%>
@@ -10,6 +11,7 @@
 	String id;
 	MemberDTO dto;
 	String cname;
+	int check;
 %>
 
 <% 
@@ -18,8 +20,14 @@
 	job = (String)session.getAttribute("job");
 	id = (String)session.getAttribute("id");
 	
+	
 	cname = request.getParameter("cname");
 	dto = new MemberDTO();
+	
+	CplanDAO cplan = new CplanDAO();
+	check = cplan.cHistoryCheck(id, cname);
+	//out.print(check);
+	
 	
 	if(id != null) {
 		ProfessorDAO pdao = new ProfessorDAO();
@@ -100,6 +108,7 @@
 						<a class="nav-link menu" href="${path}/courseList/courseList_student.jsp">강의리스트</a>
 	                </nav>
 	            </div>
+	            <div id="homework" style="display: none">
 				<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
 					수강 강좌
 	                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -112,6 +121,7 @@
 						<a class="nav-link menu" href="${path}/homework/homework.jsp?cname=<%=cname%>">과제 확인 게시판</a>
 						
 	                </nav>
+	            </div>
 	            </div>
 			</c:when>
 		</c:choose>
@@ -128,6 +138,7 @@
         </div>
 		
 		<script type="text/javascript">
+		
 			$('.menu').click(function(e) {
 				$('.menu').css('color', 'rgba(255, 255, 255, 0.25)');
 				$(this).css('color', 'white');
@@ -138,6 +149,22 @@
 					window.location.href = linkHref;
 				}, 500);
 			});
+			var check = <%=check%>
+// 			alert(check);
+			<%
+				// 클릭한 과목이 내가 듣는 강좌일 경우 수강강좌 메뉴바를 보여주도록 설정
+				if(check > 0) {
+			%>
+				
+				$('#homework').css('display','block');
+			<%
+				}else {
+			%>
+				
+				$('#homework').css('display','none');
+			<%
+				}
+			%>
 		</script>
 	</body>
 </html>
