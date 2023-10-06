@@ -322,10 +322,7 @@ List<String> scheduleDate = dao.getSdate();
 // 							    		       	System.out.println("title: " + dto.getTitle());
 // 							    		       	System.out.println("chkId: " + dto.getId());
 							    		       	if( (year == sYear && (month+1) == sMonth && index == sDate) || (year == eYear && (month+1) == eMonth && index == eDate) ) {
-							    		       		/* if(dao.getTitle(s).length() >= 8) {
-							    		      				title = title.substring(0, 8);
-							    		      				title += "...";
-							    		       		} */
+							    		       		
 %>							    		       		
 													<span style="color: #0d6efd; font-size: 0.8px;" class="calspan"><b>
 														<a href="../schedule/modSchedule.jsp?year=<%=year%>&month=<%=(month + 1)%>&date=<%=date%>&no=<%=dto.getNo()%>" class="calink"> 

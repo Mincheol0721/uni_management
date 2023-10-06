@@ -26,13 +26,16 @@
  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
  	Date today = new Date();
  	String minDate = sdf.format(today);
- 	String clickDate = "";
  	
+ 	String clickDate = year + "-";
  	if(month < 10) {
-	 	clickDate = year + "-0" + month + "-" + date;
- 	} else {
- 		clickDate = year + "-" + month + "-" + date;
+ 		clickDate += "0";
  	}
+ 	clickDate += month + "-";
+ 	if(date < 10) {
+ 		clickDate += "0";
+ 	}
+ 	clickDate += date + "";
  	System.out.println("clickDate: " + clickDate);
  	
 	

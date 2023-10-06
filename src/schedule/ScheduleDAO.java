@@ -114,7 +114,7 @@ public class ScheduleDAO {
 		}
 		
 		//게시판의 새 글 정보를 DB의 board테이블에 추가하는 기능의 메소드
-		public void insertBoard(ScheduleDTO dto, String sdate) {
+		public void insertBoard(ScheduleDTO dto) {
 			
 			try {
 				//1. 커넥션풀에서 커넥션 객체 빌려오기
@@ -128,7 +128,8 @@ public class ScheduleDAO {
 				pstmt.setString(1, dto.getTitle());
 				pstmt.setString(2, dto.getSclass());
 				pstmt.setString(3, dto.getId());
-				pstmt.setString(4, sdate);
+				pstmt.setString(4, dto.getSdate());
+				System.out.println("Dao sdate : " + dto.getSdate());
 				
 				pstmt.executeUpdate();
 				
@@ -369,21 +370,22 @@ public class ScheduleDAO {
 		
 		//UPDATE구문 완성 후 글의 정보를 수정
 		public void updateBoard(ScheduleDTO dto) {
-			
-			try {
+			System.out.println("dao no: " + dto.getNo());
+			try { 
 				//1. 커넥션풀에서 커넥션 객체 빌려오기
 				//DB와의 접속
 				con = getConnection();
 				//2. UPDATE문 만들기
 				//→ 매개변수로 전달받은 NoticeDTO객체에 저장된 no 변수의 수정할 글 번호에 해당되는 글 수정을 위해 입력한
 				//  글 제목, 글 내용을 수정하는 UPDATE구문 만들기
-				sql = "UPDATE bschedule SET title=?, sclass=? WHERE no=?";
+				sql = "UPDATE bschedule SET title=?, sclass=?, sdate=? WHERE no=?";
 				//3. PreparedStatement실행객체 얻기
 				pstmt = con.prepareStatement(sql);
 				//3.1  ?에 대응되는 값 설정
 				pstmt.setString(1, dto.getTitle()); //글 제목
 				pstmt.setString(2, dto.getSclass()); //글 대분류
-				pstmt.setInt(3, dto.getNo()); //글 번호
+				pstmt.setString(3, dto.getSdate()); //글 대분류
+				pstmt.setInt(4, dto.getNo()); //글 번호
 				//4. UPDATE문 실행
 				pstmt.executeUpdate();
 				

@@ -16,8 +16,9 @@
 	String sclass= request.getParameter("sclass");
 // 	System.out.println("sclass: " + sclass);
 	
+	dto.setSdate(sdate);
 	
- 	new ScheduleDAO().insertBoard(dto, sdate); 
+ 	new ScheduleDAO().insertBoard(dto); 
 
  	response.sendRedirect(request.getContextPath() + "/menu/schedule.jsp"); 
 

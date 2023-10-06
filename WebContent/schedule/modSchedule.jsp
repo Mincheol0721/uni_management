@@ -30,8 +30,16 @@
  	Date today = new Date();
  	String minDate = sdf.format(today);
  	
- 	String clickDate = year + "-0" + month + "-" + date;
-//  	System.out.println("clickDate: " + clickDate);
+ 	String clickDate = year + "-";
+ 	if(month < 10) {
+ 		clickDate += "0";
+ 	}
+ 	clickDate += month + "-";
+ 	if(date < 10) {
+ 		clickDate += "0";
+ 	}
+ 	clickDate += date + "";
+ 	System.out.println("clickDate: " + clickDate);
  	
 	ScheduleDTO dto = new ScheduleDTO();
 	ScheduleDAO dao = new ScheduleDAO();

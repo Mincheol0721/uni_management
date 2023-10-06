@@ -144,7 +144,7 @@
         		var $job = '<%=job%>';
         		var $input = $('#writeBtn');
         		
-        		if($id == null) {
+        		if($id == 'null') {
         			$input.hide();
         		} 
         		

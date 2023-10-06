@@ -59,7 +59,7 @@
 					}
         		});//대분류 셀렉트 옵션태그
         		
-        		if($job != '교직원') {
+        		if($job == '학생' || $id == 'null') {
         			alert('관리자만 접근가능한 페이지입니다.');
         			location.href = $path + '/index.jsp';
         		}

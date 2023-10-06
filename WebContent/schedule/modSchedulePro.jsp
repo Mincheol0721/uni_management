@@ -14,6 +14,13 @@
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
 	String sclass = request.getParameter("sclass");
+	String startDate = request.getParameter("startDate");
+	String endDate = request.getParameter("endDate");
+	String sdate = startDate + " ~ " + endDate;
+	
+	System.out.println("startDate: " + startDate);
+	System.out.println("endDate: " + endDate);
+	System.out.println("sdate: " + sdate);
 	
 	//수정할 내용 ScheduleDTO객체에 저장
 	ScheduleDTO dto = new ScheduleDTO();
@@ -21,6 +28,7 @@
 	dto.setTitle(title);
 	dto.setContent(content);
 	dto.setSclass(sclass);
+	dto.setSdate(sdate);
 	 
 	//DB작업
 	ScheduleDAO dao = new ScheduleDAO();
