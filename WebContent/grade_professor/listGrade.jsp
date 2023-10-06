@@ -1,3 +1,11 @@
+<%@page import="board_course.BoardPage"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="member.ProfessorDAO"%>
+<%@page import="member.MemberDTO"%>
+<%@page import="grade.GradeDAO"%>
+<%@page import="grade_professor.GradePDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="grade_professor.GradeBean"%>
 <%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.CoursePlanBean"%>
@@ -12,6 +20,97 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <% request.setCharacterEncoding("UTF-8"); %>
+<% 
+//한글처리
+	request.setCharacterEncoding("UTF-8"); 
+
+	//id, 직업 값 얻어오기
+	String id = (String)session.getAttribute("id");
+	String job = (String)session.getAttribute("job");
+	
+//	System.out.println("listGrade.jsp id: " + id);
+//	System.out.println("listGrade.jsp job: " + job);
+
+	// HttpSession 객체를 얻어옴
+	HttpSession sess = request.getSession();
+	GradePDAO dao = new GradePDAO();
+	
+	//------------------------------------------------------------------	
+	// 사용자가 입력한 검색 조건을 Map에 저장
+	Map<String, Object> param = new HashMap<String, Object>();
+	String search = request.getParameter("search");
+	String searchText = request.getParameter("searchText");
+	System.out.println("search : " + search); 
+	System.out.println("searchText : " + searchText);
+	
+	//검색어를 입력 했다면?
+	if (searchText != null) {
+		// 사용자가 입력한 검색 조건을 Map에 저장
+	    param.put("search", search);
+	    param.put("searchText", searchText);
+	}
+	
+	//-------------------------------------------------------------------	
+		
+		//전체 글 개수
+		int totalCount = dao.getBoardCount(param, id); 
+		System.out.println("totalCount: " + totalCount);
+
+		//하나의 화면에 띄워줄 글 개수 10
+		int pageSize = 10;
+		
+		//한 화면(블록)에 출력할 게시물의 개수
+		int blockPage = 5;
+		
+		/*** 페이지 처리 start ***/
+		//단계3. 전체 페이지 수를 계산 합니다.
+		//계산식 : Math.ceil(전체 게시물 수 / 한페이지에 출력할 게시물의 개수)
+		//	    Math.ceil(totalCount / pageSize)
+		//계산 예:
+		//- 게시물 수가 총 105개 이면?
+		//  전체 페이지 수는?   Math.ceil(105/10)   ->  Math.ceil(10.5)  =   전체 페이지 수는  11 이다.
+		int totalPage = (int)Math.ceil((double)totalCount / pageSize); // 전체 페이지 수
+		
+		// 현재 보여지는(현재 클릭한) 페이지 번호를 구합니다.
+		// 처음에는 무조건 1로 설정 해 두고, 클라이언트가 특정 페이지번호를 클릭했을때 요청받는 페이지 번호를 사용합니다.
+		int pageNum = 1;  // 기본값
+		String pageTemp = request.getParameter("pageNum");
+		if (pageTemp != null && !pageTemp.equals(""))
+		    pageNum = Integer.parseInt(pageTemp); // 요청받은 페이지로 수정
+		    
+		//System.out.println("pageNum: " + pageNum);
+		
+		  //단계2. 각 페이지에서 조회해서 출력할 게시물의 범위를 계산합니다.
+		  //계산식 :
+//		  	 범위의 시작값 : (현재페이지-1)*한페이지에 출력할 게시물의 개수 + 1
+//		         범위의 종료값 : (현재페이지 * 한페이지에 출력할 게시물의 개수)
+		  //계산예
+//		  		현재 선택한 페이지번호가 1페이지일때
+//		  					범위의 시작값 (1-1)*10+1 = 1 
+//		  							  10-10 + 1 = 1
+//		  					범위의 종료값 (1*10) = 10
+//		  		현재 선택한 페이지 번호가 2페이지일때
+//		  					범위의 시작값 (2-1)*10+1 = 1
+//		                               20-10 + 1 = 11
+//		  					범위의 종료값 (1*10) = 10
+		      
+	    // 목록에 출력할 게시물 범위 계산
+	    int start = (pageNum - 1) * pageSize + 1;  // 첫 게시물 번호
+	    int end = pageNum * pageSize; // 마지막 게시물 번호
+	    param.put("start", start);
+	    param.put("end", end);
+	    /*** 페이지 처리 end ***/
+		
+		//사용자가 입력한 검색 조건 (searchField,searchWord) 그리고  조회 할 게시물 목록 범위 첫 게시물 번호(시작값),마지막 게시물 번호(종료값)이 
+		//저장된 HashMap을 DAO의 매개변수로 전달해 조회 해 옵니다.
+		List<GradeBean> vectorBoardLists = dao.getList(param, id);   // 게시물 목록 받기	
+		
+		System.out.println("벡터 사이즈 : " + vectorBoardLists.size()); 
+		
+		//날짜 포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+
+	%>
 
 <c:set  var="contextPath"  value="${pageContext.request.contextPath}"/>
 
@@ -30,8 +129,8 @@
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	
-	<script type="text/javascript">
-		 	
+	<script>
+		
 		//초기화시킬 지 한 번 더 확인
  		function resetG(ccode,id){ 		
 
@@ -54,7 +153,6 @@
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-
 			%>		
 			
 			<jsp:useBean id="gradePDAO" class="grade_professor.GradePDAO"/>		
@@ -92,11 +190,40 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">management_grade</li>
                         </ol>
-                        <div class="row">
+                        <form method="get">
+	                       	<select name="search">
+	                       		<option value="c.ccode">과목코드</option>
+	                       		<option value="c.cname">과목명</option>
+	                       		<option value="s.id">학번</option>
+	                       		<option value="s.name">이름</option>                     		                      		                   		
+	                       	</select>
+	                       	<input type="text" name="searchText" id="searchText"/>
+	                       	<input type="submit" value="검색"/>   	                       	
+	                       	
+	                       <%--
+// 							    String loggedInProfessor = (String) session.getAttribute("id");						
+							
+// 							    String professorName = "";
+							
+// 								for(GradeBean bean : vectorBoardLists ){							    	
+							        
+// 							        if (loggedInProfessor.equals(bean.getId())) {
+							        	
+// 							        	// professorName 값을 세션에 저장
+// 							            professorName = bean.getPropId();							            
+// 							            session.setAttribute("professorName", professorName);
+							            
+// 							            break; // 교수명을 찾았으므로 반복문 종료
+// 							        }
+// 							    }
+							--%>                      	
+                    	</form>
+                        <div class="row">                      	
                         	<p class="mb-0">    		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
+	                   	           			<th width=5%>번호</th>
 	                   	           			<th width=5%>과목코드</th> 
 	                   	           			<th width=5%>과목명</th>
 	                   	           			<th width=5%>학번</th>
@@ -110,22 +237,30 @@
                    	           		
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
-                  	           <%	
-                  	           
-                  	        		String loggedInProfessor = (String)session.getAttribute("id");
-                  	           		
-                  	           		List<GradeBean> list = gradePDAO.getGrade(); 
-        	           			
-                  	           		for (int i = 0; i < list.size(); i++) {
+                  	           	<%	
+                  	           		if(vectorBoardLists.isEmpty()) { //등록된 게시물이 없을 때                 	           			
+	                  	        %>
+			                  	    <tr>
+			                  	       <td colspan="10" align="center">
+			                  	        	검색 결과가 없습니다
+			                  	       </td>
+			                  	    </tr>
+				                <%                	           			
+                  	           		}else{
+                  	           	    // 게시물이 있을 때
+                  	           	    int virtualNum = 0;  // 화면상에서의 게시물 번호
+                  	           	    int countNum = 0;
+                  	           	    System.out.println("vectorBoardLists 사이즈 : " + vectorBoardLists.size());
+                  	           		for(GradeBean bean : vectorBoardLists ){
                   	           			
-                  	           		GradeBean bean = list.get(i);
-                  	            
               	           			
-                  	           	%>
-                  	           	<% if(loggedInProfessor != null && loggedInProfessor.equals(bean.getPropId()))  {  
-							    	System.out.println(loggedInProfessor + " : " + bean.getId());							     	
+	                  	           	   // virtualNumber = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
+	                  	           	   virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);	                  	           	   
+             	           	 							     	
 							    %> 
+							    	
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+                  	           			<td><%= virtualNum %></td>
                   	           			<td><%= bean.getCcode() %></td>
                   	           			<td><%= bean.getCname() %></td>
                   	           			<td><%= bean.getId() %></td>
@@ -134,15 +269,29 @@
                   	           			<td><%= bean.getRate() %></td>
 							            <td><a href="modGrade.jsp?ccode=<%= bean.getCcode() %>&id=<%= bean.getId()%>&name=<%= bean.getName()%>">수정</a></td>	
 										<td><a href="javascript:resetG('<%= bean.getCcode()%>','<%=bean.getId()%>')">초기화</a></td>   	           				
-         	           			<% }else{
-         	           				System.out.println(loggedInProfessor + " : " + bean.getPropId());
-         	           			%>	
-							    <% } %>
-         	           				</tr>                 	           		
+         	           				</tr> 
+         	           			<% } %>
+         	           				                	           		
                   	           	<% } %>		
                   	           		</tbody>
      	           										           		                 	           		
                    	           </table>
+                   	           <br>
+                   	           	<div class="datatable-bottom">
+								    <div class="datatable-info">
+								    	전체 학생 수(조회된 학생 수): <%=totalCount%>명
+								    </div>
+								    <nav>
+										<ul class="pagination">																									    	   
+								            <!--페이징 처리   	전체 게시물의 개수,
+								            			 	한페이지에 출력할 게시물의 개수,
+								            				한 화면(블록)에 출력할 페이지 번호의 개수,
+								            			 	현재 보여지는(현재 클릭한) 페이지 번호,
+								            			 	실행된 목록 파일명  -->								           
+									      <%=BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURI()) %>  								           									  	
+									  	</ul>
+									</nav>
+								</div>  
                             </p>
                         </div>
                     </div>
@@ -164,7 +313,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-area-demo.js"></script> 
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>

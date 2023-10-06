@@ -9,8 +9,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import board_course.BoardBean;
-
 public class MoreInfoDAO {
 	
 	//DB작업에 쓰일 객체들을 저장할 변수들

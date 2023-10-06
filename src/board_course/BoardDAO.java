@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 
+
 //DAO(DB연결 후 DB작업하는 클래스)
 public class BoardDAO {
 
@@ -61,15 +62,24 @@ public class BoardDAO {
 	}//자원해제 end
 		
 	//테이블에 저장된 레코드의 개수를 반환하는 메소드
-	public int getBoardCount() {
+	public int getBoardCount(Map<String, Object> map) {
+		
 		int count = 0;
 		String sql = "";
+		
 		try {
 			con = ds.getConnection();
 			
 			sql = "select count(*) from course";
 			
-			pstmt = con.prepareStatement(sql);
+			// 검색어가 존재하는 경우, WHERE 절에 추가
+	        if (map.get("searchText") != null) {
+	            sql += " WHERE " + map.get("search") + " LIKE ?";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, "%" + map.get("searchText") + "%");
+	        } else {
+	            pstmt = con.prepareStatement(sql);
+	        }
 			
 			rs = pstmt.executeQuery();
 			
@@ -84,128 +94,67 @@ public class BoardDAO {
 		}
 		
 		return count;
-	}
-	
-	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
-	//검색어가 없으면? 모든 과목 정보 검색 후 리스트에 뿌려줌
-	public ArrayList<BoardBean> getList(String search, String searchText, int startrow, int pagesize) {
-		
-		//등록된 과목들을 담을 객체
-		ArrayList<BoardBean> list = new ArrayList<BoardBean>();
-		
-		//쿼리를 담을 변수 선언
-		String sql = "";
-		
-		try {
-			
-			//DB연결
-			con = ds.getConnection();
-			if (searchText.equals("") || searchText.equals(null)) {
-				sql = "select * from course order by ccode ASC";
-			}else {
-				sql = "select * from course where " + search + " like '%"+searchText+"%'";
-			}
-			
-			sql += " limit ?, ?";
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, pagesize);
-			
-			rs = pstmt.executeQuery();
-			
-			//rs객체에 담겨있음 -> 컬렉션 객체에 담기
-			while(rs.next()) {
-				
-				BoardBean bean = new BoardBean();
-				
-				//하나씩 저장
-				bean.setCcode(rs.getInt("ccode"));
-				bean.setCname(rs.getString("cname"));
-				bean.setCompdiv(rs.getString("compdiv"));
-				bean.setCompyear(rs.getInt("compyear"));
-				bean.setCompsem(rs.getInt("compsem"));
-				bean.setGrade(rs.getInt("grade"));
-				bean.setProfessor(rs.getString("professor"));
-				bean.setDay(rs.getString("day"));
-				bean.setStarttime(rs.getInt("starttime"));
-				bean.setEndtime(rs.getInt("endtime"));
-				
-				list.add(bean);				
-				
-			}
-			
-			System.out.println("과목 조회 sql구문 실행 완료");
-					
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			 freeResource();
-		}
+	}//getBoardCount end
 
-		return list;		
-			
-		}//getList end
-	
-	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
-	//검색어가 없으면? 모든 과목 정보 검색 후 리스트에 뿌려줌
-	public ArrayList<BoardBean> getList(int startrow, int pagesize) {
-		
-		System.out.println("getList int");
-		//등록된 과목들을 담을 객체
-		ArrayList<BoardBean> list = new ArrayList<BoardBean>();
-		
-		//쿼리를 담을 변수 선언
-		String sql = "";
-		
-		try {
-			
-			//DB연결
-			con = ds.getConnection();
-			
-			sql = "select * from course order by ccode ASC limit ?, ?";
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, startrow);
-			pstmt.setInt(2, pagesize);
-			
-			
-			rs = pstmt.executeQuery();
-			
-			//rs객체에 담겨있음 -> 컬렉션 객체에 담기
-			while(rs.next()) {
-				
-				BoardBean bean = new BoardBean();
-				
-				//하나씩 저장
-				bean.setCcode(rs.getInt("ccode"));
-				bean.setCname(rs.getString("cname"));
-				bean.setCompdiv(rs.getString("compdiv"));
-				bean.setCompyear(rs.getInt("compyear"));
-				bean.setCompsem(rs.getInt("compsem"));
-				bean.setGrade(rs.getInt("grade"));
-				bean.setProfessor(rs.getString("professor"));
-				bean.setDay(rs.getString("day"));
-				bean.setStarttime(rs.getInt("starttime"));
-				bean.setEndtime(rs.getInt("endtime"));
-				bean.setId(rs.getString("id"));
-				
-				list.add(bean);				
-				
-			}
-			
-			System.out.println("과목 조회 sql구문 실행 완료");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+	// 검색 조건에 맞는 게시물 목록을 반환합니다.
+    public List<BoardBean> getList(Map<String, Object> map) { 
+        List<BoardBean> vector = new Vector<BoardBean>();  // 결과(게시물 목록)를 담을 변수
+
+        // 쿼리문 템플릿  
+        String query = "SELECT * FROM ( " +
+        	    	   "SELECT *, ROW_NUMBER() OVER (ORDER BY ccode ASC) AS rNum " +
+        	    	   "FROM course ";
+        
+        //입력한 검색어가 있다면 WHERE 절이 추가 되도록  if문을 중간에 추가 하고
+        if (map.get("searchText") != null) {
+            query += " WHERE " + map.get("search")
+                   + " LIKE '%" + map.get("searchText") + "%' ";
+        }
+        
+        query += ") AS Tb "+
+    			 "WHERE rNum BETWEEN ? AND ?"; // 시작 게시물과 끝 게시물을 조회 범위를 정하는 BETWEEN 부분 ? 로 설정 
+           
+        System.out.println(query);
+        
+        
+        try {
+        	con = ds.getConnection();
+        	pstmt = con.prepareStatement(query);  // 쿼리문 생성
+        	pstmt.setString(1, map.get("start").toString());
+            pstmt.setString(2, map.get("end").toString());     	
+        	
+        	rs = pstmt.executeQuery();  // 쿼리 실행
+
+            while (rs.next()) {  // 결과를 순화하며...
+	           // 한 행(게시물 하나)의 내용을 bean에 저장
+	           BoardBean bean = new BoardBean(); 
+
+           	   //하나씩 저장 
+	           bean.setCcode(rs.getInt("ccode"));
+        	   bean.setCname(rs.getString("cname"));
+        	   bean.setCompdiv(rs.getString("compdiv"));
+        	   bean.setCompyear(rs.getInt("compyear"));
+        	   bean.setCompsem(rs.getInt("compsem")); 
+        	   bean.setGrade(rs.getInt("grade"));
+        	   bean.setProfessor(rs.getString("professor"));
+        	   bean.setDay(rs.getString("day")); 
+        	   bean.setStarttime(rs.getInt("starttime"));
+        	   bean.setEndtime(rs.getInt("endtime")); 
+        	   bean.setId(rs.getString("id"));
+
+        	   vector.add(bean);
+            }
+        } 
+        catch (Exception e) {
+            System.out.println("검색 조회 중 예외 발생");
+            e.printStackTrace();
+        }finally {
 			freeResource();
 		}
-		
-		return list;		
-		
-	}//getList end
-		
+
+        return vector;
+    }//getList end	
+    
 	//DB로부터 모든 과목들의 정보를 가져오는 메소드(조회)
 	public ArrayList<BoardBean> getList() {
 		

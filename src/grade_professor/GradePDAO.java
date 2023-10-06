@@ -4,13 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import courseList.CourseBean;
-import courseList.MoreInfoBean;
+import com.mysql.cj.Session;
+
+import board_course.BoardBean;
+
 
 public class GradePDAO {
 
@@ -53,65 +59,126 @@ public class GradePDAO {
 				e.printStackTrace();
 			}
 			
-	}//자원해제 end
+	}//자원해제 end	
 		
-	//DB로부터 본인의 모든 강의에 대한 학생들의 성적을 조회
-	public ArrayList<GradeBean> getGrade() {
+	//테이블에 저장된 레코드의 개수를 반환하는 메소드
+	public int getBoardCount(Map<String, Object> map, String id) {
 		
-		//등록된 과목들을 담을 객체
-		ArrayList<GradeBean> list = new ArrayList<GradeBean>();
-		
-		//쿼리를 담을 변수 선언
-		String sql = "";	
+		int count = 0;
+		String sql = "";
+		System.out.println("id : " + id);
 		
 		try {
-			
-			//DB연결
 			con = ds.getConnection();
 			
-			//sql문
-			sql = "SELECT c.ccode, c.cname, c.id AS propid, s.name AS student_name, ch.rate, ch.grade, s.id AS student_id " +
-		             "FROM course c " +
-		             "INNER JOIN cHistory ch ON c.ccode = ch.ccode " +
-		             "INNER JOIN student s ON ch.id = s.id";
-
-
-			//DB에 쿼리문 문자열 전송
-			pstmt = con.prepareStatement(sql);
-	        
-			//쿼리 실행
+			sql = "SELECT count(*) AS count, c.ccode AS ccode, c.cname AS cname, s.id AS id, s.name AS name, ch.grade AS grade, ch.rate AS rate " + 
+				  "FROM student AS s " +
+				  "JOIN cHistory AS ch ON s.id = ch.id " +
+				  "JOIN course c ON ch.ccode = c.ccode " +
+				  "WHERE c.id = ? ";
+			
+			// 검색어가 존재하는 경우, WHERE 절에 추가
+	        if (map.get("searchText") != null) {
+	            sql += " AND c." + map.get("search") + " LIKE ?"; //AND c.ccode
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, id);
+	            pstmt.setString(2, "%" + map.get("searchText") + "%");
+	        } else {
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, id);
+	        }
+			System.out.println("sql문: " + sql);
 			rs = pstmt.executeQuery();
 			
-			//rs객체에 담겨있음 -> 컬렉션 객체에 담기
-			while(rs.next()) {
-				
-				GradeBean bean = new GradeBean();
-				
-				//하나씩 저장
-				bean.setCcode(rs.getInt("ccode"));
-				bean.setCname(rs.getString("cname"));
-				bean.setId(rs.getString("student_id"));
-				bean.setName(rs.getString("student_name"));
-				bean.setGrade(rs.getInt("grade"));
-				bean.setRate(rs.getString("rate"));
-				bean.setPropId(rs.getString("propid"));
-				
-				list.add(bean);
-									
-			}			
-			
-			System.out.println("성적 조회 sql구문 실행 완료");
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("GradePDAO내부의 getBoardCount메소드에서 예외 발생: " + e);
 		} finally {
-			 freeResource();
+			freeResource();
 		}
+		
+		return count;
+	}//getBoardCount end
+	
+	// 검색 조건에 맞는 게시물 목록을 반환합니다.
+	public List<GradeBean> getList(Map<String, Object> map, String id) { 
+	    List<GradeBean> vector = new Vector<GradeBean>();  // 결과(게시물 목록)를 담을 변수
+	    System.out.println("id : " + id);
+	    System.out.println("map_search : " + map.get("search"));	   
+	    System.out.println("map_searchText : " + map.get("searchText"));
 
-		return list;
-	
-	}//조회 end	
-	
+	    String sql = "SELECT * FROM ("
+	    	    	+ "SELECT c.ccode AS ccode, c.cname AS cname, s.id AS id, s.name AS name, ch.grade AS grade, ch.rate AS rate, "
+	    	    	+ "ROW_NUMBER() OVER (ORDER BY ccode ASC) AS rNum "
+	    	    	+ "FROM student AS s "
+	    	    	+ "JOIN cHistory AS ch ON s.id = ch.id "
+	    	    	+ "JOIN course c ON ch.ccode = c.ccode "
+	    	    	+ "WHERE c.id = ? ";
+
+	    	if (map.get("searchText") != null) {
+	    	    sql += "AND (";
+	    	    	if(map.get("search") != null && map.get("search").equals("s.id")) {
+	    	    		
+	    	    		sql += " s.id LIKE '%" + map.get("searchText") + "%' ";
+	    	    		
+	    	    	}else if(map.get("search") != null && map.get("search").equals("s.name")) {
+	    	    		
+	    	    		sql += " s.name LIKE '%" + map.get("searchText") + "%' ";
+	    	    		
+	    	    	}else if(map.get("search") != null && map.get("search").equals("c.cname")) {
+	    	    		
+						sql += " c.cname LIKE '%" + map.get("searchText") + "%' ";
+
+	    	    	}else if(map.get("search") != null && map.get("search").equals("c.ccode")) {
+	    	    		
+						sql += " c.ccode LIKE '%" + map.get("searchText") + "%' ";
+
+	    	    	}
+	    	    		    	        
+	    	    	sql += ") ";
+	    	}
+
+	    	sql += ") AS Tb WHERE rNum BETWEEN ? AND ?";
+	    
+	    System.out.println(sql);
+	    
+	    try {
+	        con = ds.getConnection();
+	        pstmt = con.prepareStatement(sql);  // 쿼리문 생성   
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, map.get("start").toString());
+            pstmt.setString(3, map.get("end").toString());
+	        
+	        rs = pstmt.executeQuery();  // 쿼리 실행
+
+	        while (rs.next()) {  // 결과를 순화하며...
+	           // 한 행(게시물 하나)의 내용을 bean에 저장
+	           GradeBean bean = new GradeBean(); 
+
+	           // 하나씩 저장 
+	           bean.setCcode(rs.getInt("ccode"));
+	           bean.setCname(rs.getString("cname"));
+	           bean.setId(rs.getString("id"));
+	           bean.setName(rs.getString("name"));
+	           bean.setGrade(rs.getInt("grade"));
+	           bean.setRate(rs.getString("rate"));
+	           
+	           vector.add(bean);
+	        }
+	    } 
+	    catch (Exception e) {
+	        System.out.println("성적 검색 조회 중 예외 발생");
+	        e.printStackTrace();
+	    } finally {
+	        freeResource();
+	    }
+
+	    return vector;
+	}//getList end
+
 	//점수와 등급을 0과 "-"로 초기화시키는 기능의 메소드
 	public void resetGradeAndRate(int ccode, String id) {
 		
