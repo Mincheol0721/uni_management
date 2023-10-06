@@ -155,15 +155,35 @@
         	    var rateP = $("input[name='rate']");
         	   
         	    if (!isNaN(gradeP)) { // 입력이 유효한 숫자인지 확인합니다. (isNaN함수 : 매개변수가 숫자인지 검사하는 함수//is Not A Number?)
-        	        if (gradeP >= 90) {
-        	            rateP.val("A");
-        	        } else if (gradeP >= 80) {
-        	            rateP.val("B");
-        	        } else if (gradeP >= 70) {
-        	            rateP.val("C");
-        	        } else {
-        	            rateP.val("F");
-        	        }
+        	    	
+        	    	//95부터 5단위로 절대 평가 기준 등급을 나눠 측정합니다.        	    	
+        	    	if (gradeP >= 95) {       	    		 
+        	            rateP.val("A+");
+        	            
+        	        } else if (gradeP >= 90) {
+       	                rateP.val("A");
+       	                
+       	            } else if (gradeP >= 85) {
+       	                rateP.val("B+");
+       	                
+       	            } else if (gradeP >= 80) {
+       	                rateP.val("B");
+       	                
+       	            } else if (gradeP >= 75) {
+       	                rateP.val("C+");
+       	                
+       	            } else if (gradeP >= 70) {
+       	                rateP.val("C");
+       	                
+       	            } else if (gradeP >= 65) {
+       	                rateP.val("D+");
+       	                
+       	            } else if (gradeP >= 60) {
+       	                rateP.val("D");
+       	                
+       	            } else { // 59이하의 점수를 받을 경우 F를 받습니다.
+       	                rateP.val("F");
+       	            }       	    
         	    } else {
         	        // 입력이 유효하지 않을 경우(잘못 입력)
         	        alert("유효한 점수를 입력하세요.");       	        
