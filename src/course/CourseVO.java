@@ -7,13 +7,14 @@ public class CourseVO {
 	private int compyear; // 1학년 ~ 4학년 필수 입력 , 꼭 그학년이어야만 하는건 아님
 	private int compsem; // 1학기,2학기 중 선택 입력
 	private int grade; // 1점 ~ 3점 선택
+	private String day; //요일
 	private String professor;
 	private String startTime; // 강의 시작 교시
 	private String endTime; // 강의 끝 교시
 	
 	
 	public CourseVO(int ccode, String cname, String compdiv, int compyear, int compsem, int grade, String professor,
-			String startTime, String endTime) {
+			String startTime, String endTime,String day) {
 		super();
 		this.ccode = ccode;
 		this.cname = cname;
@@ -24,6 +25,7 @@ public class CourseVO {
 		this.professor = professor;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.day = day;
 	}
 
 	
@@ -116,6 +118,18 @@ public class CourseVO {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+
+
+	public String getDay() {
+		return day;
+	}
+
+
+
+	public void setDay(String day) {
+		this.day = day;
 	}
 	
 	

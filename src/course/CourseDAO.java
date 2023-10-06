@@ -93,9 +93,9 @@ public class CourseDAO {
 					String professor = rs.getString("professor");//조회한 담당교수
 					String startTime = rs.getString("starttime");
 					String endTime = rs.getString("endTime");
+					String day = rs.getString("day");
 					
-					
-					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor,startTime,endTime);
+					CourseVO bfbb = new CourseVO(ccode,cname,compdiv,compyear,compsem,grade,professor,startTime,endTime,day);
 																
 									  
 					boardList.add(bfbb);//ArrayList배열에  추가
