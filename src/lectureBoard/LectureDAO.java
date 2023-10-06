@@ -253,6 +253,8 @@ public void insertBoard(LectureVO lecVO) {
 					
 		} catch (Exception e) {
 			System.out.println("LectureDAO의 클래스의 getUPdateBoard메소드의 sql문 오류 발생" + e);
+		}finally {
+			freeResource();
 		}
 		return check;
 	}
