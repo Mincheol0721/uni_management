@@ -21,5 +21,5 @@
 </ul>
 
 <script>
-	sessionStorage.setItem('id', ${id}); 
+	sessionStorage.setItem('id', '${id}'); 
 </script>
