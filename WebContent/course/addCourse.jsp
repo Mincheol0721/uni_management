@@ -140,8 +140,7 @@
 	
  		%>   
    
-   
-   		
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <jsp:include page="/inc/logo.jsp" />
         </nav>
@@ -150,8 +149,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <jsp:include page="/inc/menu.jsp" />
                 </nav>
-            </div>
-            
+            </div>           
             <div id="layoutSidenav_content">
                 <main>
                 	<form action="addCourse.jsp" method="POST">

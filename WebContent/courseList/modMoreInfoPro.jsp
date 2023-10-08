@@ -5,11 +5,6 @@
 <%
 	//한글처리
 	request.setCharacterEncoding("UTF-8");
-
-%>
-
-
-<%
 	
 // 	System.out.println("Pro타는중... week=" + request.getParameter("week"));
 

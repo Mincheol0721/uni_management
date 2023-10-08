@@ -1,3 +1,6 @@
+<%@page import="board_course.BoardPage"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="courseList.CoursePlanDAO"%>
 <%@page import="courseList.CoursePlanBean"%>
@@ -22,36 +25,77 @@
 //	System.out.println("courseList_professor.jsp job: " + job);
 	 
 	CourseDAO dao = new CourseDAO();
-	CourseBean bean = new CourseBean();
-	List<CourseBean> list = null; 
+	//------------------------------------------------------------------	
+	// 사용자가 입력한 검색 조건을 Map에 저장
+	Map<String, Object> param = new HashMap<String, Object>();
+	String search = request.getParameter("search");
+	String searchText = request.getParameter("searchText");
+	System.out.println(search);
+	System.out.println(searchText);
 	
-	//전체 글 개수
-	int count = dao.getBoardCount();  
-//	System.out.println("count: " + count);
-	//하나의 화면에 띄워줄 글 개수 10
-	int pageSize = 10;
-	
-	//현재 보여질 페이지번호 가져오기
-	String pageNum = request.getParameter("pageNum");
-	
-	//현재 보여질 페이지 번호가 없으면 1페이지 처리
-	if(pageNum == null) {
-		pageNum = "1";
+	//검색어를 입력 했다면?
+	if (searchText != null) {
+		// 사용자가 입력한 검색 조건을 Map에 저장
+	    param.put("search", search);
+	    param.put("searchText", searchText);
 	}
-//	System.out.println("pageNum: " + pageNum);
-	
-	//현재 보여질 페이지 번호 "1"을 기본정수 1로 변환
-	int currentPage = Integer.parseInt(pageNum);
-//	System.out.println("currentPage: " + currentPage);
-	
-	//각 페이지마다 맨 위에 보여질 시작 글번호 구하기
-	//(현재 보여질 페이지 번호 - 1) * 한페이지당 보여줄 글 개수
-	int startRow = (currentPage - 1) * pageSize;
-//	System.out.println("startRow: " + startRow);
-	
-	
-	//날짜 포맷
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd"); 
+	//-------------------------------------------------------------------	
+		
+		//전체 글 개수
+		int totalCount = dao.getBoardCount(param); 
+		//System.out.println("count: " + count);
+
+		//하나의 화면에 띄워줄 글 개수 10
+		int pageSize = 10;
+		
+		//한 화면(블록)에 출력할 게시물의 개수
+		int blockPage = 5;
+		
+		/*** 페이지 처리 start ***/
+		//단계3. 전체 페이지 수를 계산 합니다.
+		//계산식 : Math.ceil(전체 게시물 수 / 한페이지에 출력할 게시물의 개수)
+		//	    Math.ceil(totalCount / pageSize)
+		//계산 예:
+		//- 게시물 수가 총 105개 이면?
+		//  전체 페이지 수는?   Math.ceil(105/10)   ->  Math.ceil(10.5)  =   전체 페이지 수는  11 이다.
+		int totalPage = (int)Math.ceil((double)totalCount / pageSize); // 전체 페이지 수
+		
+		// 현재 보여지는(현재 클릭한) 페이지 번호를 구합니다.
+		// 처음에는 무조건 1로 설정 해 두고, 클라이언트가 특정 페이지번호를 클릭했을때 요청받는 페이지 번호를 사용합니다.
+		int pageNum = 1;  // 기본값
+		String pageTemp = request.getParameter("pageNum");
+		if (pageTemp != null && !pageTemp.equals(""))
+		    pageNum = Integer.parseInt(pageTemp); // 요청받은 페이지로 수정
+		    
+		//System.out.println("pageNum: " + pageNum);
+		
+		  //단계2. 각 페이지에서 조회해서 출력할 게시물의 범위를 계산합니다.
+		  //계산식 :
+//		  	 범위의 시작값 : (현재페이지-1)*한페이지에 출력할 게시물의 개수 + 1
+//		         범위의 종료값 : (현재페이지 * 한페이지에 출력할 게시물의 개수)
+		  //계산예
+//		  		현재 선택한 페이지번호가 1페이지일때
+//		  					범위의 시작값 (1-1)*10+1 = 1 
+//		  							  10-10 + 1 = 1
+//		  					범위의 종료값 (1*10) = 10
+//		  		현재 선택한 페이지 번호가 2페이지일때
+//		  					범위의 시작값 (2-1)*10+1 = 1
+//		                               20-10 + 1 = 11
+//		  					범위의 종료값 (1*10) = 10
+		      
+	    // 목록에 출력할 게시물 범위 계산
+	    int start = (pageNum - 1) * pageSize + 1;  // 첫 게시물 번호
+	    int end = pageNum * pageSize; // 마지막 게시물 번호
+	    param.put("start", start);
+	    param.put("end", end);
+	    /*** 페이지 처리 end ***/ 
+		
+		//사용자가 입력한 검색 조건 (searchField,searchWord) 그리고  조회 할 게시물 목록 범위 첫 게시물 번호(시작값),마지막 게시물 번호(종료값)이 
+		//저장된 HashMap을 DAO의 매개변수로 전달해 조회 해 옵니다.
+		List<CourseBean> vectorBoardLists = dao.getList(param);   // 게시물 목록 받기	
+		
+		//날짜 포맷
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
 %>
 
@@ -72,83 +116,18 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
    		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> 
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  	<script> 
- 				
- 		$(function(){
- 			
- 			//검색어를 입력하는 <input>을 가져와 클릭 이벤트가 발생했을 때 실행되게 선언
- 			$("#searchText").on("keyup", function(){
- 				
- 				//listCourse.jsp 서버페이지로 요청할 값 얻기
- 				//검색 기준값 얻기
- 				var search = $("select[name=search]").val();
- 				
- 				//입력한 검색어 값 얻기
- 				var searchText = $(this).val();
- 				
- 				//서버페이지(listCourse.jsp)로 AJAX비동기 방식으로 요청해서 응답 받기
- 				$.ajax({
- 					
- 					//SearchServlet.java 서블릿 페이지로 검색 요청!
- 					url : '<%=request.getContextPath()%>/search.do',
- 					type : 'post',
- 					data : {search:search, searchText:searchText},
- 					dataType : 'json',
- 					success : function(data){
- 						
- 						console.log(data);
- 						
- 						//서버로부터 받아온 데이터를 동적으로 표시
- 						var $resultsTable = $('#results');
- 						
- 						//이전에 조회된 <tr>태그 요소들은 <tbody>요소 영역에서 삭제
- 						$resultsTable.empty();
- 						
- 						if(data.length > 0){
- 							
- 							$.each(data, function(index, coursebean){
- 								
- 								$resultsTable.append(
- 										
- 								"<tr align='center' style='border-bottom: 1px, solid, lightgrey;'>" + 
- 									"<td width=5%><a href='#'>" + "강의 계획서"  + "</a></td>" +
- 									"<td width=4%>" + coursebean.grade + "학점" + "</td>" +
- 									"<td width=4%>" + coursebean.compyear + "학년" + "</td>" + 
-               	           			"<td width=4%>" + coursebean.compsem + "학기" + "</td>" +              	           			
-               	                 	"<td width='5%'><a href='moreInfo_student.jsp?cname=" + encodeURIComponent(coursebean.cname) + "' id='moreInfo'>" + coursebean.cname + "</a></td>" +
-               	           			"<td width=5%>" + coursebean.professor + "</td>"  + 
-               	           			"<td width=5%>" + coursebean.compdiv + "</td>" +         			                	           			
- 								"</tr>"							
- 								);
-								
- 							});
- 							
- 						}else{
- 							
- 							$resultsTable.append("<tr><td colpsan='8' style='text-align:center;'>검색 결과가 없습니다.</td></tr>")
- 						}											
- 					}					 					
- 				});								
- 			}); 			
- 		});
-
- 	</script>
  	
- 		<style>     	   	  	
-		  a {text-decoration-line: none;}			
-    	</style>
- 	
+	<style>     	   	  	
+	  a {text-decoration-line: none;}			
+   	</style>
+	
     </head>
     <body class="sb-nav-fixed">    
         	<%
 				//한글처리
 				request.setCharacterEncoding("UTF-8");	
-        	
-        		String search = request.getParameter("search");
-        		String searchText = request.getParameter("searchText");
-
 			%>		
-			
+						
 			<jsp:useBean id="courseDAO" class="courseList.CourseDAO"/>		
 			<jsp:useBean id="coursePlanDAO" class="courseList.CoursePlanDAO"/>	
 					
@@ -185,7 +164,7 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">courseList_student</li>
                         </ol>
-                        <form action="courseList.jsp" method="post">
+                        <form method="get">
                         	<select name="search">
                         		<option value="grade">학점</option>
                         		<option value="compyear">이수학년</option>
@@ -194,14 +173,16 @@
                         		<option value="professor">담당교수</option> 
                         		<option value="compdiv">이수구분</option>            		                      		                      		                   		
                         	</select>
-                        	<input type="text" name="searchText" id="searchText"/>                    
+                        	<input type="text" name="searchText" id="searchText"/>   
+                        	<input type="submit" value="검색"/>                   
                         </form>
                         <div class="row">
                         	<p class="mb-0">    		
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">
-	                   	           			<td width=5%></td> 
+	                   	           			<th width=5%>번호</th> 
+	                   	           			<th width=5%>강의 계획서</th> 
 	                   	           			<th width=4%>학점</th>
 	                   	           			<th width=4%>이수학년</th>
 	                   	           			<th width=4%>이수학기</th>
@@ -214,15 +195,26 @@
                   	           		<%-- 과목 리스트 --%>
                   	           		<tbody id="results">
                   	           <%	
-                  	           		list = courseDAO.getList(); 
-        	           			
-                  	           		for (int i = 0; i < list.size(); i++) {
+                  	           		if(vectorBoardLists.isEmpty()) { //등록된 게시물이 없을 때                  	           			
+	                  	        %>
+			                  	    <tr>
+			                  	       <td colspan="10" align="center">
+			                  	        	검색 결과가 없습니다
+			                  	       </td>
+			                  	    </tr>
+				                <%
                   	           			
-                  	                bean = list.get(i);
-                  	            
+                  	           		}else{
+                  	           	    // 게시물이 있을 때
+                  	           	    int virtualNum = 0;  // 화면상에서의 게시물 번호
+                  	           	    int countNum = 0;
+                  	           		for(CourseBean bean : vectorBoardLists ){
               	           			
-                  	           	%>
+	                  	           	   // virtualNumber = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
+	                  	           	   virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);	                  	           	   
+	                  	        %>
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
+                  	           			<td><%= virtualNum %></td>
                   	           			<td><a href='<%=request.getContextPath()%>/student/cPlan.jsp?cname=<%=bean.getCname()%>'>강의 계획서</a></td>
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
@@ -234,76 +226,27 @@
                   	           	
                   	           	<%
                   	           	
-                  	           		}
+                  	           		} }
                   	           		
                   	            %>		
                   	           		</tbody>
      	           										           		                 	           		
                    	           </table>
-                   	                             	           <br>
-                   	           	<div class="datatable-bottom">
+                   	           <br>
+                   	           <div class="datatable-bottom">
 
 								    <div class="datatable-info">
-								    	전체 강의: <%=count%>개
+								    	전체 세부강의(조회된 세부강의): <%=totalCount%>개
 								    </div>
 								    <nav>
-										<ul class="pagination">
-<%
-								    	//전체 페이지 수 구하기
-										//전체 페이지 수 = 전체 글 / 한페이지에 보여줄 글 수 + (전체 글 수를 한페이지에 보여줄 글수로 나눈 나머지 값)
-										int pageCount = count / pageSize + (count%pageSize == 0 ? 0:1);
-										//한 화면에 보여줄 페이지 수 설정
-										int pageBlock = 5;
-										
-										//시작페이지 번호 구하기
-										//( 현재 보여질 페이지 번호 / 한 블럭에 보여줄 페이지 수 ) - ( 현재 보여질 페이지 번호 % 한 화면에 보여줄 페이지수 == 0 ? 1:0 )
-										// * 한 블럭에 보여줄 페이지 수 + 1
-										int startPage = ( (currentPage / pageBlock) - (currentPage % pageBlock == 0 ? 1 : 0) ) * pageBlock + 1;
-										
-										//끝페이지 번호 구하기
-										int endPage = startPage + pageBlock - 1;
-										//끝 페이지 번호가 전체 페이지수보다 클 때
-										if(endPage > pageCount) {
-											endPage = pageCount;
-										}
-										/* 
-										System.out.println("startPage: " + startPage);
-										System.out.println("pageBlock: " + pageBlock);
-										System.out.println("pageCount: " + pageCount);
-										System.out.println("endPage: " + endPage);
-										 */
-										//[이전] 시작 페이지 번호가 한 화면에 보여줄 페이지수보다 클 때
-										if(startPage > pageBlock) {
-%>
-											<li class="page-item">
-								    			<a href="courseList_professor.jsp?pageNum=<%=startPage - pageBlock%>" class="page-link">‹</a>
-								    		</li>
-<%
-										}
-										
-										for(int i = startPage; i <= endPage; i++) {
-											if(i == currentPage) {
-%>											
-								    			<li class="page-item active"><a href="courseList_professor.jsp?pageNum=<%=currentPage%>" class="page-link"><%=currentPage %></a></li>
-<%
-											} else {
-%>	
-								    			<li class="page-item"><a href="courseList_professor.jsp?pageNum=<%=i%>" class="page-link"><%=i %></a></li>
-<%	
-											}
-										
-										}
-										//[다음] 끝페이지 번호가 전체 페이지수 보다 작을 때
-										if(endPage < pageCount) {
-%>													
-											<li class="page-item">
-								    			<a href="courseList_professor.jsp?pageNum=<%=startPage + pageBlock%>" class="page-link">›</a>
-								    		</li>
-<%													
-										}
-										
-%>
-								    	</ul>
+										<ul class="pagination">																									    	   
+								            <!--페이징 처리   	전체 게시물의 개수,
+								            			 	한페이지에 출력할 게시물의 개수,
+								            				한 화면(블록)에 출력할 페이지 번호의 개수,
+								            			 	현재 보여지는(현재 클릭한) 페이지 번호,
+								            			 	실행된 목록 파일명  -->									         
+									      <%=BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURI()) %>  								           									  	
+									  	</ul>
 									</nav>
 								</div>
                             </p>

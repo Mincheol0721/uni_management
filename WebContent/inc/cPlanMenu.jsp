@@ -76,8 +76,10 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="#">하위메뉴1</a>
-	                    <a class="nav-link" href="#">하위메뉴2</a>
+	                    <a class="nav-link" href="${path}/course/listCourse.jsp">전체강의 관리</a>
+                    	<a class="nav-link" href="${path}/courseList/courseList_professor.jsp">세부강의 관리</a>
+                    	<a class="nav-link" href="${path}/grade_professor/listGrade.jsp?propId=${sessionScope.id}">성적 관리 게시판</a>	                    	                    
+                    	<a class="nav-link" href="${path}/homework/homework.jsp?propId=${sessionScope.id}">과제 확인 게시판</a> 
 	                </nav>
 	            </div>
 			</c:when>
@@ -88,8 +90,8 @@
 	            </a>
 	            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                <nav class="sb-sidenav-menu-nested nav">
-	                    <a class="nav-link" href="#">하위메뉴1</a>
-	                    <a class="nav-link" href="#">하위메뉴2</a>
+	                 	<a class="nav-link" href="#">하위메뉴1</a>
+	                    <a class="nav-link" href="#">하위메뉴2</a>                	
 	                </nav>
 	            </div>
 			</c:when>

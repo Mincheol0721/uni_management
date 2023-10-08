@@ -251,14 +251,11 @@
                   	           	    int virtualNum = 0;  // 화면상에서의 게시물 번호
                   	           	    int countNum = 0;
                   	           	    System.out.println("vectorBoardLists 사이즈 : " + vectorBoardLists.size());
-                  	           		for(GradeBean bean : vectorBoardLists ){
-                  	           			
+                  	           		for(GradeBean bean : vectorBoardLists ){                	           			
               	           			
 	                  	           	   // virtualNumber = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
-	                  	           	   virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);	                  	           	   
-             	           	 							     	
-							    %> 
-							    	
+	                  	           	   virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);	                  	           	               	           	 							     	
+							    %> 							    	
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
                   	           			<td><%= virtualNum %></td>
                   	           			<td><%= bean.getCcode() %></td>

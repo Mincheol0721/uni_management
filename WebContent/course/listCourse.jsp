@@ -217,7 +217,7 @@
                   	           		if(vectorBoardLists.isEmpty()) { //등록된 게시물이 없을 때                 	           			
 	                  	        %>
 			                  	    <tr>
-			                  	       <td colspan="10" align="center">
+			                  	       <td colspan="11" align="center">
 			                  	        	검색 결과가 없습니다
 			                  	       </td>
 			                  	    </tr>

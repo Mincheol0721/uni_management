@@ -179,7 +179,8 @@
                    	           <table border="1" style="border-collapse: collapse; border-color: lightgrey;" id="resultsTable" class="table table-striped">                  	      
                    	           		<thead>
 	                   	           		<tr bgcolor="lightgrey" align="center">	
-	                   	           			<th width=3%>번호</th>                 	           			 
+	                   	           			<th width=3%>번호</th>   
+	                   	           			<th width=5%>강의 계획서</th>              	           			 
 	                   	           			<th width=4%>학점</th>
 	                   	           			<th width=4%>이수학년</th>
 	                   	           			<th width=4%>이수학기</th>
@@ -213,7 +214,8 @@
 	                  	        %>
                   	           
                   	           		<tr align="center" style="border-bottom: 1px, solid, lightgrey;">
-                  	           			<td><%= virtualNum %></td>                  	           			
+                  	           			<td><%= virtualNum %></td> 
+                  	           			<td><a href='<%=request.getContextPath()%>/courseList/cPlanMod.jsp?cname=<%=bean.getCname()%>&compdiv=<%=bean.getCompdiv()%>'>강의 계획서</a></td>                 	           			                 	           			
                   	           			<td><%= bean.getGrade() %>학점</td>
                   	           			<td><%= bean.getCompyear() %>학년</td>
                   	           			<td><%= bean.getCompsem() %>학기</td>                 	           			

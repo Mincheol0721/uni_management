@@ -6,9 +6,6 @@
 	//한글처리
 	request.setCharacterEncoding("UTF-8");
 
-%>
-
-<%
 	int week = Integer.parseInt(request.getParameter("week"));
 	int sess = Integer.parseInt(request.getParameter("session"));
 	int num = Integer.parseInt(request.getParameter("num"));

@@ -1,3 +1,4 @@
+<%@page import="cPlan.CplanDAO"%>
 <%@page import="member.EmployeeDAO"%>
 <%@page import="member.StudentDAO"%>
 <%@page import="member.ProfessorDAO"%>
@@ -8,6 +9,8 @@
 <%!
 	String job;
 	String id;
+	String cname;
+	int check;
 	
 	MemberDTO dto;
 %>
@@ -19,6 +22,12 @@
 	id = (String)session.getAttribute("id");
 	
 	dto = new MemberDTO();
+	
+	cname = request.getParameter("cname");
+	
+	CplanDAO cplan = new CplanDAO();
+	check = cplan.cHistoryCheck(id, cname);
+	//out.print(check);
 	
 	if(id != null) {
 		ProfessorDAO pdao = new ProfessorDAO();
@@ -70,7 +79,8 @@
 	                <nav class="sb-sidenav-menu-nested nav">
 	                    <a class="nav-link" href="${path}/course/listCourse.jsp">전체강의 관리</a>
 	                    <a class="nav-link" href="${path}/courseList/courseList_professor.jsp">세부강의 관리</a>
-	                    <a class="nav-link" href="${path}/grade_professor/listGrade.jsp?propId=${sessionScope.id}">성적 관리</a>	                    	                    
+	                    <a class="nav-link" href="${path}/grade_professor/listGrade.jsp?propId=${sessionScope.id}">성적 관리 게시판</a>	                    	                    
+	                    <a class="nav-link" href="${path}/homework/homework.jsp?propId=${sessionScope.id}">과제 확인 게시판</a>                    	                    
 	                </nav>
 	            </div>
 			</c:when>
@@ -126,6 +136,22 @@
 					window.location.href = linkHref;
 				}, 500);
 			});
+		var check = <%=check%>
+ 			//alert(check);
+			<%
+			// 클릭한 과목이 내가 개설한 강좌일 경우 수강강좌 메뉴바를 보여주도록 설정
+			if(check > 0) {
+		%>
+			
+			$('#homework').css('display','block');
+		<%
+			}else {
+		%>
+			
+			$('#homework').css('display','none');
+		<%
+			}
+		%>
 		</script>
 	</body>
 </html>
