@@ -79,7 +79,9 @@ public class GradePDAO {
 			
 			// 검색어가 존재하는 경우, WHERE 절에 추가
 	        if (map.get("searchText") != null) {
-	            sql += " AND c." + map.get("search") + " LIKE ?"; //AND c.ccode
+	            String searchColumn = (String) map.get("search");
+	            sql += " AND (" +
+	                   searchColumn + " LIKE ?)";
 	            pstmt = con.prepareStatement(sql);
 	            pstmt.setString(1, id);
 	            pstmt.setString(2, "%" + map.get("searchText") + "%");
@@ -87,13 +89,12 @@ public class GradePDAO {
 	            pstmt = con.prepareStatement(sql);
 	            pstmt.setString(1, id);
 	        }
-			System.out.println("sql문: " + sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
+
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            count = rs.getInt("count");
+	        }
 		} catch (Exception e) {
 			System.out.println("GradePDAO내부의 getBoardCount메소드에서 예외 발생: " + e);
 		} finally {

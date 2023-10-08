@@ -1,3 +1,6 @@
+<%@page import="cPlan.CplanDTO"%>
+<%@page import="cPlan.CplanDAO"%>
+
 <%@page import="cHistory.CHistoryDAO"%>
 <%@page import="cHistory.CHistoryVO"%>
 <%@page import="course.CourseVO"%>
@@ -40,16 +43,22 @@
 <body class="sb-nav-fixed">
 
 	<%
-	String id = (String)session.getAttribute("id");
-	
-	//cHistoryDAO 객체 생성
-	CHistoryDAO cHistoryDAO = new CHistoryDAO();
-	// cHistoryVO를 담을 배열 생성
-	List<CourseVO> list2 = null;
-	// cHistoryDAO의 getBoardList메소드를 통해 테이블목록을 가져와서 List배열에 저장
-	list2 = cHistoryDAO.getBoardList(id); // 강의내역과 강의목록을 테이블을 join해서 배열에 담아 저장함
-
+		//한글처리	
+		request.setCharacterEncoding("UTF-8");
 		
+		String cnam = request.getParameter("cname");
+		
+		String compdiv = request.getParameter("compdiv");
+		
+		// CplanDAO 객체 생성
+		CplanDAO cPlDAO = new CplanDAO();
+		
+		CplanDTO plan = cPlDAO.selectBoard(cnam);
+		
+		int count = cPlDAO.getCount(cnam);
+		
+		System.out.println("수정할 cname : " + cnam);
+		System.out.println("수정할 compdiv : " + compdiv);
 	%>
 
 	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -88,61 +97,91 @@
 		</div>
 		<div id="layoutSidenav_content">
 			<main>
+			<form action="cPlanModPro.jsp?cname=<%=cnam %>" method="POST"> 
+			<input type="hidden" name="grade" value="<%=plan.getGrade()%>"/>
+			<input type="hidden" name="compsem" value="<%=plan.getCompsem()%>"/>
+			<input type="hidden" name="compyear" value="<%=plan.getCompyear()%>"/>
+			<input type="hidden" name="compdiv" value="<%=plan.getCompdiv()%>"/>
 			<div class="container-fluid px-4">
-				<h1 class="mt-4">수강강좌</h1>
+				<h1 class="mt-4">강의계획서</h1>
 				<ol class="breadcrumb mb-4">
-					<li class="breadcrumb-item active">cHistory</li>
-				</ol>
-
+					<li class="breadcrumb-item active">lecture</li>					
+				</ol>				
 
 				<div class="row">
 
 					<p class="mb-0">
+					<div align="right">
+						<input type="submit" value="수정">                        		
+                    </div>
+						
 					
-
-					<table border="1"
-						style="border-collapse: collapse; border-color: lightgrey;"
-						class="lec">
 						<%
-// 							out.print(id);
+// 							out.print(cnam);
+							if(count > 0) {
 						%>
-						<tr bgcolor="lightgrey" align="center">
-							<td width=5%>과목명</td>
-							<td width=5%>전공</td>
-							<td width=5%>학년</td>
-							<td width=5%>학기</td>
-							<td width=5%>획득학점</td>
-							<td width=5%>담당교수</td>							
+						
+						<!-- 테이블 -->
+						<table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec">
+ 							<tr >
+ 								<th scope="row" bgcolor="lightgrey" >과목명</th>
+ 									<td><%=plan.getCname()%></td>
+ 								<th scope="row" bgcolor="lightgrey">학과</th>
+ 									<td><%=plan.getDept()%></td>
+ 							</tr>
+ 								
+ 							<tr>
+ 								<th scope="row" bgcolor="lightgrey">학점</th>
+ 									<td><%=plan.getGrade()%></td>
+ 								<th scope="row" bgcolor="lightgrey">이수구분</th>
+ 									<td><%=plan.getCompdiv()%></td>
+ 							</tr>
+ 							<tr>
+ 								<th scope="row" bgcolor="lightgrey">시간</th>
+ 									<td><input type="text" name="time" value="<%=plan.getTime()%>"/></td>
+ 								<th scope="row" bgcolor="lightgrey">대상학년</th>
+ 									<td><%=plan.getCompyear()%></td>
+ 							</tr>
+ 							<tr>
+ 								<th scope="row" bgcolor="lightgrey">학기</th>
+ 									<td><%=plan.getCompsem()%></td>
+ 								<th scope="row" bgcolor="lightgrey">이메일</th>
+ 									<td><%=plan.getEmail()%></td>
+							</tr>
+							<tr>
+								<th scope="row" bgcolor="lightgrey">주교재</th>
+									<td><input type="text" name="books" value="<%=plan.getBooks()%>"/></td>
+							</tr>
+						</table>
+						
+						<table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec">
+							<tr>
+								<th scope="row" bgcolor="lightgrey">교육목표</th>
+								<td ><input type="text" name="purpose" value="<%=plan.getPurpose()%>"></td>
+							</tr>
+						</table>
+						<br><br>
+						<table border="1" style="border-collapse: collapse; border-color: lightgrey;" class="lec">
+						<tr>
+							<th scope="row" bgcolor="lightgrey">강의내용</th>
+							<td align="center">
+								<iframe src="https://www.youtube.com/embed/Rrf8uQFvICE" width="700px", height=400px>
+  									<p>사용 중인 브라우저는 iframe을 지원하지 않습니다.</p>
+								</iframe>
+							</td>
 						</tr>
-						<!-- Db에서 값을 가져올곳 -->
 						<%
-							for (CourseVO course : list2) {
+							}else{
 						%>
-
-						<tr align="center" style="border-bottom: 1px, solid, lightgrey;" class="course">
-							<td width="5%" name="Ccode" hidden="hidden"><%=course.getCcode()%></td>
-							<td width=5% name="Cname" id="Cname"><a href="cPlan.jsp?cname=<%=course.getCname()%>"><%=course.getCname()%></a></td>
-							<!-- 과목명 -->
-							<td width=5%><%=course.getCompdiv()%></td>
-							<!-- 전필 전선 교필 교선 -->
-							<td width=5%><%=course.getCompyear()%></td>
-							<!-- 학년 -->
-							<td width=5%><%=course.getCompsem()%></td>
-							<!-- 학기 -->
-							<td width=5%><%=course.getGrade()%></td>
-							<!-- 획득학점 -->
-							<td width=5%><%=course.getProfessor()%></td>
-							<!-- 담당교수 -->
-							
-						</tr>
+							<tr>
+                   	           	<td colspan="5" align="center">강의계획서 작성 전</td>
+                   	        </tr>
 						<%
-							}
+						} 
 						%>
-
-					</table>
-
-					<br>
-					<br>
+												
+						</table>
+						</div>
 					<jsp:include page="../inc/chat.jsp"></jsp:include>
 					<footer class="py-4 bg-light mt-auto">
 						<div class="container-fluid px-4">
@@ -157,6 +196,8 @@
 						</div>
 					</footer>
 				</div>
+				</form>
+				</main>
 			</div>
 
 			<script

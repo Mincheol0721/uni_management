@@ -8,6 +8,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import courseList.MoreInfoBean;
+
 public class CplanDAO {
 	
 	
@@ -145,6 +147,71 @@ public class CplanDAO {
 			}
 		} catch (Exception e) {
 			System.out.println("cPlanDAO클래스의 cHistoryCheck메소드의 sql문 오류 발생" + e);
+		}finally {
+			freeResource();
+		}
+		return check;
+	}
+	
+	//cPlan 수정하는 기능의 메소드
+	public void modifyCplan(CplanDTO dto) {			
+		
+		try {
+			
+			//DB연결
+			con = getConnection();
+			String sql = "update cPlan set time=?, books=?, purpose=? where cname=? and compdiv=?";
+			pstmt = con.prepareStatement(sql);
+			
+//			System.out.println("MOD타는중... cname=" + bean.getCname());
+								
+			pstmt.setString(1, dto.getTime());
+			pstmt.setString(2, dto.getBooks());
+			pstmt.setString(3, dto.getPurpose());
+			pstmt.setString(4, dto.getCname());
+			pstmt.setString(5, dto.getCompdiv());
+	
+			pstmt.executeUpdate();
+			
+			System.out.println("cPlan 수정 sql구문 실행 완료");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("modifyCplan메소드 실행 오류 : " + e);
+		} finally {
+			freeResource();
+		}
+		
+	}//modifyCplan end
+	
+	
+	
+	//강의리스트 화면에서 강의 계획서를 눌렀을때 누른 과목의 수강내역을 확인하는 메소드
+	public int cHistoryPCheck(String id, String cname) {
+		int check = 0;
+		try {
+			//DB연결
+			con = getConnection();
+			//sql문 작성
+			String sql = "select count(*) \n" + 
+					"					from chistory \n" + 
+					"					join course\n" + 
+					"					on course.ccode = chistory.ccode\n" + 
+					"					where course.id = ? and course.cname = ?";
+				
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, cname);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				check = rs.getInt(1);
+			}else {
+				check = 0;
+			}
+		} catch (Exception e) {
+			System.out.println("cPlanDAO클래스의 cHistoryPCheck메소드의 sql문 오류 발생" + e);
 		}finally {
 			freeResource();
 		}
