@@ -1,3 +1,4 @@
+<%@page import="org.apache.taglibs.standard.lang.jstl.test.Bean1"%>
 <%@page import="board_course.BoardPage"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -198,25 +199,7 @@
 	                       		<option value="s.name">이름</option>                     		                      		                   		
 	                       	</select>
 	                       	<input type="text" name="searchText" id="searchText"/>
-	                       	<input type="submit" value="검색"/>   	                       	
-	                       	
-	                       <%--
-// 							    String loggedInProfessor = (String) session.getAttribute("id");						
-							
-// 							    String professorName = "";
-							
-// 								for(GradeBean bean : vectorBoardLists ){							    	
-							        
-// 							        if (loggedInProfessor.equals(bean.getId())) {
-							        	
-// 							        	// professorName 값을 세션에 저장
-// 							            professorName = bean.getPropId();							            
-// 							            session.setAttribute("professorName", professorName);
-							            
-// 							            break; // 교수명을 찾았으므로 반복문 종료
-// 							        }
-// 							    }
-							--%>                      	
+	                       	<input type="submit" value="검색"/> 
                     	</form>
                         <div class="row">                      	
                         	<p class="mb-0">    		
@@ -230,6 +213,7 @@
 	                   	           			<th width=5%>이름</th>
 	                   	           			<th width=5%>점수</th>
 	                   	           			<th width=5%>등급</th>
+	                   	           			<th width=5%>과제 확인</th>	                   	           			
 	                   	           			<th width=5%>성적 수정</th>	
 	                   	           			<th width=5%>성적 초기화</th>	                   	           			         	           			                   	           			               	           			
 	                   	           		</tr>
@@ -264,6 +248,8 @@
                   	           			<td><%= bean.getName() %></td>                  	           			
                   	           			<td><%= bean.getGrade() %></td>
                   	           			<td><%= bean.getRate() %></td>
+                  	           			<%-- 교수님이 과제확인을 위한 페이지로 이동하는 링크 --%>
+                        				<td><a href="homework_confirm.jsp?studentName=<%=bean.getName()%>&cname=<%=bean.getCname()%>">과제</a></td>
 							            <td><a href="modGrade.jsp?ccode=<%= bean.getCcode() %>&id=<%= bean.getId()%>&name=<%= bean.getName()%>">수정</a></td>	
 										<td><a href="javascript:resetG('<%= bean.getCcode()%>','<%=bean.getId()%>')">초기화</a></td>   	           				
          	           				</tr> 
