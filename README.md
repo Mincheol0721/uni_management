@@ -8,4 +8,7 @@
 
 2. 웹 소켓 채팅 기능
 
-![webSocket](./img/webSocket.gif)
+<p align="center">
+  <img src="./assets/img/webSocket.gif" width="100px" height="100px">
+</p>
+
