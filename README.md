@@ -8,4 +8,4 @@
 
 2. 웹 소켓 채팅 기능
 
-[webSocket](./img/webSocket.gif)
+[webSocket](/assets/img/webSocket.gif)
