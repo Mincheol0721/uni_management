@@ -1,0 +1,304 @@
+
+package member;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+//DAO는 데이터베이스 연결을 맺은 후 DB작업하는 자바빈클래스 종류중 하나!
+
+public class EmployeeDAO {
+
+	//데이터베이스 작업관련 객체들을 저장할 변수들
+	DataSource ds;//커넥션풀 역할을 하는 DataSouce객체의 주소를 저장할 변수 
+	Connection con; //커넥션풀에 미리 만들어 놓고 DB와의 접속이 필요하면 빌려와서 사용할 DB접속정보를 가지고 있는 Connection객체의 주소를 저장할 변수 
+	PreparedStatement pstmt;//생성한 SQL문을 DB에 전송해서 실행할 역할을하는 PreparedStatement실행객체의 주소를 저장할 변수 
+	ResultSet rs;//DB의 테이블에 저장된 정보를 조회한 결과를 임시로 얻기 위한 ResultSet객체 메모리의 주소를 저장할 변수 
+	
+	//커넥션풀 생성 및 커넥션 객체를 얻어 커넥션객체자체를 반환 하는  기능의 메소드 
+	private Connection getConnection() throws Exception {
+		
+		//1. InitialContext객체 생성
+		//생성하는 이유는  자바의 네이밍 서비스(JNDI)에서 이름과 실제 객체를 연결해주는 개념이 Context이며,
+		//InitialContext객체는 네이밍 서비스를 이용하기위한 시작점입니다.
+		Context initCtx = new InitialContext();
+		//2. "java:comp/env"라는 주소를 전달하여  Context객체를 얻었습니다.
+		//"java:comp/env" 주소는 현재 웹 애플리케이션의 루트 디렉터리 라고 생각 하면됩니다.
+		//즉! 현재 웹애플리케이션이 사용할수 있는 모든 자원은 "java:comp/env"아래에 위치합니다.(<Context></Context/>이위치를 말합니다.)
+		Context ctx = (Context)initCtx.lookup("java:comp/env");
+		//3. "java:comp/env 경로 아래에 위치한  "jdbc/studyplannerdb" Recource태그의  DataSource커넥션풀을 얻는다
+		ds = (DataSource)ctx.lookup("jdbc/studyplannerdb");		 
+		//4. 마지막으로 커넥션풀(DataSouce)객체 메모리 에 저장된 Connection객체를 반환받아 사용
+		con = ds.getConnection();
+		return con;
+	}
+	
+	public void freeResource() {
+		//6.자원해제
+		try {
+			if(pstmt != null) {
+				pstmt.close();
+			}
+			if(rs != null) {
+				rs.close();
+			}
+			if(con != null) {
+				con.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//Member테이블에 새 회원을 추가 하는 기능의 메소드 
+	public int insertMember(MemberDTO dto){
+		
+		int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+		String sql = ""; // insert 쿼리문 저장할 변수 
+		
+		try {
+			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+			//  요약 : DB와의 연결
+			con = getConnection();
+			//2. insert 쿼리문(SQL문) 만들기
+			sql = "insert into employee(id,pwd,name,email,tel,ssn,addr) " +
+							     "values( ?,  ?,  ?,    ?,  ?,  ?,   ?)";
+			
+			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+			pstmt = con.prepareStatement(sql);
+			//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getPwd());
+			pstmt.setString(3, dto.getName());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getTel());
+			pstmt.setString(6, dto.getSsn());
+			pstmt.setString(7, dto.getAddr());
+			
+			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+			result = pstmt.executeUpdate();
+		
+		} catch (Exception e) {
+			System.out.println("employeeDAO클래스의 insertMember메소드 내부에서  insert문장 실행 예외발생 : " + e.toString());
+		} finally {
+			freeResource();
+		}
+	
+		//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+		return result;
+	}
+	
+	//회원가입을 위해 입력한 아이디를 매개변수로 id로 전달받아
+	//DB의 테이블에 저장되어 있는지 유무를 검사하는 메소드
+	//만약 입력한 아이디가 DB에 저장되어 있으면 1을 check변수에 저장하여 반환하고
+	//만약 입력한 아이디가 DB에 저장되어 있지 않으면 0을 check변수에 저장하여 반환
+	public int idCheck(String id) {
+		
+		int check = 0;
+		
+		String sql = "";
+		
+		try {
+			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+			//  요약 : DB와의 연결
+			con = getConnection();
+			//2. 입력한 아이디에 해당하는 회원레코드 조회 SELECT 쿼리문 만들기
+			sql = "select * from employee where id='"+id+"'";
+			//3. PreparedStatement실행객체 얻기
+			pstmt = con.prepareStatement(sql);
+			//4. select문장 DB에 전송해서 실행 후 조회 결과를 ResultSet으로 반환받기
+			rs = pstmt.executeQuery();
+			//5. 입력한 아이디에 해당하는 회원 레코드가 조회 되면(아이디 중복)
+			if(rs.next()) {
+				check = 1;
+			} else {
+				check = 0;
+			}
+			
+		} catch (Exception e) {
+			System.out.println("employeeDAO의 idCheck메소드 내부에서 SQL 실행오류: " + e);
+		} finally {
+			//7. 자원반납(커넥션풀에 Connection객체 사용 후 반납)
+			freeResource();
+		}
+		//6. join_IDcheck.jsp로 반환
+		return check;
+	}
+	
+	//Member테이블에 회원정보를 수정하는 기능의 메소드 
+	public int updateMember(MemberDTO dto){
+		
+		int result = 0; // insert에 성공하면 1을 저장, 실패하면 0을 저장 
+		String sql = ""; // insert 쿼리문 저장할 변수 
+		
+		try {
+			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+			//  요약 : DB와의 연결
+			con = getConnection();
+			//2. insert 쿼리문(SQL문) 만들기
+			sql = "update employee set name=?, tel=?, ssn=?, email=?, addr=?";
+			
+			if(dto.getPwd() != "") {
+				sql += ", pwd=?";
+			} 
+			sql += " where id=?";
+			
+			//3. PreparedStatement insert 쿼리문 실행할 객체 얻기 
+			pstmt = con.prepareStatement(sql);
+			//3.1  ? 기호에 대응되게 insert할 값들을 설정 (순서대로)
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getTel());
+			pstmt.setString(3, dto.getSsn());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getAddr());
+			
+			if(dto.getPwd() != "") {
+				pstmt.setString(6, dto.getPwd());
+				pstmt.setString(7, dto.getId());
+			} else {
+				pstmt.setString(6, dto.getId());
+			}
+			
+			//4. 완성된 insert 쿼리문 DB의 member테이블에 전송해 실행합니다.
+			// excuteUpdate메소드는 insert, update, delete 문을 실행하는 메소드로  성공하면 1을 반환 실패하면 0을 반환 하는 메소드임.
+			result = pstmt.executeUpdate();
+		
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 updateMember메소드 내부에서 예외 발생 : " + e.toString());
+		} finally {
+			freeResource();
+		}
+	
+		//5.   joinPro.jsp페이지에 insertMember메소드 호출구문을 작성한 줄로  1 또는 0을 반환
+		return result;
+	}
+	
+	public MemberDTO selectMember(String id) {
+		MemberDTO dto = null;
+		
+		try {
+			con = getConnection();
+			String sql = "select * from employee where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new MemberDTO();
+				
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setSsn(rs.getString("ssn"));
+				dto.setTel(rs.getString("tel"));
+				dto.setEmail(rs.getString("email"));
+				dto.setAddr(rs.getString("addr"));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 selectMember메소드 내부에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		return dto;
+	}
+	
+	public String checkPwd(String id) {
+		String pwd = null;
+		
+		try {
+			con = getConnection();
+			
+			String sql = "select pwd from employee where id=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pwd = rs.getString("pwd");
+			}
+			
+			
+		} catch (Exception e) {
+			System.out.println("EmployeeDAO클래스의 checkPwd메소드 내부에서 예외 발생: " + e);
+		} finally {
+			freeResource();
+		}
+		
+		
+		return pwd;
+	}
+	
+	//로그인 처리 시 사용하는 메소드
+	//입력받은 아이디, 비밀번호가 DB(jspbeginner)내부의 member테이블에 저장되어 있는지 확인하기 위해 
+	//입력받은 아이디, 비밀번호와 member테이블에 저장된 아이디, 비밀번호를 비교하는 메소드
+	//입력한 아이디와 비밀번호가 맞으면(member테이블에 저장되어 있으면)check변수의 값을 1로 저장
+	//입력한 아이디가 맞고 비밀번호가 틀리면 check변수의 값을 0으로 저장
+	//입력한 아이디가 틀리고 비밀번호가 맞으면 check변수의 값을 -1로 저장
+	public int userCheck(String id, String pwd) {
+		int check = -1;
+		
+		String sql = "";
+		
+		try {
+			//1.커넥션풀에서 커넥션 객체 얻기 (DB와 MemberDAO.java와 연결을 맺은 정보를 가지고 있는 Connection객체 얻기)
+			//  요약 : DB와의 연결
+			con = getConnection();
+			//2.1 입력한 아이디에 해당하는 정보 조회(SELECT문 만들기)
+			
+			sql = "SELECT * FROM employee WHERE id=?";
+			//2.2 입력한 비밀번호에 해당하는 정보 조회(SELECT문 만들기)
+			//sql = "SELECT * FROM MEMBER WHERE passwd=?";
+			//3. PreparedStatement실행 객체 얻기
+			pstmt = con.prepareStatement(sql);
+			//3.1 ?에 대응되는 값을 입력한 아이디와 비밀번호 값으로 설정
+			pstmt.setString(1, id);
+			//pstmt.setString(2, passwd);
+			//4. PreparedStatement 실행객체 메모리에 설정된 전체 SELECT문장을 DB의 테이블에 전송해서 실행
+			//   실행 후 조회된 결과 데이터들을 ResultSet객체 메모리에 담아서 얻기
+			rs = pstmt.executeQuery();
+			
+			//5. ResultSet에 커서위치를 그 다음행으로 옮겨서 조회한 정보가 있는지 확인
+			if(rs.next()) {//입력한 아이디가 DB의 테이블에 존재하면
+				//입력한 비밀번호와 DB의 테이블에서 조회된 비밀번호를 비교해서 같으면
+				//(입력한 ID와 비밀번호가 모두 같으면)
+				if( pwd.equals( rs.getString("pwd") ) ) {
+					check = 1;	//아이디 비밀번호 모두 같음
+				} else { //입력한 ID는 같으나 비밀번호가 틀리면
+					check = 0;	//비밀번호 다름
+				}
+				
+			} else {//입력한 아이디가 DB의 테이블에 저장되어 있지 않으면
+				check = -1;		//아이디 다름
+			}
+			
+		} catch (Exception e) {
+			System.out.println("employeeDAO의 userCheck메소드에서 sql문 실행 오류: " + e);
+		} finally {
+			//자원반납(커넥션풀에 Connection객체 사용 후 반납)
+			freeResource();
+		}
+		
+		
+		return check;
+	}
+	
+	
+}
+
+
+
+
+
