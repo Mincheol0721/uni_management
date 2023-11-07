@@ -5,10 +5,9 @@
 
 1. 네이버 블로그 검색 API
 
+![image](https://github.com/Mincheol0721/uni_management/assets/41099574/22f153ba-9b71-4f5b-b156-b08a00720037)
+
 
 2. 웹 소켓 채팅 기능
 
-<p align="center">
-  <img src="/assets/img/webSocket.gif" width="100px" height="100px">
-</p>
-
+![image](https://github.com/Mincheol0721/uni_management/assets/41099574/4a6533c6-cf50-4996-83a7-17746fbff3eb)
